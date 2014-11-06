@@ -1,0 +1,26 @@
+{
+	"name": "yearn",
+	"version": "0.0.1",
+	"description": "Override node's require mechanism."
+	"keywords": [
+		"require",
+		"override",
+		"load",
+		"version"
+	],
+	"author": "Rusty Nelson",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/doctorrustynelson/yearn.git"
+	},
+	"bugs": {
+		"url": "https://github.com/doctorrustynelson/yearn/issues"
+	},
+	"license": "MIT",
+	"main": "lib/yearn.js",
+	"dependencies": {
+		"chalk": "0.5.1",
+		"semver": "4.1.0",
+		"commander": "2.5.0"
+	}
+}

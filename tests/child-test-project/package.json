@@ -1,0 +1,9 @@
+{
+	"name": "child-test-project",
+	"version": "0.0.1",
+	"main": "child-tests.js",
+	"private": true,
+	"dependencies": {
+		"test-module-0": "~1.0.0"
+	}
+}

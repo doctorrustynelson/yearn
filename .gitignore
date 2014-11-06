@@ -1,0 +1,13 @@
+
+# nodejs ignores
+node_modules
+npm-debug.log
+
+
+# eclipse IDE ignores
+.settings
+.project
+.jshintrc
+
+# include everything under tests
+!tests/**/node_modules
