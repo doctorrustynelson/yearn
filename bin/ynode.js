@@ -1,9 +1,11 @@
 
+'use strict';
+
 var repl = require( 'repl' );
 var path = require( 'path' );
-var yearn = require( path.resolve( __dirname, '../lib/yearn' ) )( { log: 'ALL' } );
+require( path.resolve( __dirname, '../lib/yearn' ) )( { log: 'ALL' } );
 
-var DIRECT_CRAVING_REGEXP = /^(?:\.\.\/|\.\/|\/)/;
+//var DIRECT_CRAVING_REGEXP = /^(?:\.\.\/|\.\/|\/)/;
 
 if( process.argv.length < 3 ){
 	
@@ -16,11 +18,11 @@ if( process.argv.length < 3 ){
 } else if ( process.argv.length === 3 ){
 	
 	switch( process.argv[2] ){
-			// TODO: add other options
-		default:
-			// TODO: fix
-			require( process.argv[2] );
-			break;
+		// TODO: add other options
+	default:
+		// TODO: fix
+		require( process.argv[2] );
+		break;
 	}
 } else {
 	console.log( process.argv );
