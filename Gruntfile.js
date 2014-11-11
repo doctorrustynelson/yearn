@@ -22,7 +22,10 @@ module.exports = function( grunt ){
 			tests: [
 				'tests/**/*tests.js',
 				'tests/**/*tests.js'
-			]
+			],
+			options: {
+				reporter: 'verbose'
+			}
 		}
 	});
 	

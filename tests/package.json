@@ -1,8 +1,0 @@
-{
-	"name": "tests",
-	"version": "0.0.1",
-	"private": true,
-	"dependencies": {
-		"test-module-0": "~1.0.0"
-	}
-}
