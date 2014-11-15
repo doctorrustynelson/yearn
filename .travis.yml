@@ -1,0 +1,14 @@
+# travis continuous integration build specification
+
+language: node_js
+
+# versions of node.js to test with:
+node_js:
+  - "0.11"
+  - "0.10"
+  - "0.8"
+
+# npm install is run by default
+
+# what to run:
+# using the default which is: npm test

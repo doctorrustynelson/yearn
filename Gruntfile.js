@@ -31,7 +31,8 @@ module.exports = function( grunt ){
 	
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
+	grunt.loadNpmTasks( 'grunt-travis-lint' );
 	
-	grunt.registerTask( 'test', [ 'jshint', 'nodeunit' ] );
+	grunt.registerTask( 'test', [ 'jshint', 'travis-lint', 'nodeunit' ] );
 	grunt.registerTask( 'default', [ 'test' ] );
 };
