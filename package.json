@@ -1,6 +1,6 @@
 {
 	"name": "yearn",
-	"version": "0.0.5",
+	"version": "0.1.0",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
@@ -8,6 +8,7 @@
 		"load",
 		"version"
 	],
+	"private": "true",
 	"author": "Rusty Nelson",
 	"repository": {
 		"type": "git",
