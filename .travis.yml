@@ -8,7 +8,9 @@ node_js:
   - "0.10"
   - "0.8"
 
-# npm install is run by default
+# npm install is run by default but need to add grunt-ci
+before_script:
+  - npm install -g grunt-cli
 
 # what to run:
 # using the default which is: npm test
