@@ -1,6 +1,6 @@
 {
 	"name": "yearn",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
@@ -18,6 +18,9 @@
 	},
 	"license": "MIT",
 	"main": "lib/yearn.js",
+	"scripts": {
+		"test": "grunt test"
+	},
 	"dependencies": {
 		"chalk": "0.5.1",
 		"semver": "4.1.0",
