@@ -56,16 +56,13 @@ module.exports.simpleIntigrationTests = {
 		test.done();
 	},
 	
-	/*
-	 TODO: Fix
 	fullyQualifiedYearningWithSubLegacyYearningWithSubLegacyYearningFallback: function( test ){
 		
 		var result = yearn( { org: 'test_modules', module: 'test-module-3', version: '1.1.0' } );
 		
-		test.equal( 'Secret string for test-module-3 v.1.1.0 in default org with test-submodule-0 v.0.1.0.', result );
+		test.equal( 'Secret string for test-module-3 v.1.1.0 in default org with test-submodule-1 v.0.0.1 with test-submodule-2 v.0.1.0.', result );
 		test.done();
 	},
-	*/
 	
 	fullyQualifiedYearningWithNonRootSubYearning: function( test ){
 		
