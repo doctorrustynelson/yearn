@@ -1,4 +1,7 @@
 # yearn
+[![Build Status](https://img.shields.io/travis/doctorrustynelson/yearn.svg)](http://travis-ci.org/doctorrustynelson/yearn)
+[![NPM Version](https://img.shields.io/npm/v/yearn.svg)](https://npmjs.org/package/yearn)
+![NPM License](https://img.shields.io/npm/l/yearn.svg)
 
 ### Overview
 Yearn is a library that injects functionality into Node's require mechanism (optional but default) providing the ability to transform the require before it's passed to load.
