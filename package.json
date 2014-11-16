@@ -19,6 +19,9 @@
 	},
 	"license": "MIT",
 	"main": "lib/yearn.js",
+	"bin": {
+		"ynpm": "bin/ynpm.js"
+	}
 	"scripts": {
 		"test": "grunt test"
 	},
