@@ -26,13 +26,20 @@ module.exports = function( grunt ){
 			options: {
 				reporter: 'verbose'
 			}
+		},
+		jsonlint: {
+			all: [ 
+			    'package.json',
+			    'tests/**/*.json'
+			]	  
 		}
 	});
 	
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
+	grunt.loadNpmTasks( 'grunt-jsonlint' );
 	grunt.loadNpmTasks( 'grunt-travis-lint' );
 	
-	grunt.registerTask( 'test', [ 'jshint', 'travis-lint', 'nodeunit' ] );
+	grunt.registerTask( 'test', [ 'jshint', 'jsonlint', 'travis-lint', 'nodeunit' ] );
 	grunt.registerTask( 'default', [ 'test' ] );
 };

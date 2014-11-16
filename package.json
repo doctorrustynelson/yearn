@@ -21,7 +21,7 @@
 	"main": "lib/yearn.js",
 	"bin": {
 		"ynpm": "bin/ynpm.js"
-	}
+	},
 	"scripts": {
 		"test": "grunt test"
 	},
@@ -34,6 +34,7 @@
 		"grunt": "0.4.5",
 		"grunt-contrib-jshint": "0.10.0",
 		"grunt-contrib-nodeunit": "0.4.1",
+		"grunt-jsonlint": "1.0.4",
 		"grunt-travis-lint": "0.0.3"
 	}
 }
