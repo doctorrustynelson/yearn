@@ -8,7 +8,7 @@
 		"load",
 		"version"
 	],
-	"private": "true",
+	"private": true,
 	"author": "Rusty Nelson",
 	"repository": {
 		"type": "git",
