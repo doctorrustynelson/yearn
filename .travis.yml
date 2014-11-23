@@ -13,5 +13,4 @@ before_script:
 
 # what to run:
 script:
-  - npm run-script test
   - npm run-script ci
