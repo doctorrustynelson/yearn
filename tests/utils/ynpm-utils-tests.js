@@ -43,7 +43,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 			grunt.file.delete( './tmp-dest' );
 		
 		npm.load( function( ){
-			npm.commands.install( './tmp-src', 'lodash@2.4.0', function( err, modules ){
+			npm.commands.install( './tmp-src', 'lodash@2.4.0', function( ){
 				grunt.file.mkdir( './tmp-dest' );
 				ynpm_utils.translateLegacyDependencyStructure( './tmp-src/node_modules/lodash', './tmp-dest' );
 				
@@ -68,7 +68,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 			grunt.file.delete( './tmp-dest' );
 		
 		npm.load( function( ){
-			npm.commands.install( './tmp-src', 'has-ansi@1.0.0', function( err, modules ){
+			npm.commands.install( './tmp-src', 'has-ansi@1.0.0', function( ){
 				grunt.file.mkdir( './tmp-dest' );
 				ynpm_utils.translateLegacyDependencyStructure( './tmp-src/node_modules/has-ansi', './tmp-dest' );
 				
