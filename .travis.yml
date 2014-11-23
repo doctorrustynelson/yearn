@@ -12,4 +12,5 @@ before_script:
   - npm install -g grunt-cli
 
 # what to run:
-# using the default which is: npm test
+script:
+  - npm run-script ci

@@ -18,6 +18,7 @@ module.exports = function( grunt ){
 				jshintrc: '.jshintrc'
 			}
 		},
+		
 		nodeunit: {
 			tests: [
 				'tests/**/*tests.js',
@@ -27,11 +28,18 @@ module.exports = function( grunt ){
 				reporter: 'verbose'
 			}
 		},
+		
 		jsonlint: {
 			all: [ 
 			    'package.json',
 			    'tests/**/*.json'
 			]	  
+		},
+		
+		coveralls: {
+			submit_coverage: {
+				src: 'coverage/lcov.info'
+			}
 		}
 	});
 	
@@ -39,7 +47,9 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
 	grunt.loadNpmTasks( 'grunt-jsonlint' );
 	grunt.loadNpmTasks( 'grunt-travis-lint' );
+	grunt.loadNpmTasks( 'grunt-coveralls' );
 	
-	grunt.registerTask( 'test', [ 'jshint', 'jsonlint', 'travis-lint', 'nodeunit' ] );
-	grunt.registerTask( 'default', [ 'test' ] );
+	grunt.registerTask( 'test', [ 'jshint', 'nodeunit' ] );
+	grunt.registerTask( 'full-test', [ 'jshint', 'jsonlint', 'travis-lint', 'nodeunit' ] );
+	grunt.registerTask( 'default', [ 'full-test' ] );
 };
