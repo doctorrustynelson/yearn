@@ -24,7 +24,7 @@
 	},
 	"scripts": {
 		"test": "grunt test",
-		"ci": "istanbul cover --preload-sources -x bin/** -x Gruntfile.js -- grunt default -debug -verbose && grunt coveralls"
+		"ci": "istanbul cover --preload-sources -x bin/** -x Gruntfile.js -- grunt default && grunt coveralls"
 	},
 	"dependencies": {
 		"chalk": "0.5.1",
@@ -37,9 +37,7 @@
 		"grunt": "0.4.5",
 		"grunt-contrib-jshint": "0.10.0",
 		"grunt-contrib-nodeunit": "0.4.1",
-		"grunt-jsonlint": "1.0.4",
-		"grunt-travis-lint": "0.0.3",
-	    "grunt-coveralls": "^1.0.0",
-	    "istanbul": "^0.3.2"
+	    "grunt-coveralls": "1.0.0",
+	    "istanbul": "0.3.2"
 	}
 }

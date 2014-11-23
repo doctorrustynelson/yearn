@@ -32,13 +32,6 @@ module.exports = function( grunt ){
 			}
 		},
 		
-		jsonlint: {
-			all: [ 
-			    'package.json',
-			    'tests/**/*.json'
-			]	  
-		},
-		
 		coveralls: {
 			submit_coverage: {
 				src: 'coverage/lcov.info'
@@ -48,11 +41,8 @@ module.exports = function( grunt ){
 	
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
-	grunt.loadNpmTasks( 'grunt-jsonlint' );
-	grunt.loadNpmTasks( 'grunt-travis-lint' );
 	grunt.loadNpmTasks( 'grunt-coveralls' );
 	
 	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:integration' ] );
-	grunt.registerTask( 'full-test', [ 'jshint', 'jsonlint', 'travis-lint', 'nodeunit:unit', 'nodeunit:integration' ] );
-	grunt.registerTask( 'default', [ 'full-test' ] );
+	grunt.registerTask( 'default', [ 'test' ] );
 };
