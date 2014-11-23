@@ -24,7 +24,7 @@
 	},
 	"scripts": {
 		"test": "grunt test",
-		"ci": "istanbul cover -- grunt test && grunt coveralls"
+		"ci": "istanbul cover --preload-sources -- grunt test && grunt coveralls"
 	},
 	"dependencies": {
 		"chalk": "0.5.1",
