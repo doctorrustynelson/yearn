@@ -20,9 +20,12 @@ module.exports = function( grunt ){
 		},
 		
 		nodeunit: {
-			tests: [
+			unit: [
 				'tests/**/*tests.js',
-				'tests/**/*tests.js'
+				'!tests/yearn-tests.js'
+			],
+			integration: [
+			    'tests/yearn-tests.js'
 			],
 			options: {
 				reporter: 'verbose'
@@ -49,7 +52,7 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-travis-lint' );
 	grunt.loadNpmTasks( 'grunt-coveralls' );
 	
-	grunt.registerTask( 'test', [ 'jshint', 'nodeunit' ] );
-	grunt.registerTask( 'full-test', [ 'jshint', 'jsonlint', 'travis-lint', 'nodeunit' ] );
+	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:integration' ] );
+	grunt.registerTask( 'full-test', [ 'jshint', 'jsonlint', 'travis-lint', 'nodeunit:unit', 'nodeunit:integration' ] );
 	grunt.registerTask( 'default', [ 'full-test' ] );
 };
