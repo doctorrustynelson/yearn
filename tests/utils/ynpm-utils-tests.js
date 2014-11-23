@@ -28,10 +28,68 @@
  *		- Finish the current test function, and move on to the next. ALL tests should call this!
  */
 
-//var ynpm-utils = require( '../lib/utils/ynpm-utils' );
+var ynpm_utils = require( '../../lib/utils/ynpm-utils' );
+var npm = require( 'npm' );
+var grunt = require( 'grunt' );
 
-module.exports.simpleIntigrationTests = {
+module.exports.translateLegacyDependencyStructureTests = {
 	
+	noDependenciesStructureTest: function( unit ){
+		
+		if( grunt.file.exists( './tmp-src' ) )
+			grunt.file.delete( './tmp-src' );
+		
+		if( grunt.file.exists( './tmp-dest' ) )
+			grunt.file.delete( './tmp-dest' );
+		
+		npm.load( function( ){
+			npm.commands.install( './tmp-src', 'lodash@2.4.0', function( err, modules ){
+				grunt.file.mkdir( './tmp-dest' );
+				ynpm_utils.translateLegacyDependencyStructure( './tmp-src/node_modules/lodash', './tmp-dest' );
+				
+				unit.ok( grunt.file.exists( './tmp-dest/lodash' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/lodash/2.4.0' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/lodash/2.4.0/package.json' ) );
+				unit.ok( !grunt.file.exists( './tmp-dest/lodash/2.4.0/node_modules' ) );
+				
+				grunt.file.delete( './tmp-src' );
+				grunt.file.delete( './tmp-dest' );
+				unit.done();
+			} );
+		} );
+	},
 	
+	smallDependenciesStructureTest: function( unit ){
+		
+		if( grunt.file.exists( './tmp-src' ) )
+			grunt.file.delete( './tmp-src' );
+		
+		if( grunt.file.exists( './tmp-dest' ) )
+			grunt.file.delete( './tmp-dest' );
+		
+		npm.load( function( ){
+			npm.commands.install( './tmp-src', 'has-ansi@1.0.0', function( err, modules ){
+				grunt.file.mkdir( './tmp-dest' );
+				ynpm_utils.translateLegacyDependencyStructure( './tmp-src/node_modules/has-ansi', './tmp-dest' );
+				
+				unit.ok( grunt.file.exists( './tmp-dest/has-ansi' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/has-ansi/1.0.0' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/has-ansi/1.0.0/package.json' ) );
+				unit.ok( !grunt.file.exists( './tmp-dest/has-ansi/1.0.0/node_modules' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/ansi-regex' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/ansi-regex/1.1.0' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/ansi-regex/1.1.0/package.json' ) );
+				unit.ok( !grunt.file.exists( './tmp-dest/ansi-regex/1.1.0/node_modules' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/get-stdin' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/get-stdin/1.0.0' ) );
+				unit.ok( grunt.file.exists( './tmp-dest/get-stdin/1.0.0/package.json' ) );
+				unit.ok( !grunt.file.exists( './tmp-dest/get-stdin/1.0.0/node_modules' ) );
+				
+				grunt.file.delete( './tmp-src' );
+				grunt.file.delete( './tmp-dest' );
+				unit.done();
+			} );
+		} );
+	}
 	
 };
