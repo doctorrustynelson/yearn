@@ -29,6 +29,7 @@
  */
 
 var ynpm_utils = require( '../../lib/utils/ynpm-utils' );
+var path = require( 'path' );
 var npm = require( 'npm' );
 var grunt = require( 'grunt' );
 
@@ -91,5 +92,143 @@ module.exports.translateLegacyDependencyStructureTests = {
 			} );
 		} );
 	}
-	
 };
+
+module.exports.npmInstallToDirTests = {
+	
+	installBadModule: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDir( 'thismodulehadbetternoteverexist', tempdir, function( err ){
+			unit.notEqual( err, null );
+			
+			grunt.file.delete( tempdir, { force: true } );
+			unit.done();
+		} );
+	},
+		
+	installAnyLodash: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDir( 'lodash', tempdir, function( err ){
+			unit.equal( err, null );
+			unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
+			unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
+			
+			grunt.file.delete( tempdir, { force: true } );
+			unit.done();
+		} );
+	},
+
+	installSpecificLodash: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDir( 'lodash@2.4.0', tempdir, function( err ){
+			unit.equal( err, null );
+			unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
+			unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
+			
+			grunt.file.delete( tempdir, { force: true } );
+			unit.done();
+		} );
+	},
+	
+	installFuzzyLodash: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDir( 'lodash@~2.4.0', tempdir, function( err ){
+			unit.equal( err, null );
+			unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
+			unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
+			
+			grunt.file.delete( tempdir, { force: true } );
+			unit.done();
+		} );
+	},
+	
+	installRangeLodash: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDir( 'lodash@2.0.0 - 2.4.0', tempdir, function( err ){
+			unit.equal( err, null );
+			unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
+			unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
+			
+			grunt.file.delete( tempdir, { force: true } );
+			unit.done();
+		} );
+	}
+};
+
+module.exports.npmInstallToDirSyncTests = {
+	
+	installBadModule: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		unit.throws( function(){
+			ynpm_utils.npmInstallToDirSync( 'thismodulehadbetternoteverexist', tempdir );
+		});
+		
+		grunt.file.delete( tempdir, { force: true } );
+		unit.done();
+	},
+		
+	installAnyLodash: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDirSync( 'lodash', tempdir );
+		
+		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
+		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
+		
+		grunt.file.delete( tempdir, { force: true } );
+		unit.done();
+	},
+
+	installSpecificLodash: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDirSync( 'lodash@2.4.0', tempdir );
+		
+		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
+		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
+		
+		grunt.file.delete( tempdir, { force: true } );
+		unit.done();
+	},
+	
+	installFuzzyLodash: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDirSync( 'lodash@~2.4.0', tempdir );
+		
+		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
+		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
+		
+		grunt.file.delete( tempdir, { force: true } );
+		unit.done();
+	},
+	
+	installRangeLodash: function( unit ){
+		
+		var tempdir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils.npmInstallToDirSync( 'lodash@2.0.0 - 2.4.0', tempdir );
+		
+		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
+		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
+		
+		grunt.file.delete( tempdir, { force: true } );
+		unit.done();
+	}
+};
+
