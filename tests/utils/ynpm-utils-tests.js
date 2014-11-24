@@ -37,24 +37,21 @@ module.exports.translateLegacyDependencyStructureTests = {
 	
 	noDependenciesStructureTest: function( unit ){
 		
-		if( grunt.file.exists( './tmp-src' ) )
-			grunt.file.delete( './tmp-src' );
-		
-		if( grunt.file.exists( './tmp-dest' ) )
-			grunt.file.delete( './tmp-dest' );
+		var temp_src_dir = ynpm_utils.createTempDirSync();
+		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		
 		npm.load( function( ){
-			npm.commands.install( './tmp-src', 'lodash@2.4.0', function( ){
-				grunt.file.mkdir( './tmp-dest' );
-				ynpm_utils.translateLegacyDependencyStructure( './tmp-src/node_modules/lodash', './tmp-dest' );
+			npm.commands.install( temp_src_dir, 'lodash@2.4.0', function( ){
+
+				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir );
 				
-				unit.ok( grunt.file.exists( './tmp-dest/lodash' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/lodash/2.4.0' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/lodash/2.4.0/package.json' ) );
-				unit.ok( !grunt.file.exists( './tmp-dest/lodash/2.4.0/node_modules' ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodash' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodash/2.4.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodash/2.4.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'lodash/2.4.0/node_modules' ) ) );
 				
-				grunt.file.delete( './tmp-src' );
-				grunt.file.delete( './tmp-dest' );
+				grunt.file.delete( temp_src_dir, { force: true } );
+				grunt.file.delete( temp_dest_dir, { force: true } );
 				unit.done();
 			} );
 		} );
@@ -62,33 +59,62 @@ module.exports.translateLegacyDependencyStructureTests = {
 	
 	smallDependenciesStructureTest: function( unit ){
 		
-		if( grunt.file.exists( './tmp-src' ) )
-			grunt.file.delete( './tmp-src' );
-		
-		if( grunt.file.exists( './tmp-dest' ) )
-			grunt.file.delete( './tmp-dest' );
+		var temp_src_dir = ynpm_utils.createTempDirSync();
+		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		
 		npm.load( function( ){
-			npm.commands.install( './tmp-src', 'has-ansi@1.0.0', function( ){
-				grunt.file.mkdir( './tmp-dest' );
-				ynpm_utils.translateLegacyDependencyStructure( './tmp-src/node_modules/has-ansi', './tmp-dest' );
+			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
+
+				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir );
 				
-				unit.ok( grunt.file.exists( './tmp-dest/has-ansi' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/has-ansi/1.0.0' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/has-ansi/1.0.0/package.json' ) );
-				unit.ok( !grunt.file.exists( './tmp-dest/has-ansi/1.0.0/node_modules' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/ansi-regex' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/ansi-regex/1.1.0' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/ansi-regex/1.1.0/package.json' ) );
-				unit.ok( !grunt.file.exists( './tmp-dest/ansi-regex/1.1.0/node_modules' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/get-stdin' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/get-stdin/1.0.0' ) );
-				unit.ok( grunt.file.exists( './tmp-dest/get-stdin/1.0.0/package.json' ) );
-				unit.ok( !grunt.file.exists( './tmp-dest/get-stdin/1.0.0/node_modules' ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/node_modules' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/node_modules' ) ) );
 				
-				grunt.file.delete( './tmp-src' );
-				grunt.file.delete( './tmp-dest' );
+				grunt.file.delete( temp_src_dir, { force: true } );
+				grunt.file.delete( temp_dest_dir, { force: true } );
 				unit.done();
+			} );
+		} );
+	},
+	
+	alreadyInstalledDependenciesStructureTest: function( unit ){
+		
+		var temp_src_dir = ynpm_utils.createTempDirSync();
+		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		
+		npm.load( function( ){
+			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
+				npm.commands.install( temp_src_dir, 'get-stdin@1.0.0', function( ){
+
+					ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir );
+					
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
+					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/package.json' ) ) );
+					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/node_modules' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
+					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/node_modules' ) ) );
+					
+					grunt.file.delete( temp_src_dir, { force: true } );
+					grunt.file.delete( temp_dest_dir, { force: true } );
+					unit.done();
+				} );
 			} );
 		} );
 	}
