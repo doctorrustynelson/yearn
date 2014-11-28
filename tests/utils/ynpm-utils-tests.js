@@ -43,7 +43,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 		npm.load( function( ){
 			npm.commands.install( temp_src_dir, 'lodash@2.4.0', function( ){
 
-				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir );
+				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
 				
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodash' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodash/2.4.0' ) ) );
@@ -65,7 +65,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 		npm.load( function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 
-				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir );
+				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
 				
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
@@ -96,7 +96,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 				npm.commands.install( temp_src_dir, 'get-stdin@1.0.0', function( ){
 
-					ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir );
+					ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
 					
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
@@ -115,6 +115,41 @@ module.exports.translateLegacyDependencyStructureTests = {
 					grunt.file.delete( temp_dest_dir, { force: true } );
 					unit.done();
 				} );
+			} );
+		} );
+	},
+	
+	alternatePrimeDestinationTest: function( unit ){
+		
+		var temp_src_dir = ynpm_utils.createTempDirSync();
+		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		var alt_dest_dir = ynpm_utils.createTempDirSync();
+		
+		npm.load( function( ){
+			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
+
+				ynpm_utils.translateLegacyDependencyStructure( path.join( temp_src_dir, 'node_modules', 'has-ansi' ), alt_dest_dir, temp_dest_dir );
+					
+				unit.ok( grunt.file.exists( path.join( alt_dest_dir, 'has-ansi' ) ) );
+				unit.ok( grunt.file.exists( path.join( alt_dest_dir, 'has-ansi/1.0.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( alt_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( alt_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/node_modules' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/node_modules' ) ) );
+					
+				grunt.file.delete( temp_src_dir, { force: true } );
+				grunt.file.delete( temp_dest_dir, { force: true } );
+				unit.done();
 			} );
 		} );
 	}
