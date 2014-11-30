@@ -1,6 +1,6 @@
 {
 	"name": "yearn",
-	"version": "0.0.5",
+	"version": "0.1.0",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
@@ -18,18 +18,28 @@
 	},
 	"license": "MIT",
 	"main": "lib/yearn.js",
+	"bin": {
+		"ynpm": "bin/ynpm-ci.js"
+	},
 	"scripts": {
-		"test": "grunt test"
+		"test": "grunt test",
+		"ci": "istanbul cover --preload-sources -x **/bin/** -x **/tests/** -x Gruntfile.js -v --print both grunt && grunt coveralls"
 	},
 	"dependencies": {
 		"chalk": "0.5.1",
 		"semver": "4.1.0",
-		"commander": "2.5.0"
+		"commander": "2.5.0",
+		"fs-extra": "0.12.0",
+		"npm": "2.1.7",
+		"deasync": "0.0.7",
+		"temp": "0.8.1",
+		"json5": "0.4.0"
 	},
 	"devDependencies": {
 		"grunt": "0.4.5",
 		"grunt-contrib-jshint": "0.10.0",
 		"grunt-contrib-nodeunit": "0.4.1",
-		"grunt-travis-lint": "0.0.3"
+	    "grunt-coveralls": "1.0.0",
+	    "istanbul": "0.3.2"
 	}
 }

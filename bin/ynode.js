@@ -2,8 +2,8 @@
 'use strict';
 
 var repl = require( 'repl' );
-var path = require( 'path' );
-require( path.resolve( __dirname, '../lib/yearn' ) )( { log: 'ALL' } );
+//var path = require( 'path' );
+global.yearn = require( '../lib/yearn' )( );
 
 //var DIRECT_CRAVING_REGEXP = /^(?:\.\.\/|\.\/|\/)/;
 
