@@ -20,7 +20,7 @@
 	"license": "MIT",
 	"main": "lib/yearn.js",
 	"bin": {
-		"ynpm": "bin/ynpm.js"
+		"ynpm": "bin/ynpm-ci.js"
 	},
 	"scripts": {
 		"test": "grunt test",
@@ -33,7 +33,8 @@
 		"fs-extra": "0.12.0",
 		"npm": "2.1.7",
 		"deasync": "0.0.7",
-		"temp": "0.8.1"
+		"temp": "0.8.1",
+		"json5": "0.4.0"
 	},
 	"devDependencies": {
 		"grunt": "0.4.5",

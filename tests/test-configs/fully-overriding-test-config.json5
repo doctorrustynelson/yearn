@@ -1,0 +1,10 @@
+{
+		log_level: 'ALL',
+		init_type: 'LAZY',
+		load_missing: false,
+		override: false,
+		orgs: {
+				'': '/user/bin/node_modules', 
+				spec: '/user/bin/spec'
+		}
+}

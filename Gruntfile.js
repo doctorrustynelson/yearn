@@ -22,10 +22,14 @@ module.exports = function( grunt ){
 		nodeunit: {
 			unit: [
 				'tests/**/*tests.js',
-				'!tests/yearn-tests.js'
+				'!tests/yearn-tests.js',
+				'!tests/*cli-tests.js'
 			],
 			integration: [
 			    'tests/yearn-tests.js'
+			],
+			cli: [
+			    'tests/*cli-tests.js'
 			],
 			options: {
 				reporter: 'verbose'
@@ -43,6 +47,6 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
 	grunt.loadNpmTasks( 'grunt-coveralls' );
 	
-	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:integration' ] );
+	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:cli', 'nodeunit:integration' ] );
 	grunt.registerTask( 'default', [ 'test' ] );
 };

@@ -28,7 +28,7 @@
  *		- Finish the current test function, and move on to the next. ALL tests should call this!
  */
 
-var ynpm_utils = require( '../../lib/utils/ynpm-utils' );
+var ynpm_utils = require( '../../lib/utils/ynpm-utils' )( {} );
 var path = require( 'path' );
 var npm = require( 'npm' );
 var grunt = require( 'grunt' );
