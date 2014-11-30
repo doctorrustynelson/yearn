@@ -1,6 +1,6 @@
 {
 	"name": "yearn",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
@@ -17,9 +17,10 @@
 		"url": "https://github.com/doctorrustynelson/yearn/issues"
 	},
 	"license": "MIT",
+	"preferGlobal": true,
 	"main": "lib/yearn.js",
 	"bin": {
-		"ynpm": "bin/ynpm-ci.js"
+		"ynpm": "./bin/ynpm-cli.js"
 	},
 	"scripts": {
 		"test": "grunt test",
