@@ -33,6 +33,27 @@ var path = require( 'path' );
 var npm = require( 'npm' );
 var grunt = require( 'grunt' );
 
+module.exports.getLatestVersionTests = {
+	
+	nodeunit: function( test ){
+		var version = ynpm_utils.getLatestVersionOf( 'nodeunit' );
+		test.notEqual( version, null );
+		test.done();
+	},
+
+	yearn: function( test ){
+		var version = ynpm_utils.getLatestVersionOf( 'yearn' );
+		test.notEqual( version, null );
+		test.done();
+	},
+	
+	moduleThatShouldNeverExist: function( test ){
+		var version = ynpm_utils.getLatestVersionOf( 'modulethatshouldneverexist' );
+		test.equal( version, null );
+		test.done();
+	}	
+};
+
 module.exports.translateLegacyDependencyStructureTests = {
 	
 	noDependenciesStructureTest: function( unit ){

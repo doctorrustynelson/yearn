@@ -29,8 +29,96 @@
  */
 
 var path = require( 'path' );
+var fs = require( 'fs' );
 var grunt = require( 'grunt' );
 var exec = require( 'child_process' ).exec;
+var JSON5 = require( 'json5' );
+
+module.exports.checkTests = {
+	
+	lodashInDefaultOrgAndCorrect: function( test ){
+		var env = JSON.parse( JSON.stringify( process.env ) );
+		env.YEARN_CONFIG = path.join( __dirname, 'test-configs', 'default-test-config.json5' );
+		var ynpm = require( '../lib/ynpm' )( JSON5.parse( fs.readFileSync( env.YEARN_CONFIG ) ) );
+		
+		ynpm.commands.install( 'lodash' );
+		
+		exec( 'node bin/ynpm-cli.js check lodash', {
+			cwd: path.join( __dirname, '..' ),
+			env: env
+		}, function( err, stdout, stderr ){
+			console.log( stderr );
+			console.log( stdout );
+			
+			test.equal( null, err );
+			test.deepEqual( [
+			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));     			
+			test.deepEqual( [
+			    'Checking Complete.' 
+			], stdout.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
+			
+			grunt.file.delete( path.join( __dirname, '..', 'test_node_modules' ), { force: true } );
+			grunt.file.delete( path.join( __dirname, '..', 'spec_node_modules' ), { force: true } );
+			test.done();
+		} );	
+	},
+	
+	lodashInDefaultOrgAndIncorrect: function( test ){
+		var env = JSON.parse( JSON.stringify( process.env ) );
+		env.YEARN_CONFIG = path.join( __dirname, 'test-configs', 'default-test-config.json5' );
+		var ynpm = require( '../lib/ynpm' )( JSON5.parse( fs.readFileSync( env.YEARN_CONFIG ) ) );
+		
+		ynpm.commands.install( 'lodash@2.4.0' );
+		
+		exec( 'node bin/ynpm-cli.js check lodash', {
+			cwd: path.join( __dirname, '..' ),
+			env: env
+		}, function( err, stdout, stderr ){
+			console.log( stderr );
+			console.log( stdout );
+			
+			test.equal( null, err );
+			test.deepEqual( [
+			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));     			
+			test.notDeepEqual( [
+			    'Checking Complete.' 
+			], stdout.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
+			
+			grunt.file.delete( path.join( __dirname, '..', 'test_node_modules' ), { force: true } );
+			grunt.file.delete( path.join( __dirname, '..', 'spec_node_modules' ), { force: true } );
+			test.done();
+		} );	
+	},
+	
+	allAndLodashIncorrect: function( test ){
+		var env = JSON.parse( JSON.stringify( process.env ) );
+		env.YEARN_CONFIG = path.join( __dirname, 'test-configs', 'default-test-config.json5' );
+		var ynpm = require( '../lib/ynpm' )( JSON5.parse( fs.readFileSync( env.YEARN_CONFIG ) ) );
+		
+		ynpm.commands.install( 'lodash@2.4.0' );
+		ynpm.commands.install( 'spec/lodash@2.4.0' );
+		
+		exec( 'node bin/ynpm-cli.js check', {
+			cwd: path.join( __dirname, '..' ),
+			env: env
+		}, function( err, stdout, stderr ){
+			console.log( stderr );
+			console.log( stdout );
+			
+			test.equal( null, err );
+			test.deepEqual( [
+			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));     			
+			test.notDeepEqual( [
+			    'Checking Complete.' 
+			], stdout.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
+			
+			grunt.file.delete( path.join( __dirname, '..', 'test_node_modules' ), { force: true } );
+			grunt.file.delete( path.join( __dirname, '..', 'spec_node_modules' ), { force: true } );
+			test.done();
+		} );	
+	},
+		
+};
 
 module.exports.orgsTests = {
 	

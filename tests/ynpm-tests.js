@@ -31,6 +31,106 @@
 var path = require( 'path' );
 var grunt = require( 'grunt' );
 
+module.exports.checkCommandTests = {
+	
+	badOrg: function( test ){
+		var ynpm = require( '../lib/ynpm' )( { orgs: { '': './node_modules' } } );
+		
+		var result = ynpm.commands.check( 'badorg/lodash' );
+		test.strictEqual( result, false );
+		test.done();
+	},
+	
+	noSuchModuleExists: function( test ){
+		var ynpm = require( '../lib/ynpm' )( { orgs: { '': './node_modules' } } );
+		
+		var result = ynpm.commands.check( 'nosuchmoduleexists' );
+		test.strictEqual( result, false );
+		test.done();
+	},
+		
+	lodashInDefaultOrgAndCorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
+		
+		ynpm.commands.install( 'lodash' );
+		
+		var result = ynpm.commands.check( 'lodash' );
+		test.strictEqual( result, true );
+		grunt.file.delete( temp_dir, { force: true } );
+		test.done();
+	},
+	
+	multipleLodashInDefaultOrgAndCorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
+		
+		ynpm.commands.install( 'lodash' );
+		ynpm.commands.install( 'lodash@2.4.0' );
+		
+		var result = ynpm.commands.check( 'lodash' );
+		test.strictEqual( result, true );
+		grunt.file.delete( temp_dir, { force: true } );
+		test.done();
+	},
+	
+	lodashInOtherOrgAndCorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		var spec_dir = require( 'temp' ).mkdirSync();
+		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'spec': spec_dir } } );
+		
+		ynpm.commands.install( 'spec/lodash' );
+		
+		var result = ynpm.commands.check( 'spec/lodash' );
+		test.strictEqual( result, true );
+		grunt.file.delete( temp_dir, { force: true } );
+		grunt.file.delete( spec_dir, { force: true } );
+		test.done();
+	},
+	
+	lodashInDefaultOrgAndIncorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
+		
+		ynpm.commands.install( 'lodash@2.4.0' );
+		
+		var result = ynpm.commands.check( 'lodash' );
+		test.notStrictEqual( result, true );
+		test.notStrictEqual( result, false );
+		grunt.file.delete( temp_dir, { force: true } );
+		test.done();
+	},
+	
+	multipleLodashInDefaultOrgAndIncorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
+		
+		ynpm.commands.install( 'lodash@2.3.0' );
+		ynpm.commands.install( 'lodash@2.4.0' );
+		
+		var result = ynpm.commands.check( 'lodash' );
+		test.notStrictEqual( result, true );
+		test.notStrictEqual( result, false );
+		grunt.file.delete( temp_dir, { force: true } );
+		test.done();
+	},
+	
+	lodashInOtherOrgAndIncorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		var spec_dir = require( 'temp' ).mkdirSync();
+		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'spec': spec_dir } } );
+		
+		ynpm.commands.install( 'spec/lodash@2.4.0' );
+		
+		var result = ynpm.commands.check( 'spec/lodash' );
+		test.notStrictEqual( result, true );
+		test.notStrictEqual( result, false );
+		grunt.file.delete( temp_dir, { force: true } );
+		grunt.file.delete( spec_dir, { force: true } );
+		test.done();
+	}
+	
+};
 
 module.exports.orgsCommandTests = {
 	

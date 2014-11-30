@@ -59,10 +59,9 @@ commander
 		
 	} );
 
-// Print the orgs from the YEARN_CONFIG
 commander
 	.command( 'orgs' )
-	.description( 'Print the current orgs as specified by the config at YEARN_CONFIG.' )
+	.description( 'Print the current orgs as specified by the YEARN_CONFIG.' )
 	.action( function( ){
 		var orgs = ynpm.commands.orgs( );
 		for( var org in orgs ){
@@ -72,11 +71,48 @@ commander
 		}
 	} );
 
+commander
+	.command( 'check [orgs_or_specific_modules...]' )
+	.description( 'Print the modules that need to be updated and to what version.' )
+	.action( function( modules ){
+		if( modules.length === 0 ){
+			modules = Object.keys( config.orgs );
+		}
+		
+		modules.forEach( function( module ){
+			if( yutils.isValidOrg( module ) ){
+				fs.readdirSync( config.orgs[ module ] ).forEach( function( installed_module ){
+					var latest;
+					var desired;
+					if( module === '' ){
+						desired = '""/' + installed_module;
+						latest = ynpm.commands.check( installed_module );
+					} else {
+						desired = module + '/' + installed_module;
+						latest = ynpm.commands.check( desired );
+					}
+					
+					if( latest !== true && latest !== false ){
+						console.log( desired + ' -> ' + latest );
+					}
+				} );
+			} else {
+				var latest = ynpm.commands.check( module );
+				if( latest !== true && latest !== false ){
+					console.log( module + ' -> ' + latest );
+				}
+			}
+		} );
+		
+		console.log( 'Checking Complete.' );
+	} );
+
 // Unrecognized 
 commander
 	.command( '*' )
 	.action( function( ){
 		console.log( 'Unrecognized ynpm command.  For more help using ynpm run "ynpm help".' );
+		console.log( arguments );
 	} );
 
 // Process arguments
