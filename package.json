@@ -31,13 +31,15 @@
 		"ynpm": "./bin/ynpm-cli.js"
 	},
 	"dependencies": {
-		"chalk": "0.5.1",
 		"semver": "4.1.0",
 		"commander": "2.5.0",
 		"fs-extra": "0.12.0",
 		"npm": "2.1.7",
 		"temp": "0.8.1",
 		"json5": "0.4.0"
+	},
+	"optionalDependencies": {
+		"log4js": "0.6.22"
 	},
 	"devDependencies": {
 		"grunt": "0.4.5",

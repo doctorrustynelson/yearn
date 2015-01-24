@@ -8,7 +8,7 @@ var version = require( '../package.json' ).version;
 var config = require( '../lib/utils/config' ).initialize( );
 var ynpm = require( '../lib/ynpm' )( config );
 var yutils = require( '../lib/utils/yearn-utils' )( config );
-var LOGGER = require( '../lib/utils/logger' )( config.log_level, 'ynpm' );
+var LOGGER = require( '../lib/utils/logger' ).getLOGGER( config.logger );
 
 // Set version number
 commander.version( version );
