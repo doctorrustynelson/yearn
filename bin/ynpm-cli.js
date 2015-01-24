@@ -38,8 +38,6 @@ commander
 			LOGGER.info( 'Installing modules specified in package.json.' );
 			var package_json_location = yutils.findPackageJsonLocation( undefined, this );
 			
-			console.log( package_json_location );
-			
 			var contents = JSON.parse( fs.readFileSync( package_json_location, 'utf8' ) );
 			
 			var dependencies = yutils.mergeMaps(
@@ -54,7 +52,13 @@ commander
 		}
 		
 		modules.forEach( function( module ){
-			ynpm.commands.install( module );
+			ynpm.commands.install( module, function( err ){
+				if( err !== null ){
+					LOGGER.warn( 'Failed to install ' + module + '.' );
+				} else {
+					LOGGER.info( 'Module ' + module + ' correctly installed.' );
+				}
+			} );
 		} );
 		
 	} );
@@ -82,29 +86,35 @@ commander
 		modules.forEach( function( module ){
 			if( yutils.isValidOrg( module ) ){
 				fs.readdirSync( config.orgs[ module ] ).forEach( function( installed_module ){
-					var latest;
 					var desired;
 					if( module === '' ){
 						desired = '""/' + installed_module;
-						latest = ynpm.commands.check( installed_module );
+						return ynpm.commands.check( installed_module, function( err, latest ){
+							console.log( desired + ' -> ' + latest );
+						} );
 					} else {
 						desired = module + '/' + installed_module;
-						latest = ynpm.commands.check( desired );
-					}
-					
-					if( latest !== true && latest !== false ){
-						console.log( desired + ' -> ' + latest );
+						return ynpm.commands.check( desired, function( err, latest ){
+							console.log( desired + ' -> ' + latest );
+						} );
 					}
 				} );
 			} else {
-				var latest = ynpm.commands.check( module );
-				if( latest !== true && latest !== false ){
-					console.log( module + ' -> ' + latest );
-				}
+				return ynpm.commands.check( module, function( err, latest ){
+					if( latest !== true && latest !== false ){
+						console.log( module + ' -> ' + latest );
+					}
+				} );
+				
 			}
 		} );
-		
-		console.log( 'Checking Complete.' );
+	} );
+
+commander
+	.command( 'config [args...]' )
+	.description( 'Manage npm configuration.' )
+	.action( function( args ){
+		ynpm.commands.config( args, function( ){ } );
 	} );
 
 // Unrecognized 
@@ -115,5 +125,16 @@ commander
 		console.log( arguments );
 	} );
 
-// Process arguments
-commander.parse( process.argv );
+// Initialize ynpm and process arguments
+ynpm.init(
+	{
+		//TODO: make this more configurable with a .ynpmrc config file
+		long: true,
+		prefix: require( 'os' ).tmpdir( )
+	},
+	function( err ){
+		if( err === null ){
+			commander.parse( process.argv );
+		}
+	}
+);

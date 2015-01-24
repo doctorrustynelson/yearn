@@ -25,6 +25,9 @@ module.exports = function( grunt ){
 				'!tests/yearn-tests.js',
 				'!tests/*cli-tests.js'
 			],
+			ynpm: [
+			    'tests/ynpm-tests.js'
+			],
 			integration: [
 			    'tests/yearn-tests.js'
 			],

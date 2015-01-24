@@ -33,24 +33,37 @@ var path = require( 'path' );
 var npm = require( 'npm' );
 var grunt = require( 'grunt' );
 
+module.exports.setUp = function( callback ){
+	npm.load( function( ){
+		callback();
+	} );
+};
+
 module.exports.getLatestVersionTests = {
 	
 	nodeunit: function( test ){
-		var version = ynpm_utils.getLatestVersionOf( 'nodeunit' );
-		test.notEqual( version, null );
-		test.done();
+		ynpm_utils.getLatestVersionOf( 'nodeunit', function( err, version ){
+			test.equal( err, null );
+			test.notEqual( version, undefined );
+			test.done();
+		} );
+		
 	},
 
 	yearn: function( test ){
-		var version = ynpm_utils.getLatestVersionOf( 'yearn' );
-		test.notEqual( version, null );
-		test.done();
+		ynpm_utils.getLatestVersionOf( 'yearn', function( err, version ){
+			test.equal( err, null );
+			test.notEqual( version, undefined );
+			test.done();
+		} );
 	},
 	
 	moduleThatShouldNeverExist: function( test ){
-		var version = ynpm_utils.getLatestVersionOf( 'modulethatshouldneverexist' );
-		test.equal( version, null );
-		test.done();
+		ynpm_utils.getLatestVersionOf( 'modulethatshouldneverexist', function( err, version ){
+			test.notEqual( err, null );
+			test.equal( version, undefined );
+			test.done();
+		} );
 	}	
 };
 
@@ -244,73 +257,6 @@ module.exports.npmInstallToDirTests = {
 			grunt.file.delete( tempdir, { force: true } );
 			unit.done();
 		} );
-	}
-};
-
-module.exports.npmInstallToDirSyncTests = {
-	
-	installBadModule: function( unit ){
-		
-		var tempdir = ynpm_utils.createTempDirSync();
-		
-		unit.throws( function(){
-			ynpm_utils.npmInstallToDirSync( 'thismodulehadbetternoteverexist', tempdir );
-		});
-		
-		grunt.file.delete( tempdir, { force: true } );
-		unit.done();
-	},
-		
-	installAnyLodash: function( unit ){
-		
-		var tempdir = ynpm_utils.createTempDirSync();
-		
-		ynpm_utils.npmInstallToDirSync( 'lodash', tempdir );
-		
-		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
-		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
-		
-		grunt.file.delete( tempdir, { force: true } );
-		unit.done();
-	},
-
-	installSpecificLodash: function( unit ){
-		
-		var tempdir = ynpm_utils.createTempDirSync();
-		
-		ynpm_utils.npmInstallToDirSync( 'lodash@2.4.0', tempdir );
-		
-		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
-		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
-		
-		grunt.file.delete( tempdir, { force: true } );
-		unit.done();
-	},
-	
-	installFuzzyLodash: function( unit ){
-		
-		var tempdir = ynpm_utils.createTempDirSync();
-		
-		ynpm_utils.npmInstallToDirSync( 'lodash@~2.4.0', tempdir );
-		
-		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
-		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
-		
-		grunt.file.delete( tempdir, { force: true } );
-		unit.done();
-	},
-	
-	installRangeLodash: function( unit ){
-		
-		var tempdir = ynpm_utils.createTempDirSync();
-		
-		ynpm_utils.npmInstallToDirSync( 'lodash@2.0.0 - 2.4.0', tempdir );
-		
-		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash' ) ) );
-		unit.ok( grunt.file.exists( path.join( tempdir, 'node_modules/lodash/package.json' ) ) );
-		
-		grunt.file.delete( tempdir, { force: true } );
-		unit.done();
 	}
 };
 
