@@ -20,11 +20,14 @@
 	"preferGlobal": true,
 	"main": "lib/yearn.js",
 	"bin": {
-		"ynpm": "./bin/ynpm-cli.js"
+		"ynpm": "./bin/ynpm-cli.js",
+		"ynode": "./bin/ynode.js"
 	},
 	"scripts": {
+		"ci": "istanbul cover --preload-sources -x **/bin/** -x **/tests/** -x Gruntfile.js -v --print both grunt && grunt coveralls",
 		"test": "grunt test",
-		"ci": "istanbul cover --preload-sources -x **/bin/** -x **/tests/** -x Gruntfile.js -v --print both grunt && grunt coveralls"
+		"ynode": "node ./bin/ynode.js",
+		"ynpm": "./bin/ynpm-cli.js"
 	},
 	"dependencies": {
 		"chalk": "0.5.1",
