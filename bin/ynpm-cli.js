@@ -129,6 +129,7 @@ commander
 ynpm.init(
 	{
 		//TODO: make this more configurable with a .ynpmrc config file
+		loglevel: 'error',
 		long: true,
 		prefix: require( 'os' ).tmpdir( )
 	},

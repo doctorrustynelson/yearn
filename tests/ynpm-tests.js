@@ -33,7 +33,7 @@ var grunt = require( 'grunt' );
 var npm = require( 'npm' );
 
 module.exports.setUp = function( callback ){
-	npm.load( function( ){
+	npm.load( { loglevel: 'error' }, function( ){
 		callback();
 	} );
 };
@@ -167,7 +167,7 @@ module.exports.installCommandTests = {
 		var spec_dir = require( 'temp' ).mkdirSync();
 		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'other': spec_dir } } );
 		
-		ynpm.commands.install( 'other/nodeunit@0.9.0', function( ){
+		ynpm.commands.install( 'other:nodeunit@0.9.0', function( ){
 			test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit' ) ) );
 			test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit', '0.9.0' ) ) );
 			test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
@@ -241,8 +241,8 @@ module.exports.checkCommandTests = {
 		var spec_dir = require( 'temp' ).mkdirSync();
 		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'spec': spec_dir } } );
 		
-		ynpm.commands.install( 'spec/lodash', function( ){
-			ynpm.commands.check( 'spec/lodash', function( err, version ){
+		ynpm.commands.install( 'spec:lodash', function( ){
+			ynpm.commands.check( 'spec:lodash', function( err, version ){
 				test.equal( err, null );
 				test.equal( version, true );
 				grunt.file.delete( temp_dir, { force: true } );
@@ -289,8 +289,8 @@ module.exports.checkCommandTests = {
 		var spec_dir = require( 'temp' ).mkdirSync();
 		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'spec': spec_dir }, log: 'All' } );
 		
-		ynpm.commands.install( 'spec/lodash@2.3.0', function( ){
-			ynpm.commands.check( 'spec/lodash', function( err, version ){
+		ynpm.commands.install( 'spec:lodash@2.3.0', function( ){
+			ynpm.commands.check( 'spec:lodash', function( err, version ){
 				test.equal( err, null );
 				test.notEqual( version, true );
 				test.notEqual( version, false );

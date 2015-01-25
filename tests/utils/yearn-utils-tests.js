@@ -28,7 +28,7 @@
  *		- Finish the current test function, and move on to the next. ALL tests should call this!
  */
 
-var yearn_utils = require( '../../lib/utils/yearn-utils' )( {} );
+var yearn_utils = require( '../../lib/utils/yearn-utils' )( require( '../../lib/utils/config' )( {} ) );
 
 module.exports.isDirectYearningTests = {
 	

@@ -101,7 +101,7 @@ module.exports.checkTests = {
 		var ynpm = require( '../lib/ynpm' )( JSON5.parse( fs.readFileSync( env.YEARN_CONFIG ) ) );
 		
 		ynpm.commands.install( 'lodash@2.4.0', function( ){
-			ynpm.commands.install( 'spec/lodash@2.4.0', function( ){
+			ynpm.commands.install( 'spec:lodash@2.4.0', function( ){
 				exec( 'node bin/ynpm-cli.js check', {
 					cwd: path.join( __dirname, '..' ),
 					env: env
@@ -316,7 +316,7 @@ module.exports.installTests = {
 		var env = JSON.parse( JSON.stringify( process.env ) );
 		env.YEARN_CONFIG = path.join( __dirname, 'test-configs', 'default-test-config.json5' );
 		
-		exec( 'node ../bin/ynpm-cli.js install spec/nodeunit@0.9.0', {
+		exec( 'node ../bin/ynpm-cli.js install spec:nodeunit@0.9.0', {
 			cwd: __dirname,
 			env: env
 		}, function( err, stdout, stderr ){
