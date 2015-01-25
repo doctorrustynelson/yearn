@@ -67,18 +67,18 @@ YEARN_CONFIG is an eviroment variable that is read when ever ynode and ynpm are 
    
    Example:
    
-	var yearn = require( 'yearn' )({
-		orgs: { 
-			'', '//usr/bin/default_node_modules_location' 
-			'other_loc': '//some/other/location'	
-		}
-	});
+		var yearn = require( 'yearn' )({
+			orgs: { 
+				'', '//usr/bin/default_node_modules_location' 
+				'other_loc': '//some/other/location'	
+			}
+		});
 	
-	// require looking in '//usr/bin/default_node_modules_location/module1' for a version specified in the package.json for module1.
-	var regular_module = require( 'module1' );  
+		// require looking in '//usr/bin/default_node_modules_location/module1' for a version specified in the package.json for module1.
+		var regular_module = require( 'module1' );  
 	
-	// require looking in '//some/other/location/module2' for a version specified in the package.json for module2.
-	var other_modules = require( 'other:module2' );
+		// require looking in '//some/other/location/module2' for a version specified in the package.json for module2.
+		var other_modules = require( 'other:module2' );
    
 + __logger__: As of yearn 0.2.0, yearn has no built in logger.  This option allows for bootstrapping loggers.  The suggested logger is [log4js](https://www.npmjs.com/package/log4js).  Any logger can be supported as long as it can be instantiated with the line `require( config.logger ).getLogger( 'yearn|ynpm' );`  Note: the setup of any optional logger will happen after setting up yearn so the logger must be installed in a way that the possibly overridden require will work.
    
