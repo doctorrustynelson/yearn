@@ -111,7 +111,7 @@ commander
 	} );
 
 commander
-	.command( 'config [args...]' )
+	.command( 'npmconfig [args...]' )
 	.description( 'Manage npm configuration.' )
 	.action( function( args ){
 		ynpm.commands.config( args, function( ){ } );
