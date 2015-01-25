@@ -48,7 +48,7 @@ Example initialization with a few options and then some requires:
 
 See ynode and ynpm below for the global scripts that are provided with yearn.
 
-YEARN_CONFIG is an eviroment variable that is read when ever ynode and ynpm are started up.  This config variable should point to a .json file containing the global yearn config.  All the options for local yearn below are supported.
+YEARN_CONFIG is an evironment variable that is read when ever ynode and ynpm are started up.  This environment variable should point to a .json file containing the global yearn config.  All the options for local yearn below are supported.
 
 ### Options
 
@@ -85,19 +85,19 @@ YEARN_CONFIG is an eviroment variable that is read when ever ynode and ynpm are 
    + `'default'`: no logging (default).
    + `'${other logger}'`: user specified logger.
 
-+ __override__: This boolean specifies if yearn should override Node's require mechanism or should only return the yearn functionality.  Additionaly if a function is provided than yearn will ignore all of it's default funtionality and override require with that functionality instead.
++ __override__: This boolean specifies if yearn should override Node's require mechanism or should only return the yearn functionality.  Additionaly if a function is provided than yearn will ignore all of it's default functionality and override require with that functionality instead.
 
    There are a few thing that one should know if your going to override the functionality yourself.  Firstly this does not override the most outer form of require and thus you end up limited to a single argument getting passed to your require function.  Secondly if you want to call the underlying load mechanism use `module.constructor._load( path, this )` where path is the location of the modules (or name of the modules to get Node's default loading mechanism instead).
    
-+ __delimiters__: The __delimiters__ option is a way to set the delimiters between org, module, version and specific file parts of a string based require.  By default these values are `:` between org and module, `@` between module and version similarly to how semver does their versioning and `/` to state that the require is for a particular file in the module.  These should not be the same delimiter (prior to version 0.2.0 of yearn they were all `/` and that lead to problems with pre-exisiting modules like npm and grunt).  
++ __delimiters__: The __delimiters__ option is a way to set the delimiters between org, module, version and specific file parts of a string based require.  By default these values are `:` between org and module, `@` between module and version similarly to how semver does their versioning and `/` to state that the require is for a particular file in the module.  These should not be the same delimiter (prior to version 0.2.0 of yearn they were all `/` and that lead to problems with pre existing modules like npm and grunt).  
 
-   + __org__: the seperator between an org and module (defaults to `:`).
-   + __semver__: the seperator between a module and the desired semver to match (defaults to `@`).
-   + __file__: the seperator to determine the path to find the file within the found module (defaults to `/`).
+   + __org__: the separator between an org and module (defaults to `:`).
+   + __semver__: the separator between a module and the desired semver to match (defaults to `@`).
+   + __file__: the separator to determine the path to find the file within the found module (defaults to `/`).
 
 ### ynode
 
-ynode is a small wrapper around node itself that will enforce a YEARN_CONFIG.  Running with arguments will interpert the first as a script and preform a require of it.  Executing ynode without any arguments will open a REPL with a YEARN_CONFIG already interperted.
+ynode is a small wrapper around node itself that will enforce a YEARN_CONFIG.  Running with arguments will interpret the first as a script and perform a require of it.  Executing ynode without any arguments will open a REPL with a YEARN_CONFIG already interpreted.
 
 If one wants to force the use of ynode over node then change the globally installed scripts from `ynode` and `ynode.cmd` to `node` and `node.cmd`.  Then make sure that the folder where the scripts appears before the folder where `node` is installed.  Finally go into the altered `ynode` script and change the `#!` to point to the actual `node` instead of `/usr/bin/env node`.  Then whenever `node` is called or a `node` script is run it will be run through the `ynode` script.
 
@@ -115,4 +115,4 @@ ynpm is a small wrapper around some of npm's functionality.  This script can be 
 
 + `ynpm orgs`: Print the current orgs as specified by the YEARN_CONFIG.
 
-+ `ynpm version`: Print the version of yearn currently assciated with ynpm
++ `ynpm version`: Print the version of yearn currently associated with ynpm.
