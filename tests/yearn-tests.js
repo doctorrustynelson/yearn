@@ -148,7 +148,7 @@ module.exports.simpleResolveTests = {
 		
 		var result = yearn.resolve( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
 		
-		test.equal( 'node_modules/test-module-0/0.0.1/test_module_0.js', path.relative( __dirname, result ) );
+		test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1', 'test_module_0.js' ), path.relative( __dirname, result ) );
 		test.done();
 	},
 	
@@ -156,7 +156,7 @@ module.exports.simpleResolveTests = {
 		
 		var result = yearn.resolve( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
 		
-		test.equal( 'node_modules/test-module-1/1.0.0/test_module_1.js', path.relative( __dirname, result ) );
+		test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0', 'test_module_1.js' ), path.relative( __dirname, result ) );
 		test.done();
 	},
 	
@@ -176,7 +176,7 @@ module.exports.nativeResolveTests = {
 		
 		var result = require.resolve( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
 		
-		test.equal( 'node_modules/test-module-0/0.0.1/test_module_0.js', path.relative( __dirname, result ) );
+		test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1', 'test_module_0.js' ), path.relative( __dirname, result ) );
 		test.done();
 	},
 	
@@ -184,7 +184,7 @@ module.exports.nativeResolveTests = {
 		
 		var result = require.resolve( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
 		
-		test.equal( 'node_modules/test-module-1/1.0.0/test_module_1.js', path.relative( __dirname, result ) );
+		test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0', 'test_module_1.js' ), path.relative( __dirname, result ) );
 		test.done();
 	},
 	
