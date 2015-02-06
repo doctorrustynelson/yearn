@@ -114,6 +114,7 @@ commander
 	.command( 'npmconfig [args...]' )
 	.description( 'Manage npm configuration.' )
 	.action( function( args ){
+		//TODO: improve
 		ynpm.commands.config( args, function( ){ } );
 	} );
 
@@ -127,12 +128,7 @@ commander
 
 // Initialize ynpm and process arguments
 ynpm.init(
-	{
-		//TODO: make this more configurable with a .ynpmrc config file
-		loglevel: 'error',
-		long: true,
-		prefix: require( 'os' ).tmpdir( )
-	},
+	config.npmconfig,
 	function( err ){
 		if( err === null ){
 			commander.parse( process.argv );
