@@ -38,7 +38,7 @@ var yearn = require( '../lib/yearn' )({
 	log: 'ALL' 
 });
 
-module.exports.simpleIntigrationTests = {
+module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearning: function( test ){
 		
@@ -85,6 +85,114 @@ module.exports.simpleIntigrationTests = {
 		var result = yearn( 'path' );
 		
 		test.equal( 'function', typeof result.resolve );
+		test.done();
+	}
+	
+};
+
+module.exports.nativeRequireTests = {
+		
+	fullyQualifiedYearning: function( test ){
+		
+		var result = require( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
+		
+		test.equal( 'Secret string for test-module-0 v.0.0.1 in default org.', result );
+		test.done();
+	},
+	
+	fullyQualifiedYearningWithSubYearning: function( test ){
+		
+		var result = require( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
+		
+		test.equal( 'Secret string for test-module-1 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
+		test.done();
+	},
+	
+	fullyQualifiedYearningWithSubLegacyYearningWithSubLegacyYearningFallback: function( test ){
+		
+		var result = require( { org: 'test_modules', module: 'test-module-3', version: '1.1.0' } );
+		
+		test.equal( 'Secret string for test-module-3 v.1.1.0 in default org with test-submodule-1 v.0.0.1 with test-submodule-2 v.0.1.0.', result );
+		test.done();
+	},
+	
+	fullyQualifiedYearningWithNonRootSubYearning: function( test ){
+		
+		var result = require( { org: 'test_modules', module: 'test-module-2', version: '1.0.0' } );
+		
+		test.equal( 'Secret string for test-module-2 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
+		test.done();
+	},
+	
+	fullyQualifiedYearningWithNonRootSubYearningAndProxy: function( test ){
+		
+		var result = require( { org: 'test_modules', module: 'test-module-2', version: '2.0.0' } );
+		
+		test.equal( 'Secret string for test-module-2 (proxy) v.2.0.0 in default org with test-submodule-0 v.0.1.0.', result );
+		test.done();
+	},
+	
+	nativeYearning: function( test ){
+		
+		var result = require( 'path' );
+		
+		test.equal( 'function', typeof result.resolve );
+		test.done();
+	}
+	
+};
+
+module.exports.simpleResolveTests = {
+		
+	fullyQualifiedYearning: function( test ){
+		
+		var result = yearn.resolve( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
+		
+		test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1', 'test_module_0.js' ), path.relative( __dirname, result ) );
+		test.done();
+	},
+	
+	fullyQualifiedYearningWithSubYearning: function( test ){
+		
+		var result = yearn.resolve( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
+		
+		test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0', 'test_module_1.js' ), path.relative( __dirname, result ) );
+		test.done();
+	},
+	
+	nativeYearning: function( test ){
+		
+		var result = yearn.resolve( 'path' );
+		
+		test.equal( 'path', result );
+		test.done();
+	}
+	
+};
+
+module.exports.nativeResolveTests = {
+	
+	fullyQualifiedYearning: function( test ){
+		
+		var result = require.resolve( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
+		
+		test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1', 'test_module_0.js' ), path.relative( __dirname, result ) );
+		test.done();
+	},
+	
+	fullyQualifiedYearningWithSubYearning: function( test ){
+		
+		var result = require.resolve( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
+		
+		test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0', 'test_module_1.js' ), path.relative( __dirname, result ) );
+		test.done();
+	},
+	
+	nativeYearning: function( test ){
+		
+		var result = require.resolve( 'path' );
+		
+		test.equal( 'path', result );
 		test.done();
 	}
 	
