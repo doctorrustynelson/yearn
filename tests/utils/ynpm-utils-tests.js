@@ -32,6 +32,7 @@ var ynpm_utils = require( '../../lib/utils/ynpm-utils' )( {} );
 var path = require( 'path' );
 var npm = require( 'npm' );
 var grunt = require( 'grunt' );
+var fs = require( 'fs' );
 
 module.exports.setUp = function( callback ){
 	npm.load( function( ){
@@ -106,9 +107,15 @@ module.exports.translateLegacyDependencyStructureTests = {
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
 				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
-				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0' ) ) );
-				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/package.json' ) ) );
-				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/node_modules' ) ) );
+				
+				
+				var ansi_regex_versions = fs.readdirSync( path.join( temp_dest_dir, 'ansi-regex' ) );
+				console.log( ansi_regex_versions );
+				unit.ok( ansi_regex_versions.length === 1 );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0] ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0], 'package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0], 'node_modules' ) ) );
+				
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
@@ -137,9 +144,13 @@ module.exports.translateLegacyDependencyStructureTests = {
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
 					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
-					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0' ) ) );
-					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/package.json' ) ) );
-					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/node_modules' ) ) );
+					
+					var ansi_regex_versions = fs.readdirSync( path.join( temp_dest_dir, 'ansi-regex' ) );
+					unit.ok( ansi_regex_versions.length === 1 );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0] ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0], 'package.json' ) ) );
+					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0], 'node_modules' ) ) );
+					
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
@@ -173,9 +184,13 @@ module.exports.translateLegacyDependencyStructureTests = {
 				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
 				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
-				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0' ) ) );
-				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/package.json' ) ) );
-				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex/1.1.0/node_modules' ) ) );
+
+				var ansi_regex_versions = fs.readdirSync( path.join( temp_dest_dir, 'ansi-regex' ) );
+				unit.ok( ansi_regex_versions.length === 1 );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0] ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0], 'package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0], 'node_modules' ) ) );
+				
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
