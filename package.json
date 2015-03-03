@@ -1,13 +1,14 @@
 {
 	"name": "yearn",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
 		"resolve",
 		"override",
 		"load",
-		"version"
+		"version",
+		"dependency"
 	],
 	"author": "Rusty Nelson",
 	"repository": {
