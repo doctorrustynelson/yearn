@@ -37,7 +37,8 @@
 		"fs-extra": "0.12.0",
 		"npm": "2.1.7",
 		"temp": "0.8.1",
-		"json5": "0.4.0"
+		"json5": "0.4.0",
+		"merge": "1.2.0"
 	},
 	"optionalDependencies": {
 		"log4js": "0.6.22"

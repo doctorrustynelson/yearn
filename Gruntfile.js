@@ -34,6 +34,9 @@ module.exports = function( grunt ){
 			cli: [
 			    'tests/*cli-tests.js'
 			],
+			merge: [
+			    'tests/utils/merge-tests.js'
+			],
 			options: {
 				reporter: 'verbose'
 			}
