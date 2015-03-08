@@ -1,6 +1,6 @@
 # yearn
-[![Build Status](https://img.shields.io/travis/doctorrustynelson/yearn.svg)](http://travis-ci.org/doctorrustynelson/yearn)
-[![Coverage Status](http://img.shields.io/coveralls/doctorrustynelson/yearn.svg)](https://coveralls.io/r/doctorrustynelson/yearn)
+[![Build Status](https://img.shields.io/travis/doctorrustynelson/yearn/master.svg)](http://travis-ci.org/doctorrustynelson/yearn)
+[![Coverage Status](http://img.shields.io/coveralls/doctorrustynelson/yearn/master.svg)](https://coveralls.io/r/doctorrustynelson/yearn)
 [![NPM Version](https://img.shields.io/npm/v/yearn.svg)](https://npmjs.org/package/yearn)
 ![NPM License](https://img.shields.io/npm/l/yearn.svg)
 ![NPM Downloads](https://img.shields.io/npm/dm/yearn.svg)
