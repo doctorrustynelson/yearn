@@ -5,6 +5,10 @@
 ![NPM License](https://img.shields.io/npm/l/yearn.svg)
 ![NPM Downloads](https://img.shields.io/npm/dm/yearn.svg)
 
+[![Dependencies](https://img.shields.io/david/doctorrustynelson/yearn.svg)](https://david-dm.org/doctorrustynelson/yearn#info=dependencies)
+[![Optional Dependencies](https://david-dm.org/doctorrustynelson/yearn/optional-status.svg)](https://david-dm.org/doctorrustynelson/yearn#info=optionalDependencies)
+[![Dev Dependencies](https://img.shields.io/david/dev/doctorrustynelson/yearn.svg)](https://david-dm.org/doctorrustynelson/yearn#info=devDependencies)
+
 ### Overview
 yearn is a library that injects functionality into Node's require mechanism providing the ability to transform the require before it's passed to load.  A default mechanism is injected so that all requires look for *./node_modules/module/version* instead of node's default *./node_modules/module* location. There is also support for __orgs__, which allows for a more central placement of all modules or separation of public and private modules (default __org__ points to *./node_modules* for backward compatibility).  yearn also provides wrappers around node (__ynode__) and npm (__ynpm__) to automaticaly enforce yearn requiring.
 
