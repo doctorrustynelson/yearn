@@ -30,7 +30,6 @@
 
 var path = require( 'path' );
 var grunt = require( 'grunt' );
-var npm = require( 'npm' );
 
 module.exports.orgsCommandTests = {
 	
