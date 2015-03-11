@@ -48,6 +48,25 @@ module.exports.tearDown = function( callback ){
 	callback( );
 };
 
+module.exports.cachedTest = function( test ){
+	
+	test.strictEqual( yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
+
+	var new_yearn = require( '../lib/yearn' )({ 
+		orgs: { 
+			'': './node_modules',
+			'test_modules': path.join( __dirname, 'node_modules' ) 
+		},
+		override: true,
+		log: 'ALL' 
+	} );
+	
+	test.strictEqual( new_yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
+	test.strictEqual( new_yearn, yearn, 'Cached yearn returned on second require.' );
+	
+	test.done();
+};
+
 module.exports.simpleRequireTests = {
 	
 	invalidSemverYearning: function( test ){
