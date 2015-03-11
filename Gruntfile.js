@@ -22,7 +22,6 @@ module.exports = function( grunt ){
 		nodeunit: {
 			unit: [
 				'tests/**/*tests.js',
-				'!tests/yearn-tests.js',
 				'!tests/*cli-tests.js'
 			],
 			utils: [
@@ -31,8 +30,8 @@ module.exports = function( grunt ){
 			ynpm: [
 			    'tests/ynpm-tests.js'
 			],
-			integration: [
-			    'tests/yearn-tests.js'
+			yearn: [
+			    'tests/yearn*tests.js'
 			],
 			cli: [
 			    'tests/*cli-tests.js'
@@ -56,6 +55,6 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
 	grunt.loadNpmTasks( 'grunt-coveralls' );
 	
-	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:cli', 'nodeunit:integration' ] );
+	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:cli' ] );
 	grunt.registerTask( 'default', [ 'test' ] );
 };

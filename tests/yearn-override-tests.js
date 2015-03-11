@@ -37,7 +37,7 @@ module.exports.setUp = function( callback ){
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
-		override: false,
+		override: true,
 		log: 'ALL' 
 	} );
 	callback( );
@@ -48,18 +48,11 @@ module.exports.tearDown = function( callback ){
 	callback( );
 };
 
-module.exports.simpleRequireTests = {
-	
-	invalidSemverYearning: function( test ){
-		test.throws( function( ){
-			yearn( { org: 'test_modules', module: 'test-module-0', version: 'invalid semver' } );
-		} );
-		test.done();
-	},
+module.exports.nativeRequireTests = {
 		
 	fullyQualifiedYearning: function( test ){
 		
-		var result = yearn( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
+		var result = require( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
 		
 		test.equal( 'Secret string for test-module-0 v.0.0.1 in default org.', result );
 		test.done();
@@ -67,7 +60,7 @@ module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearningWithSubYearning: function( test ){
 		
-		var result = yearn( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
+		var result = require( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
 		
 		test.equal( 'Secret string for test-module-1 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
 		test.done();
@@ -75,7 +68,7 @@ module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearningWithSubLegacyYearningWithSubLegacyYearningFallback: function( test ){
 		
-		var result = yearn( { org: 'test_modules', module: 'test-module-3', version: '1.1.0' } );
+		var result = require( { org: 'test_modules', module: 'test-module-3', version: '1.1.0' } );
 		
 		test.equal( 'Secret string for test-module-3 v.1.1.0 in default org with test-submodule-1 v.0.0.1 with test-submodule-2 v.0.1.0.', result );
 		test.done();
@@ -83,7 +76,7 @@ module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearningWithNonRootSubYearning: function( test ){
 		
-		var result = yearn( { org: 'test_modules', module: 'test-module-2', version: '1.0.0' } );
+		var result = require( { org: 'test_modules', module: 'test-module-2', version: '1.0.0' } );
 		
 		test.equal( 'Secret string for test-module-2 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
 		test.done();
@@ -91,7 +84,7 @@ module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearningWithNonRootSubYearningAndProxy: function( test ){
 		
-		var result = yearn( { org: 'test_modules', module: 'test-module-2', version: '2.0.0' } );
+		var result = require( { org: 'test_modules', module: 'test-module-2', version: '2.0.0' } );
 		
 		test.equal( 'Secret string for test-module-2 (proxy) v.2.0.0 in default org with test-submodule-0 v.0.1.0.', result );
 		test.done();
@@ -99,7 +92,7 @@ module.exports.simpleRequireTests = {
 	
 	nativeYearning: function( test ){
 		
-		var result = yearn( 'path' );
+		var result = require( 'path' );
 		
 		test.equal( 'function', typeof result.resolve );
 		test.done();
@@ -107,11 +100,11 @@ module.exports.simpleRequireTests = {
 	
 };
 
-module.exports.simpleResolveTests = {
-		
+module.exports.nativeResolveTests = {
+	
 	fullyQualifiedYearning: function( test ){
 		
-		var result = yearn.resolve( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
+		var result = require.resolve( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
 		
 		test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1', 'test_module_0.js' ), path.relative( __dirname, result ) );
 		test.done();
@@ -119,7 +112,7 @@ module.exports.simpleResolveTests = {
 	
 	fullyQualifiedYearningWithSubYearning: function( test ){
 		
-		var result = yearn.resolve( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
+		var result = require.resolve( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
 		
 		test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0', 'test_module_1.js' ), path.relative( __dirname, result ) );
 		test.done();
@@ -127,7 +120,7 @@ module.exports.simpleResolveTests = {
 	
 	nativeYearning: function( test ){
 		
-		var result = yearn.resolve( 'path' );
+		var result = require.resolve( 'path' );
 		
 		test.equal( 'path', result );
 		test.done();
