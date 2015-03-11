@@ -214,9 +214,9 @@ module.exports.findPackageJsonLocationTests = {
 		unit.done();
 	},
 	
-	testCorrectDirectory: function( unit ){
+	testChildFileDirectory: function( unit ){
 		unit.equal( 
-			yearn_utils.findPackageJsonLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0' ) ), 
+			yearn_utils.findPackageJsonLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0/lib/test_module_2.js' ) ), 
 			path.resolve( __dirname, '../node_modules/test-module-2/1.0.0/package.json' ) 
 		);
 		unit.done();
