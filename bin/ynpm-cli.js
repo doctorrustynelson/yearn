@@ -4,6 +4,8 @@
 
 var commander = require( 'commander' );
 var fs = require( 'fs' );
+var merge = require( 'merge' ).recursive;
+
 var version = require( '../package.json' ).version;
 var config = require( '../lib/utils/config' ).initialize( );
 var ynpm = require( '../lib/ynpm' )( config );
@@ -40,7 +42,7 @@ commander
 			
 			var contents = JSON.parse( fs.readFileSync( package_json_location, 'utf8' ) );
 			
-			var dependencies = yutils.mergeMaps(
+			var dependencies = merge(
 				contents.dependencies,
 				contents.devDependencies,
 				contents.optionalDependencies
