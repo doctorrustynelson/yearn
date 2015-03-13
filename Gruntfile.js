@@ -46,7 +46,7 @@ module.exports = function( grunt ){
 				force: true
 			},*/
 			submit_coverage: {
-				src: 'coverage/lcov.info'
+				src: './coverage/lcov.info'
 			}
 		}
 	});

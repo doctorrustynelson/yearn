@@ -26,7 +26,7 @@
 		"ynode": "./bin/ynode.js"
 	},
 	"scripts": {
-		"ci": "istanbul cover --preload-sources -x **/bin/** -x **/tests/** -x Gruntfile.js -v --print both grunt && grunt coveralls",
+		"ci": "istanbul cover --include-all-sources -x '**/bin/**' -x 'Gruntfile.js' --verbose --print detail --report lcovonly grunt && grunt coveralls",
 		"test": "grunt test",
 		"ynode": "node ./bin/ynode.js",
 		"ynpm": "./bin/ynpm-cli.js"
@@ -48,6 +48,6 @@
 		"grunt-contrib-jshint": "^0.10.x",
 		"grunt-contrib-nodeunit": "^0.4.x",
 		"grunt-coveralls": "^1.0.x",
-		"istanbul": "0.3.2"
+		"istanbul": "^0.3.7"
 	}
 }
