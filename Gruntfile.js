@@ -42,9 +42,9 @@ module.exports = function( grunt ){
 		},
 		
 		coveralls: {
-			options: {
+			/*options: {
 				force: true
-			},
+			},*/
 			submit_coverage: {
 				src: 'coverage/lcov.info'
 			}
