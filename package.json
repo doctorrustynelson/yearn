@@ -47,7 +47,7 @@
 		"grunt": "^0.4.x",
 		"grunt-contrib-jshint": "^0.10.x",
 		"grunt-contrib-nodeunit": "^0.4.x",
-	    "grunt-coveralls": "^1.0.x",
-	    "istanbul": "^0.3.2"
+		"grunt-coveralls": "^1.0.x",
+		"istanbul": "0.3.2"
 	}
 }
