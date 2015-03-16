@@ -210,7 +210,7 @@ module.exports.checkCommandTests = {
 		require( '../lib/ynpm' )( { orgs: { '': './node_modules' } }, function( err, ynpm ){
 			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-			ynpm.commands.check( 'badorg/lodash', function( err, version ){
+			ynpm.commands.check( 'badorg:lodash', function( err, version ){
 				test.notEqual( err, null );
 				test.equal( version, null );
 				test.done();
@@ -223,7 +223,7 @@ module.exports.checkCommandTests = {
 			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
 			ynpm.commands.check( 'nosuchmoduleexists', function( err, version ){
-				test.notEqual( err, null );
+				test.notEqual( err, null, err );
 				test.equal( version, null );
 				test.done();
 			} );
