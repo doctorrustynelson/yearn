@@ -75,10 +75,32 @@ module.exports.simpleRequireTests = {
 		} );
 		test.done();
 	},
+	
+	malformedYearning: function( test ){
+		test.throws( function( ){
+			yearn( { org: 'test_modules', version: '*' } );
+		} );
+		test.done();
+	},
+	
+	incorrectTypeYearning: function( test ){
+		test.throws( function( ){
+			yearn( 0 );
+		} );
+		test.done();
+	},
 		
 	fullyQualifiedYearning: function( test ){
 		
 		var result = yearn( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
+		
+		test.equal( 'Secret string for test-module-0 v.0.0.1 in default org.', result );
+		test.done();
+	},
+	
+	defaultOrgYearning: function( test ){
+		
+		var result = yearn( { module: 'test-module-0', version: '0.0.1' } );
 		
 		test.equal( 'Secret string for test-module-0 v.0.0.1 in default org.', result );
 		test.done();
