@@ -40,6 +40,13 @@ var yearn = require( '../lib/yearn' )({
 
 module.exports.simpleRequireTests = {
 	
+	invalidSemverYearning: function( test ){
+		test.throws( function( ){
+			yearn( { org: 'test_modules', module: 'test-module-0', version: 'invalid semver' } );
+		} );
+		test.done();
+	},
+		
 	fullyQualifiedYearning: function( test ){
 		
 		var result = yearn( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
