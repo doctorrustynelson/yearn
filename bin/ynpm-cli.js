@@ -8,7 +8,7 @@ var merge = require( 'merge' ).recursive;
 
 var version = require( '../package.json' ).version;
 var config = require( '../lib/utils/config' ).initialize( );
-var ynpm = require( '../lib/ynpm' )( config );
+var ynpm = null;
 var yutils = require( '../lib/utils/yearn-utils' )( config );
 var LOGGER = require( '../lib/utils/logger' ).getLOGGER( config.logger );
 
@@ -129,11 +129,9 @@ commander
 	} );
 
 // Initialize ynpm and process arguments
-ynpm.init(
-	config.npmconfig,
-	function( err ){
-		if( err === null ){
-			commander.parse( process.argv );
-		}
+require( '../lib/ynpm' )( config, function( err, initialized_ynpm ){
+	if( err === null ){
+		ynpm = initialized_ynpm;
+		commander.parse( process.argv );
 	}
-);
+} );

@@ -30,134 +30,151 @@
 
 var path = require( 'path' );
 var grunt = require( 'grunt' );
-var npm = require( 'npm' );
-
-module.exports.setUp = function( callback ){
-	npm.load( { loglevel: 'error' }, function( ){
-		callback();
-	} );
-};
-
+//var npm = require( 'npm' );
 
 module.exports.orgsCommandTests = {
 	
-	noProvidedConfig: function( test ){
+	undefinedConfig: function( test ){
 		
-		var ynpm = require( '../lib/ynpm' )( );
-		
-		test.deepEqual( { '': './node_modules' }, ynpm.commands.orgs() );
-		test.done();
+		require( '../lib/ynpm' )( undefined, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+			
+			test.deepEqual( { '': './node_modules' }, ynpm.commands.orgs() );
+			test.done();
+		} );
 	},
 	
 	emptyConfig: function( test ){
 		
-		var ynpm = require( '../lib/ynpm' )( {} );
+		require( '../lib/ynpm' )( {}, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-		test.deepEqual( { '': './node_modules' }, ynpm.commands.orgs() );
-		test.done();
+			test.deepEqual( { '': './node_modules' }, ynpm.commands.orgs() );
+			test.done();
+		} );
 	},
 	
 	emptyOrgs: function( test ){
 		
-		var ynpm = require( '../lib/ynpm' )( { orgs: {} } );
+		require( '../lib/ynpm' )( { orgs: {} }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-		test.deepEqual( { '': './node_modules' }, ynpm.commands.orgs() );
-		test.done();
+			test.deepEqual( { '': './node_modules' }, ynpm.commands.orgs() );
+			test.done();
+		} );
 	},
 	
 	fullySpecifiedConfig: function( test ){
 		
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': '/user/bin/node_modules', 'spec': '/user/bin/spec' } } );
+		require( '../lib/ynpm' )( { orgs: { '': '/user/bin/node_modules', 'spec': '/user/bin/spec' } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-		test.deepEqual( { '': '/user/bin/node_modules', 'spec': '/user/bin/spec' }, ynpm.commands.orgs() );
-		test.done();
+			test.deepEqual( { '': '/user/bin/node_modules', 'spec': '/user/bin/spec' }, ynpm.commands.orgs() );
+			test.done();
+		} );
 	},
 	
 	noDefaultInOverridenConfig: function( test ){
 		
-		var ynpm = require( '../lib/ynpm' )( { orgs: { 'spec': '/user/bin/spec' } } );
+		require( '../lib/ynpm' )( { orgs: { 'spec': '/user/bin/spec' } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-		test.deepEqual( { '': './node_modules', 'spec': '/user/bin/spec' }, ynpm.commands.orgs() );
-		test.done();
+			test.deepEqual( { '': './node_modules', 'spec': '/user/bin/spec' }, ynpm.commands.orgs() );
+			test.done();
+		} );
 	}
 };
 
 
 module.exports.installCommandTests = {
 		
-		
 	installLodashToAbsoluteDefault: function( test ){
 		
 		var temp_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
 		
-		ynpm.commands.install( 'lodash@2.4.0', function( ){
-			test.ok( grunt.file.exists( path.join( temp_dir, 'lodash' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0', 'package.json' ) ) );
-			
-			grunt.file.delete( temp_dir, { force: true } );
-			test.done();
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'lodash@2.4.0', function( ){
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0', 'package.json' ) ) );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
 		} );
 	},
 	
 	installLodashWithoutVersionToAbsoluteDefault: function( test ){
 		
 		var temp_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
 		
-		ynpm.commands.install( 'lodash', function( ){
-			test.ok( grunt.file.exists( path.join( temp_dir, 'lodash' ) ) );
-			
-			grunt.file.delete( temp_dir, { force: true } );
-			test.done();
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'lodash', function( ){
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash' ) ) );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
 		} );
 	},
 	
 	installNodeunitToAbsoluteDefault: function( test ){
 		
 		var temp_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
 		
-		ynpm.commands.install( 'nodeunit@0.9.0', function( ){
-			test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'tap' ) ) );
-			
-			grunt.file.delete( temp_dir, { force: true } );
-			test.done();
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'nodeunit@0.9.0', function( ){
+				test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'tap' ) ) );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
 		} );
 	},
 	
 	installLodashToRelativeDefault: function( test ){
 		
 		var temp_dir = './temp_node_modules';
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
 		
-		ynpm.commands.install( 'lodash@2.4.0', function( ){
-			test.ok( grunt.file.exists( path.join( temp_dir, 'lodash' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0', 'package.json' ) ) );
-			
-			grunt.file.delete( temp_dir, { force: true } );
-			test.done();
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'lodash@2.4.0', function( ){
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0', 'package.json' ) ) );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
 		} );
 	},
 	
 	installNodeunitToRelativeDefault: function( test ){
 		
 		var temp_dir = './temp_node_modules';
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
 		
-		ynpm.commands.install( 'nodeunit@0.9.0', function( ){
-			test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'tap' ) ) );
-			
-			grunt.file.delete( temp_dir, { force: true } );
-			test.done();
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'nodeunit@0.9.0', function( ){
+				test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'tap' ) ) );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
 		} );
 	},
 	
@@ -165,20 +182,23 @@ module.exports.installCommandTests = {
 		
 		var temp_dir = './temp_node_modules';
 		var spec_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'other': spec_dir } } );
 		
-		ynpm.commands.install( 'other:nodeunit@0.9.0', function( ){
-			test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit' ) ) );
-			test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit', '0.9.0' ) ) );
-			test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
-			test.ok( !grunt.file.exists( path.join( spec_dir, 'tap' ) ) );
-			test.ok( !grunt.file.exists( path.join( temp_dir, 'nodeunit' ) ) );
-			test.ok( !grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0' ) ) );
-			test.ok( !grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
-			test.ok( grunt.file.exists( path.join( temp_dir, 'tap' ) ) );
-			
-			grunt.file.delete( temp_dir, { force: true } );
-			test.done();
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'other': spec_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'other:nodeunit@0.9.0', function( ){
+				test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit' ) ) );
+				test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit', '0.9.0' ) ) );
+				test.ok( grunt.file.exists( path.join( spec_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
+				test.ok( !grunt.file.exists( path.join( spec_dir, 'tap' ) ) );
+				test.ok( !grunt.file.exists( path.join( temp_dir, 'nodeunit' ) ) );
+				test.ok( !grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0' ) ) );
+				test.ok( !grunt.file.exists( path.join( temp_dir, 'nodeunit', '0.9.0', 'package.json' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'tap' ) ) );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
 		} );
 	}
 	
@@ -187,45 +207,36 @@ module.exports.installCommandTests = {
 module.exports.checkCommandTests = {
 		
 	badOrg: function( test ){
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': './node_modules' } } );
+		require( '../lib/ynpm' )( { orgs: { '': './node_modules' } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-		ynpm.commands.check( 'badorg/lodash', function( err, version ){
-			test.notEqual( err, null );
-			test.equal( version, null );
-			test.done();
-		} );
-	},
-	
-	noSuchModuleExists: function( test ){
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': './node_modules' } } );
-		
-		ynpm.commands.check( 'nosuchmoduleexists', function( err, version ){
-			test.notEqual( err, null );
-			test.equal( version, null );
-			test.done();
-		} );
-	},
-		
-	lodashInDefaultOrgAndCorrect: function( test ){
-		var temp_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir }, log: 'ALL' } );
-		
-		ynpm.commands.install( 'lodash', function( ){
-			ynpm.commands.check( 'lodash', function( err, version ){
-				test.equal( err, null );
-				test.equal( version, true );
-				grunt.file.delete( temp_dir, { force: true } );
+			ynpm.commands.check( 'badorg/lodash', function( err, version ){
+				test.notEqual( err, null );
+				test.equal( version, null );
 				test.done();
 			} );
 		} );
 	},
 	
-	multipleLodashInDefaultOrgAndCorrect: function( test ){
-		var temp_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
+	noSuchModuleExists: function( test ){
+		require( '../lib/ynpm' )( { orgs: { '': './node_modules' } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-		ynpm.commands.install( 'lodash', function( ){
-			ynpm.commands.install( 'lodash@2.4.0', function( ){
+			ynpm.commands.check( 'nosuchmoduleexists', function( err, version ){
+				test.notEqual( err, null );
+				test.equal( version, null );
+				test.done();
+			} );
+		} );
+	},
+		
+	lodashInDefaultOrgAndCorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir }, log: 'ALL' }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'lodash', function( ){
 				ynpm.commands.check( 'lodash', function( err, version ){
 					test.equal( err, null );
 					test.equal( version, true );
@@ -236,43 +247,51 @@ module.exports.checkCommandTests = {
 		} );
 	},
 	
+	multipleLodashInDefaultOrgAndCorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'lodash', function( ){
+				ynpm.commands.install( 'lodash@2.4.0', function( ){
+					ynpm.commands.check( 'lodash', function( err, version ){
+						test.equal( err, null );
+						test.equal( version, true );
+						grunt.file.delete( temp_dir, { force: true } );
+						test.done();
+					} );
+				} );
+			} );
+		} );
+	},
+	
 	lodashInOtherOrgAndCorrect: function( test ){
 		var temp_dir = require( 'temp' ).mkdirSync();
 		var spec_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'spec': spec_dir } } );
 		
-		ynpm.commands.install( 'spec:lodash', function( ){
-			ynpm.commands.check( 'spec:lodash', function( err, version ){
-				test.equal( err, null );
-				test.equal( version, true );
-				grunt.file.delete( temp_dir, { force: true } );
-				grunt.file.delete( spec_dir, { force: true } );
-				test.done();
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'spec': spec_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'spec:lodash', function( ){
+				ynpm.commands.check( 'spec:lodash', function( err, version ){
+					test.equal( err, null );
+					test.equal( version, true );
+					grunt.file.delete( temp_dir, { force: true } );
+					grunt.file.delete( spec_dir, { force: true } );
+					test.done();
+				} );
 			} );
 		} );
 	},
 	
 	lodashInDefaultOrgAndIncorrect: function( test ){
 		var temp_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir }, log: 'All' } );
 		
-		ynpm.commands.install( 'lodash@2.3.0', function( ){
-			ynpm.commands.check( 'lodash', function( err, version ){
-				test.equal( err, null );
-				test.notEqual( version, true );
-				test.notEqual( version, false );
-				grunt.file.delete( temp_dir, { force: true } );
-				test.done();
-			} );
-		} );
-	},
-	
-	multipleLodashInDefaultOrgAndIncorrect: function( test ){
-		var temp_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir } } );
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir }, log: 'All' }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-		ynpm.commands.install( 'lodash@2.3.0', function( ){
-			ynpm.commands.install( 'lodash@2.4.0', function( ){
+			ynpm.commands.install( 'lodash@2.3.0', function( ){
 				ynpm.commands.check( 'lodash', function( err, version ){
 					test.equal( err, null );
 					test.notEqual( version, true );
@@ -284,19 +303,42 @@ module.exports.checkCommandTests = {
 		} );
 	},
 	
+	multipleLodashInDefaultOrgAndIncorrect: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'lodash@2.3.0', function( ){
+				ynpm.commands.install( 'lodash@2.4.0', function( ){
+					ynpm.commands.check( 'lodash', function( err, version ){
+						test.equal( err, null );
+						test.notEqual( version, true );
+						test.notEqual( version, false );
+						grunt.file.delete( temp_dir, { force: true } );
+						test.done();
+					} );
+				} );
+			} );
+		} );
+	},
+	
 	lodashInOtherOrgAndIncorrect: function( test ){
 		var temp_dir = require( 'temp' ).mkdirSync();
 		var spec_dir = require( 'temp' ).mkdirSync();
-		var ynpm = require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'spec': spec_dir }, log: 'All' } );
 		
-		ynpm.commands.install( 'spec:lodash@2.3.0', function( ){
-			ynpm.commands.check( 'spec:lodash', function( err, version ){
-				test.equal( err, null );
-				test.notEqual( version, true );
-				test.notEqual( version, false );
-				grunt.file.delete( temp_dir, { force: true } );
-				grunt.file.delete( spec_dir, { force: true } );
-				test.done();
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir, 'spec': spec_dir }, log: 'All' }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'spec:lodash@2.3.0', function( ){
+				ynpm.commands.check( 'spec:lodash', function( err, version ){
+					test.equal( err, null );
+					test.notEqual( version, true );
+					test.notEqual( version, false );
+					grunt.file.delete( temp_dir, { force: true } );
+					grunt.file.delete( spec_dir, { force: true } );
+					test.done();
+				} );
 			} );
 		} );
 	}

@@ -28,19 +28,19 @@
  *		- Finish the current test function, and move on to the next. ALL tests should call this!
  */
 
-var ynpm_utils = require( '../../lib/utils/ynpm-utils' )( {} );
+var ynpm_utils = null;
 var path = require( 'path' );
 var npm = require( 'npm' );
 var grunt = require( 'grunt' );
 var fs = require( 'fs' );
 
 module.exports.setUp = function( callback ){
-	npm.load( function( err/*, npm*/ ){
+	npm.load( function( err, npm ){
 		if( err !== null ){
 			console.log( 'Failed to setup npm.' );
 		}
 		
-		//ynpm_utils.setNPM( npm );
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( {}, npm );
 		callback( );
 	} );
 };
@@ -89,7 +89,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var temp_src_dir = ynpm_utils.createTempDirSync();
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		
-		npm.load( function( ){
+		//npm.load( function( ){
 			npm.commands.install( temp_src_dir, 'lodash@2.4.0', function( ){
 
 				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
@@ -103,7 +103,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 				grunt.file.delete( temp_dest_dir, { force: true } );
 				unit.done();
 			} );
-		} );
+		//} );
 	},
 	
 	smallDependenciesStructureTest: function( unit ){
@@ -111,7 +111,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var temp_src_dir = ynpm_utils.createTempDirSync();
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		
-		npm.load( function( ){
+		//npm.load( function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 
 				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
@@ -139,7 +139,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 				grunt.file.delete( temp_dest_dir, { force: true } );
 				unit.done();
 			} );
-		} );
+		//} );
 	},
 	
 	alreadyInstalledDependenciesStructureTest: function( unit ){
@@ -147,7 +147,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var temp_src_dir = ynpm_utils.createTempDirSync();
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		
-		npm.load( function( ){
+		//npm.load( function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 				npm.commands.install( temp_src_dir, 'get-stdin@1.0.0', function( ){
 
@@ -175,7 +175,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 					unit.done();
 				} );
 			} );
-		} );
+		//} );
 	},
 	
 	alternatePrimeDestinationTest: function( unit ){
@@ -184,7 +184,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		var alt_dest_dir = ynpm_utils.createTempDirSync();
 		
-		npm.load( function( ){
+		//npm.load( function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 
 				ynpm_utils.translateLegacyDependencyStructure( path.join( temp_src_dir, 'node_modules', 'has-ansi' ), alt_dest_dir, temp_dest_dir );
@@ -214,7 +214,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 				grunt.file.delete( temp_dest_dir, { force: true } );
 				unit.done();
 			} );
-		} );
+		//} );
 	}
 };
 
