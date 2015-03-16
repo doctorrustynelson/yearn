@@ -112,14 +112,6 @@ commander
 		} );
 	} );
 
-commander
-	.command( 'npmconfig [args...]' )
-	.description( 'Manage npm configuration.' )
-	.action( function( args ){
-		//TODO: improve
-		ynpm.commands.config( args, function( ){ } );
-	} );
-
 // Unrecognized 
 commander
 	.command( '*' )

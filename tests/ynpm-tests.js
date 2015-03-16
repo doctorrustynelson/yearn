@@ -118,13 +118,13 @@ module.exports.installCommandTests = {
 		} );
 	},
 	
-	installArray: function( test ){
+	installNumber: function( test ){
 		var temp_dir = require( 'temp' ).mkdirSync();
 		
 		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
 			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-			ynpm.commands.install( [ ], function( err ){
+			ynpm.commands.install( 0, function( err ){
 				test.notEqual( err, null );
 				
 				grunt.file.delete( temp_dir, { force: true } );
@@ -295,6 +295,23 @@ module.exports.checkCommandTests = {
 			ynpm.commands.check( 'nosuchmoduleexists', function( err, version ){
 				test.notEqual( err, null, err );
 				test.equal( version, null );
+				test.done();
+			} );
+		} );
+	},
+	
+	lodashNotInstalled: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir }, log: 'ALL' }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.check( 'lodash', function( err, version ){
+				test.equal( err, null );
+				test.notEqual( version, true );
+				test.notEqual( version, false );
+				
+				grunt.file.delete( temp_dir, { force: true } );
 				test.done();
 			} );
 		} );
