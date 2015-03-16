@@ -100,9 +100,9 @@ module.exports.simpleRequireTests = {
 	
 	defaultOrgYearning: function( test ){
 		
-		var result = yearn( { module: 'test-module-0', version: '0.0.1' } );
+		var result = yearn( { module: 'semver', version: '*' } );
 		
-		test.equal( 'Secret string for test-module-0 v.0.0.1 in default org.', result );
+		test.notEqual( result.valid, undefined );
 		test.done();
 	},
 	
