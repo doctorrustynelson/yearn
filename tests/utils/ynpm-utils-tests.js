@@ -35,7 +35,7 @@ var grunt = require( 'grunt' );
 var fs = require( 'fs' );
 
 module.exports.setUp = function( callback ){
-	npm.load( function( err, npm ){
+	npm.load( function( err/*, npm*/ ){
 		if( err !== null ){
 			console.log( 'Failed to setup npm.' );
 		}
