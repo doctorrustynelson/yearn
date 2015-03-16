@@ -40,7 +40,7 @@ module.exports.setUp = function( callback ){
 			console.log( 'Failed to setup npm.' );
 		}
 		
-		ynpm_utils.setNPM( npm );
+		//ynpm_utils.setNPM( npm );
 		callback( );
 	} );
 };
