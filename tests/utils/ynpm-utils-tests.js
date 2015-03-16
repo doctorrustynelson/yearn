@@ -35,8 +35,13 @@ var grunt = require( 'grunt' );
 var fs = require( 'fs' );
 
 module.exports.setUp = function( callback ){
-	npm.load( function( ){
-		callback();
+	npm.load( function( err, npm ){
+		if( err !== null ){
+			console.log( 'Failed to setup npm.' );
+		}
+		
+		ynpm_utils.setNPM( npm );
+		callback( );
 	} );
 };
 
@@ -69,6 +74,15 @@ module.exports.getLatestVersionTests = {
 };
 
 module.exports.translateLegacyDependencyStructureTests = {
+		
+	badPathTest: function( unit ){
+		
+		var temp_src_dir = '/one/bad/path';
+		var temp_dest_dir = '/another/bad/path';
+		
+		unit.ok( !ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir ) );
+		unit.done();
+	},
 	
 	noDependenciesStructureTest: function( unit ){
 		
