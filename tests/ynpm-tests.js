@@ -88,8 +88,52 @@ module.exports.orgsCommandTests = {
 
 module.exports.installCommandTests = {
 		
-	installLodashToAbsoluteDefault: function( test ){
+	installNativeModule: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
 		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( 'os', function( err ){
+				test.notEqual( err, null );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
+		} );
+	},
+	
+	installPath: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( './node_modules/test-module-0/1.0.0', function( err ){
+				test.notEqual( err, null );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
+		} );
+	},
+	
+	installArray: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( [ ], function( err ){
+				test.notEqual( err, null );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
+		} );
+	},
+		
+	installLodashToAbsoluteDefault: function( test ){
 		var temp_dir = require( 'temp' ).mkdirSync();
 		
 		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
@@ -107,7 +151,6 @@ module.exports.installCommandTests = {
 	},
 	
 	installLodashWithoutVersionToAbsoluteDefault: function( test ){
-		
 		var temp_dir = require( 'temp' ).mkdirSync();
 		
 		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
@@ -123,7 +166,6 @@ module.exports.installCommandTests = {
 	},
 	
 	installNodeunitToAbsoluteDefault: function( test ){
-		
 		var temp_dir = require( 'temp' ).mkdirSync();
 		
 		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
@@ -142,7 +184,6 @@ module.exports.installCommandTests = {
 	},
 	
 	installLodashToRelativeDefault: function( test ){
-		
 		var temp_dir = './temp_node_modules';
 		
 		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
@@ -160,7 +201,6 @@ module.exports.installCommandTests = {
 	},
 	
 	installNodeunitToRelativeDefault: function( test ){
-		
 		var temp_dir = './temp_node_modules';
 		
 		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
@@ -179,7 +219,6 @@ module.exports.installCommandTests = {
 	},
 	
 	installNodeunitAbsoluteWithRelativeDefault: function( test ){
-		
 		var temp_dir = './temp_node_modules';
 		var spec_dir = require( 'temp' ).mkdirSync();
 		
@@ -200,8 +239,39 @@ module.exports.installCommandTests = {
 				test.done();
 			} );
 		} );
-	}
+	},
 	
+	modernProgramaticInstallMalformedObject: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( { }, function( err ){
+				test.notEqual( err, null );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
+		} );
+	},
+	
+	modernProgramaticInstallLodash: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( { module: 'lodash', version: '2.4.0' }, function( ){
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0', 'package.json' ) ) );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
+		} );
+	},
 };
 
 module.exports.checkCommandTests = {
