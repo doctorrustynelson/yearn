@@ -4,9 +4,11 @@
 
 var commander = require( 'commander' );
 var fs = require( 'fs' );
+var merge = require( 'merge' ).recursive;
+
 var version = require( '../package.json' ).version;
 var config = require( '../lib/utils/config' ).initialize( );
-var ynpm = require( '../lib/ynpm' )( config );
+var ynpm = null;
 var yutils = require( '../lib/utils/yearn-utils' )( config );
 var LOGGER = require( '../lib/utils/logger' ).getLOGGER( config.logger );
 
@@ -40,7 +42,7 @@ commander
 			
 			var contents = JSON.parse( fs.readFileSync( package_json_location, 'utf8' ) );
 			
-			var dependencies = yutils.mergeMaps(
+			var dependencies = merge(
 				contents.dependencies,
 				contents.devDependencies,
 				contents.optionalDependencies
@@ -110,14 +112,6 @@ commander
 		} );
 	} );
 
-commander
-	.command( 'npmconfig [args...]' )
-	.description( 'Manage npm configuration.' )
-	.action( function( args ){
-		//TODO: improve
-		ynpm.commands.config( args, function( ){ } );
-	} );
-
 // Unrecognized 
 commander
 	.command( '*' )
@@ -127,11 +121,9 @@ commander
 	} );
 
 // Initialize ynpm and process arguments
-ynpm.init(
-	config.npmconfig,
-	function( err ){
-		if( err === null ){
-			commander.parse( process.argv );
-		}
+require( '../lib/ynpm' )( config, function( err, initialized_ynpm ){
+	if( err === null ){
+		ynpm = initialized_ynpm;
+		commander.parse( process.argv );
 	}
-);
+} );

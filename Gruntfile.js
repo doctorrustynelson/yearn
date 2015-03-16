@@ -22,14 +22,17 @@ module.exports = function( grunt ){
 		nodeunit: {
 			unit: [
 				'tests/**/*tests.js',
-				'!tests/yearn-tests.js',
+				'!tests/yearn*tests.js',
 				'!tests/*cli-tests.js'
+			],
+			utils: [
+			     'tests/utils/*utils-tests.js'           
 			],
 			ynpm: [
 			    'tests/ynpm-tests.js'
 			],
-			integration: [
-			    'tests/yearn-tests.js'
+			yearn: [
+			    'tests/yearn*tests.js'
 			],
 			cli: [
 			    'tests/*cli-tests.js'
@@ -40,6 +43,9 @@ module.exports = function( grunt ){
 		},
 		
 		coveralls: {
+			options: {
+				force: false
+			},
 			submit_coverage: {
 				src: 'coverage/lcov.info'
 			}
@@ -50,6 +56,6 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
 	grunt.loadNpmTasks( 'grunt-coveralls' );
 	
-	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:cli', 'nodeunit:integration' ] );
+	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:cli', 'nodeunit:yearn' ] );
 	grunt.registerTask( 'default', [ 'test' ] );
 };

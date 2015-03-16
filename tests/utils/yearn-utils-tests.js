@@ -28,6 +28,7 @@
  *		- Finish the current test function, and move on to the next. ALL tests should call this!
  */
 
+var path = require( 'path' );
 var yearn_utils = require( '../../lib/utils/yearn-utils' )( require( '../../lib/utils/config' )( {} ) );
 
 module.exports.isDirectYearningTests = {
@@ -115,65 +116,240 @@ module.exports.isNativeModuleTests = {
 	}
 };
 
-module.exports.mergeMapsTests = {
-		
-	testTwoDifferentMaps: function( unit ){
-		var result = yearn_utils.mergeMaps( {
-			'a': 1,
-			'b': 2
-		}, {
-			'c': 3,
-			'd': 4
-		} );
-		
-		unit.deepEqual( result, {
-			'a': 1,
-			'b': 2,
-			'c': 3,
-			'd': 4
-		} );
+module.exports.constructYearningStringTests = {
+	
+	testLegacyYearning: function( unit ){
+		unit.equal( yearn_utils.constructYearningString( { module: 'yearn' } ), 'yearn' );
 		unit.done();
 	},
 	
-	testTwoOverlappingMaps: function( unit ){
-		var result = yearn_utils.mergeMaps( {
-			'a': 1,
-			'b': 2
-		}, {
-			'b': -1,
-			'c': 3,
-			'd': 4
-		} );
-		
-		unit.deepEqual( result, {
-			'a': 1,
-			'b': -1,
-			'c': 3,
-			'd': 4
-		} );
+	testDefaultOrgedYearning: function( unit ){
+		unit.equal( yearn_utils.constructYearningString( { org: '', module: 'yearn' } ), '"default":yearn' );
 		unit.done();
 	},
 	
-	testThreeOverlappingMaps: function( unit ){
-		var result = yearn_utils.mergeMaps( {
-			'a': 1,
-			'b': 2
-		}, {
-			'b': -1,
-			'c': 3,
-			'd': 4
-		}, {
-			'b': -2,
-			'd': 5
-		} );
-		
-		unit.deepEqual( result, {
-			'a': 1,
-			'b': -2,
-			'c': 3,
-			'd': 5
-		} );
+	testNonDefaultOrgedYearning: function( unit ){
+		unit.equal( yearn_utils.constructYearningString( { org: 'other', module: 'yearn' } ), 'other:yearn' );
 		unit.done();
 	},
 	
+	testVersionedYearning: function( unit ){
+		unit.equal( yearn_utils.constructYearningString( { module: 'yearn', version: '0.4.0' } ), 'yearn@0.4.0' );
+		unit.done();
+	},
+	
+	testSemVersionedYearning: function( unit ){
+		unit.equal( yearn_utils.constructYearningString( { module: 'yearn', version: '*' } ), 'yearn@*' );
+		unit.done();
+	},
+	
+	testFileYearning: function( unit ){
+		unit.equal( yearn_utils.constructYearningString( { module: 'yearn', file: 'lib/yearn' } ), 'yearn/lib/yearn' );
+		unit.done();
+	},
+	
+	testFileAndVersionedYearning: function( unit ){
+		unit.equal( yearn_utils.constructYearningString( { module: 'yearn', version: '0.4.0', file: 'lib/yearn' } ), 'yearn@0.4.0/lib/yearn' );
+		unit.done();
+	},
+	
+	testComplexYearning: function( unit ){
+		unit.equal( yearn_utils.constructYearningString( { org: '', module: 'yearn', version: '0.4.0', file: 'lib/yearn' } ), '"default":yearn@0.4.0/lib/yearn' );
+		unit.done();
+	}
+};
+
+module.exports.extractYearningPartsTests = {
+	testLegacyYearning: function( unit ){
+		unit.deepEqual( yearn_utils.extractYearningParts( 'yearn' ), { org: undefined, module: 'yearn', version: undefined, file: undefined } );
+		unit.done();
+	},
+	
+	testNonDefaultOrgedYearning: function( unit ){
+		unit.deepEqual( yearn_utils.extractYearningParts( 'other:yearn' ), { org: 'other', module: 'yearn', version: undefined, file: undefined } );
+		unit.done();
+	},
+	
+	testVersionedYearning: function( unit ){
+		unit.deepEqual( yearn_utils.extractYearningParts( 'yearn@0.4.0' ), { org: undefined, module: 'yearn', version: '0.4.0', file: undefined } );
+		unit.done();
+	},
+	
+	testSemVersionedYearning: function( unit ){
+		unit.deepEqual( yearn_utils.extractYearningParts( 'yearn@*' ), { org: undefined, module: 'yearn', version: '*', file: undefined } );
+		unit.done();
+	},
+	
+	testFileYearning: function( unit ){
+		unit.deepEqual( yearn_utils.extractYearningParts( 'yearn/lib/yearn' ), { org: undefined, module: 'yearn', version: undefined, file: 'lib/yearn' } );
+		unit.done();
+	},
+	
+	testFileAndVersionedYearning: function( unit ){
+		unit.deepEqual( yearn_utils.extractYearningParts( 'yearn@0.4.0/lib/yearn' ), { org: undefined, module: 'yearn', version: '0.4.0', file: 'lib/yearn' } );
+		unit.done();
+	},
+	
+	testComplexYearning: function( unit ){
+		unit.deepEqual( yearn_utils.extractYearningParts( 'other:yearn@0.4.0/lib/yearn' ), { org: 'other', module: 'yearn', version: '0.4.0', file: 'lib/yearn' } );
+		unit.done();
+	}
+};
+
+module.exports.findPackageJsonLocationTests = {
+	
+	testCorrectDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findPackageJsonLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0' ) ), 
+			path.resolve( __dirname, '../node_modules/test-module-2/1.0.0/package.json' ) 
+		);
+		unit.done();
+	},
+	
+	testChildDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findPackageJsonLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0/lib' ) ), 
+			path.resolve( __dirname, '../node_modules/test-module-2/1.0.0/package.json' ) 
+		);
+		unit.done();
+	},
+	
+	testChildFileDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findPackageJsonLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0/lib/test_module_2.js' ) ), 
+			path.resolve( __dirname, '../node_modules/test-module-2/1.0.0/package.json' ) 
+		);
+		unit.done();
+	},
+	
+	testNoPackageJsonInNode_ModulesDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findPackageJsonLocation( path.resolve( __dirname, '../node_modules' ) ), 
+			null
+		);
+		unit.done();
+	},
+	
+	testNoPackageJsonChildOfNode_ModulesDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findPackageJsonLocation( path.resolve( __dirname, '../node_modules/test-module-2' ) ), 
+			null 
+		);
+		unit.done();
+	},
+	
+	testNoPackageJsonRootDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findPackageJsonLocation( path.resolve( '/' ) ), 
+			null
+		);
+		unit.done();
+	},
+	
+	testNoPackageJsonChildOfRootDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findPackageJsonLocation( path.resolve( require('os').tmpdir() ) ), 
+			null
+		);
+		unit.done();
+	},
+};
+
+module.exports.findModuleLocationTests = {
+		
+	testCorrectDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/' ), 'test-module-2' ), 
+			path.resolve( __dirname, '../node_modules/test-module-2' ) 
+		);
+		unit.done();
+	},
+	
+	testCorrectWithLegacyDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/' ), 'test-module-2', true ), 
+			path.resolve( __dirname, '../node_modules/test-module-2' ) 
+		);
+		unit.done();
+	},
+	
+	testChildDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2' ), 'test-module-2' ), 
+			null
+		);
+		unit.done();
+	},
+	
+	testChildWithLegacyDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2' ), 'test-module-2', true ), 
+			path.resolve( __dirname, '../node_modules/test-module-2' ) 
+		);
+		unit.done();
+	},
+	
+	testGrandChildDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0' ), 'test-module-2' ), 
+			null
+		);
+		unit.done();
+	},
+	
+	testGrandChildWithLegacyDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0' ), 'test-module-2', true ), 
+			path.resolve( __dirname, '../node_modules/test-module-2' ) 
+		);
+		unit.done();
+	},
+	
+	testNephewDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1' ), 'test-module-2' ), 
+			null
+		);
+		unit.done();
+	},
+	
+	testNephewWithLegacyDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1' ), 'test-module-2', true ), 
+			path.resolve( __dirname, '../node_modules/test-module-2' ) 
+		);
+		unit.done();
+	},
+	
+	testGrandNephewDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1/1.0.0' ), 'test-module-2' ), 
+			null
+		);
+		unit.done();
+	},
+	
+	testGrandNephewWithLegacyDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1/1.0.0' ), 'test-module-2', true ), 
+			path.resolve( __dirname, '../node_modules/test-module-2' ) 
+		);
+		unit.done();
+	},
+	
+	testNoModuleRootDirectoryWithLegacy: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( '/' ), 'test-module-2', true ), 
+			null
+		);
+		unit.done();
+	},
+	
+	testNoModuleChildOfRootDirectoryWithLegacy: function( unit ){
+		unit.equal( 
+			yearn_utils.findModuleLocation( path.resolve( require('os').tmpdir() ), 'test-module-2', true ), 
+			null
+		);
+		unit.done();
+	}
 };
