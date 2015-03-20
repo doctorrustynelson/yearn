@@ -11,7 +11,7 @@ process.argv.shift( );
 if( process.argv.length < 2 ){
 	
 	repl.start( {
-		prompt: 'ynode> ',
+		prompt: ( global.yearn.config.prompt || 'ynode> ' ),
 		input: process.stdin,
 		output: process.stdout
 	} );

@@ -1,14 +1,16 @@
 {
 	"name": "yearn",
-	"version": "0.3.3",
+	"version": "0.3.4",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
 		"resolve",
 		"override",
 		"load",
+		"loader",
 		"version",
-		"dependency"
+		"dependency",
+		"repl"
 	],
 	"author": "Rusty Nelson",
 	"repository": {
@@ -33,7 +35,7 @@
 	},
 	"dependencies": {
 		"semver": "4.3.x",
-		"commander": "2.6.x",
+		"commander": "2.7.x",
 		"fs-extra": "0.16.x",
 		"npm": "2.7.x",
 		"temp": "0.8.x",
@@ -45,7 +47,7 @@
 	},
 	"devDependencies": {
 		"grunt": "^0.4.x",
-		"grunt-contrib-jshint": "^0.10.x",
+		"grunt-contrib-jshint": "^0.11.x",
 		"grunt-contrib-nodeunit": "^0.4.x",
 		"grunt-coveralls": "^1.0.x",
 	    "istanbul": "^0.3.x"
