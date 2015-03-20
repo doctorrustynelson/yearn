@@ -11,4 +11,5 @@ coverage
 .project
 
 # include everything under tests
+tests/test_node_modules
 !tests/**/node_modules

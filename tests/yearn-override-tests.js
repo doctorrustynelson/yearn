@@ -115,6 +115,14 @@ module.exports.nativeRequireTests = {
 		
 		test.equal( 'function', typeof result.resolve );
 		test.done();
+	},
+	
+	yearnYearning: function( test ){
+		
+		var result = require( 'yearn' );
+		
+		test.strictEqual( yearn, result() );
+		test.done();
 	}
 	
 };
