@@ -61,6 +61,7 @@ YEARN_CONFIG is an evironment variable that is read when ever ynode and ynpm are
 		orgs: { '', './node_modules' },
 		logger: 'default',
 		override: true,
+		prompt: 'ynode> ',
 		delimiters: {
 			org: ':',
 			semver: '@',
@@ -95,6 +96,8 @@ YEARN_CONFIG is an evironment variable that is read when ever ynode and ynpm are
 + __override__: This boolean specifies if yearn should override Node's require mechanism or should only return the yearn functionality.  Additionaly if a function is provided than yearn will ignore all of it's default functionality and override require with that functionality instead.
 
    There are a few thing that one should know if your going to override the functionality yourself.  Firstly this does not override the most outer form of require and thus you end up limited to two arguments getting passed to your function (what the user passes to require or resolve and the parent module of the call).  The function you are infact overriding is `module.constructor._resolveFilename` so that your code works in both the require and require.resolve contexts.  Yearn will also override some functionality in require so that it doesn't restrict passed arguments to strings.  Secondly yearn does not load or compile the modules itself it is only overriding the resolve aspect, node's internal compiler and loader should take it from there.  The result of your override functionality should be the full path to the module's file.
+
++ __prompt__: Set the prompt of the ynode REPL.  Defaults to `ynode>`.
    
 + __delimiters__: The __delimiters__ option is a way to set the delimiters between org, module, version and specific file parts of a string based require.  By default these values are `:` between org and module, `@` between module and version similarly to how semver does their versioning and `/` to state that the require is for a particular file in the module.  These should not be the same delimiter (prior to version 0.2.0 of yearn they were all `/` and that lead to problems with pre existing modules like npm and grunt).  
 

@@ -144,6 +144,14 @@ module.exports.simpleRequireTests = {
 		
 		test.equal( 'function', typeof result.resolve );
 		test.done();
+	},
+	
+	yearnYearning: function( test ){
+		
+		var result = yearn( 'yearn' );
+		
+		test.strictEqual( yearn, result() );
+		test.done();
 	}
 	
 };

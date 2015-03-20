@@ -29,15 +29,21 @@
  */
 
 var path = require( 'path' );
+var path_resolved = require.resolve( 'path' );
+var raw_yearn = require( '../lib/yearn' );
 var yearn = null;
 
 module.exports.setUp = function( callback ){
-	yearn = require( '../lib/yearn' )({ 
+	var original_resolver = module.constructor._resolveFilename;
+	yearn = raw_yearn({ 
 		orgs: { 
 			'': './node_modules',
-			'test_modules': path.join( __dirname, 'node_modules' ) 
+			'test_modules': path.join( __dirname, 'node_modules' )
 		},
-		override: true,
+		override: function( desired, parent ){
+			console.log( 'Ignored require for ' + desired + ' and subsituting path.' );
+			return original_resolver( 'path', parent );
+		},
 		log: 'ALL' 
 	} );
 	callback( );
@@ -52,7 +58,7 @@ module.exports.forceTest = function( test ){
 	
 	test.notStrictEqual( yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
 
-	var new_yearn = require( '../lib/yearn' )({ 
+	var new_yearn = raw_yearn({ 
 		orgs: { 
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
@@ -73,7 +79,7 @@ module.exports.nativeRequireTests = {
 		
 		var result = require( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
 		
-		test.equal( 'Secret string for test-module-0 v.0.0.1 in default org.', result );
+		test.strictEqual( path, result );
 		test.done();
 	},
 	
@@ -81,7 +87,7 @@ module.exports.nativeRequireTests = {
 		
 		var result = require( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
 		
-		test.equal( 'Secret string for test-module-1 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
+		test.strictEqual( path, result );
 		test.done();
 	},
 	
@@ -89,7 +95,7 @@ module.exports.nativeRequireTests = {
 		
 		var result = require( { org: 'test_modules', module: 'test-module-3', version: '1.1.0' } );
 		
-		test.equal( 'Secret string for test-module-3 v.1.1.0 in default org with test-submodule-1 v.0.0.1 with test-submodule-2 v.0.1.0.', result );
+		test.strictEqual( path, result );
 		test.done();
 	},
 	
@@ -97,7 +103,7 @@ module.exports.nativeRequireTests = {
 		
 		var result = require( { org: 'test_modules', module: 'test-module-2', version: '1.0.0' } );
 		
-		test.equal( 'Secret string for test-module-2 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
+		test.strictEqual( path, result );
 		test.done();
 	},
 	
@@ -105,7 +111,7 @@ module.exports.nativeRequireTests = {
 		
 		var result = require( { org: 'test_modules', module: 'test-module-2', version: '2.0.0' } );
 		
-		test.equal( 'Secret string for test-module-2 (proxy) v.2.0.0 in default org with test-submodule-0 v.0.1.0.', result );
+		test.strictEqual( path, result );
 		test.done();
 	},
 	
@@ -113,7 +119,7 @@ module.exports.nativeRequireTests = {
 		
 		var result = require( 'path' );
 		
-		test.equal( 'function', typeof result.resolve );
+		test.strictEqual( path, result );
 		test.done();
 	},
 	
@@ -121,7 +127,7 @@ module.exports.nativeRequireTests = {
 		
 		var result = require( 'yearn' );
 		
-		test.strictEqual( yearn, result() );
+		test.strictEqual( path, result );
 		test.done();
 	}
 	
@@ -133,7 +139,7 @@ module.exports.nativeResolveTests = {
 		
 		var result = require.resolve( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
 		
-		test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1', 'test_module_0.js' ), path.relative( __dirname, result ) );
+		test.equal( path_resolved, result );
 		test.done();
 	},
 	
@@ -141,7 +147,7 @@ module.exports.nativeResolveTests = {
 		
 		var result = require.resolve( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
 		
-		test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0', 'test_module_1.js' ), path.relative( __dirname, result ) );
+		test.equal( path_resolved, result );
 		test.done();
 	},
 	
@@ -149,7 +155,7 @@ module.exports.nativeResolveTests = {
 		
 		var result = require.resolve( 'path' );
 		
-		test.equal( 'path', result );
+		test.equal( path_resolved, result );
 		test.done();
 	}
 	

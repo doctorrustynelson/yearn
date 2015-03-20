@@ -49,6 +49,7 @@ module.exports.configTests = {
 				init_type: 'LAZY',
 				load_missing: false,
 				override: true,
+				prompt: 'ynode> ',
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				npmconfig: {}
@@ -76,6 +77,7 @@ module.exports.configTests = {
 				init_type: 'LAZY',
 				load_missing: false,
 				override: true,
+				prompt: 'ynode> ',
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				npmconfig: {}
@@ -97,6 +99,7 @@ module.exports.configTests = {
 				init_type: 'LAZY',
 				load_missing: false,
 				override: true,
+				prompt: 'ynode> ',
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				npmconfig: {}
