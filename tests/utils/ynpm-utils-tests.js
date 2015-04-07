@@ -84,6 +84,15 @@ module.exports.translateLegacyDependencyStructureTests = {
 		unit.done();
 	},
 	
+	badPathTest: function( unit ){
+		
+		var temp_src_dir = '/one/bad/path';
+		var temp_dest_dir = '/another/bad/path';
+		
+		unit.ok( !ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir ) );
+		unit.done();
+	},
+		
 	noDependenciesStructureTest: function( unit ){
 		
 		var temp_src_dir = ynpm_utils.createTempDirSync();

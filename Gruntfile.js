@@ -29,7 +29,7 @@ module.exports = function( grunt ){
 			     'tests/utils/*utils-tests.js'           
 			],
 			ynpm: [
-			    'tests/ynpm-tests.js'
+			    'tests/ynpm*tests.js'
 			],
 			yearn: [
 			    'tests/yearn*tests.js'
@@ -47,7 +47,7 @@ module.exports = function( grunt ){
 				force: false
 			},
 			submit_coverage: {
-				src: 'coverage/lcov.info'
+				src: './coverage/lcov.info'
 			}
 		}
 	});

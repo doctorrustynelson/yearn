@@ -1,6 +1,6 @@
 {
 	"name": "yearn",
-	"version": "0.3.4",
+	"version": "0.4.0",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
@@ -28,15 +28,15 @@
 		"ynode": "./bin/ynode.js"
 	},
 	"scripts": {
-		"ci": "istanbul cover --preload-sources -x **/bin/** -x **/tests/** -x Gruntfile.js -v --print both grunt && grunt coveralls",
+		"ci": "istanbul cover --include-all-sources -x '**/bin/**' -x 'Gruntfile.js' --verbose --print detail --report lcovonly grunt && grunt coveralls",
 		"test": "grunt test",
 		"ynode": "node ./bin/ynode.js",
 		"ynpm": "./bin/ynpm-cli.js"
 	},
 	"dependencies": {
-		"semver": "4.3.x",
+		"semver": "~4.3.2",
 		"commander": "2.7.x",
-		"fs-extra": "0.16.x",
+		"fs-extra": "0.18.x",
 		"npm": "2.7.x",
 		"temp": "0.8.x",
 		"json5": "0.4.x",
