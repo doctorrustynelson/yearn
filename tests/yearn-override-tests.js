@@ -47,6 +47,14 @@ module.exports.setUp = function( callback ){
 module.exports.tearDown = function( callback ){
 	process.env.LOG4JS_CONFIG = undefined;
 	yearn.revert( );
+	
+	//wipe the cache of all yearn test node_modules
+	Object.keys( require.cache ).forEach( function( item ){
+		if( item.indexOf( path.resolve( __dirname, './node_modules' ) ) === 0){
+			delete require.cache[ item ];
+		}
+	});
+	
 	callback( );
 };
 
