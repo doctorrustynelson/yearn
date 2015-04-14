@@ -62,6 +62,7 @@ module.exports.tearDown = function( callback ){
 	callback( );
 };
 
+/*
 module.exports.forceTest = function( test ){
 	
 	test.notStrictEqual( yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
@@ -79,6 +80,7 @@ module.exports.forceTest = function( test ){
 	
 	test.done();
 };
+*/
 
 module.exports.nativeRequireTests = {
 		
