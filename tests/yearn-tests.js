@@ -39,8 +39,7 @@ module.exports.setUp = function( callback ){
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
-		override: false,
-		logger: 'log4js' 
+		override: false
 	} );
 	
 	callback( );
@@ -69,8 +68,7 @@ module.exports.cachedTest = function( test ){
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
-		override: true,
-		log: 'ALL' 
+		override: true
 	} );
 	
 	test.strictEqual( new_yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );

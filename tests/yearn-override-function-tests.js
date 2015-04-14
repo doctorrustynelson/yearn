@@ -43,8 +43,7 @@ module.exports.setUp = function( callback ){
 		override: function( desired, parent ){
 			console.log( 'Ignored require for ' + desired + ' and subsituting path.' );
 			return original_resolver( 'path', parent );
-		},
-		log: 'ALL' 
+		}
 	} );
 	callback( );
 };
@@ -71,8 +70,7 @@ module.exports.forceTest = function( test ){
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
-		override: false,
-		log: 'ALL' 
+		override: false
 	}, true );
 	
 	test.strictEqual( new_yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
