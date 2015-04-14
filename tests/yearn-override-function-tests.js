@@ -30,10 +30,12 @@
 
 var path = require( 'path' );
 var path_resolved = require.resolve( 'path' );
+var raw_yearn = null;
 var yearn = null;
 
 module.exports.setUp = function( callback ){
 	var original_resolver = module.constructor._resolveFilename;
+	raw_yearn = require( '../lib/yearn' );
 	yearn = require( '../lib/yearn' )({ 
 		orgs: { 
 			'': './node_modules',
@@ -64,7 +66,7 @@ module.exports.forceTest = function( test ){
 	
 	test.notStrictEqual( yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
 
-	var new_yearn = require( '../lib/yearn' )({ 
+	var new_yearn = raw_yearn({ 
 		orgs: { 
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
