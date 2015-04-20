@@ -75,9 +75,8 @@ module.exports.determineYearningPathTests = {
 	
 	noPackage: function( test ){
 		
-		test.throws( function( ){
-			core.determineYearningPath( { module: 'test-module-0' }, { id: path.resolve( '/' ) } );
-		} );
+		var result = core.determineYearningPath( { module: 'test-module-2' }, { id: path.resolve( '/' ) } );
+		test.equal( result, path.resolve( __dirname, 'node_modules', 'test-module-2', '2.0.0' ) );
 		
 		test.done(  );
 	},
@@ -110,9 +109,8 @@ module.exports.determineYearningPathTests = {
 	
 	noKnowVersion: function( test ){
 		
-		test.throws( function( ){
-			core.determineYearningPath( { module: 'test-module-3' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
-		} );
+		var result = core.determineYearningPath( { module: 'test-module-3' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		test.equal( result, path.resolve( __dirname, 'node_modules', 'test-module-3', '1.1.0' ) );
 		
 		test.done(  );
 	}
