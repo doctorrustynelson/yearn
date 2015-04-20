@@ -1,0 +1,128 @@
+
+/* Node unit quick reference:
+ * 
+ *	ok(value, [message]) 
+ *		- Tests if value is a true value.
+ *	equal(actual, expected, [message]) 
+ *		- Tests shallow, coercive equality with the equal comparison operator ( == ).
+ *	notEqual(actual, expected, [message]) 
+ *		- Tests shallow, coercive non-equality with the not equal comparison operator ( != ).
+ *	deepEqual(actual, expected, [message]) 
+ *		- Tests for deep equality.
+ *	notDeepEqual(actual, expected, [message]) 
+ *		- Tests for any deep inequality.
+ *	strictEqual(actual, expected, [message]) 
+ *		- Tests strict equality, as determined by the strict equality operator ( === )
+ *	notStrictEqual(actual, expected, [message]) 
+ *		- Tests strict non-equality, as determined by the strict not equal operator ( !== )
+ *	throws(block, [error], [message]) 
+ *		- Expects block to throw an error.
+ *	doesNotThrow(block, [error], [message]) 
+ *		- Expects block not to throw an error.
+ *	ifError(value) 
+ *		- Tests if value is not a false value, throws if it is a true value.
+ *	
+ *	expect(amount) 
+ *		- Specify how many assertions are expected to run within a test. 
+ *	done() 
+ *		- Finish the current test function, and move on to the next. ALL tests should call this!
+ */
+
+var core = require( '../lib/yearn-core' );
+var config = require( '../lib/utils/config' )( );
+var path = require( 'path' );
+
+module.exports.populatePackageCacheTest = {
+	
+	setUp: function( callback ){
+		core.init( config );
+		
+		callback( );
+	},
+		
+	cacheYearnPackage: function( test ){
+		
+		core.populatePackageCache( path.resolve( __dirname, '../package.json' ), this );
+		
+		test.deepEqual( core.package_dependencies[ path.resolve( __dirname, '../package.json' ) ], { 
+			semver: '4.3.x',
+		    commander: '2.7.x',
+		    'fs-extra': '0.16.x',
+		    npm: '2.7.x',
+		    temp: '0.8.x',
+		    json5: '0.4.x',
+		    merge: '1.2.x',
+		    grunt: '^0.4.x',
+		    'grunt-contrib-jshint': '^0.11.x',
+		    'grunt-contrib-nodeunit': '^0.4.x',
+		    'grunt-coveralls': '^1.0.x',
+		    istanbul: '^0.3.x',
+		    log4js: '0.6.x',
+		    __reverseOrgs: { 
+		    	semver: '',
+		        commander: '',
+		        'fs-extra': '',
+		        npm: '',
+		        temp: '',
+		        json5: '',
+		        merge: '',
+		        grunt: '',
+		        'grunt-contrib-jshint': '',
+		        'grunt-contrib-nodeunit': '',
+		        'grunt-coveralls': '',
+		        istanbul: '',
+		        log4js: ''
+		    } 
+		} );
+		test.done();
+	},
+	
+	cacheMultipleYearnPackage: function( test ){
+		
+		core.populatePackageCache( path.resolve( __dirname, '../package.json' ), this );
+		core.populatePackageCache( path.resolve( __dirname, '../package.json' ), this );
+		core.populatePackageCache( path.resolve( __dirname, '../package.json' ), this );
+		
+		test.deepEqual( core.package_dependencies[ path.resolve( __dirname, '../package.json' ) ], { 
+			semver: '4.3.x',
+		    commander: '2.7.x',
+		    'fs-extra': '0.16.x',
+		    npm: '2.7.x',
+		    temp: '0.8.x',
+		    json5: '0.4.x',
+		    merge: '1.2.x',
+		    grunt: '^0.4.x',
+		    'grunt-contrib-jshint': '^0.11.x',
+		    'grunt-contrib-nodeunit': '^0.4.x',
+		    'grunt-coveralls': '^1.0.x',
+		    istanbul: '^0.3.x',
+		    log4js: '0.6.x',
+		    __reverseOrgs: { 
+		    	semver: '',
+		        commander: '',
+		        'fs-extra': '',
+		        npm: '',
+		        temp: '',
+		        json5: '',
+		        merge: '',
+		        grunt: '',
+		        'grunt-contrib-jshint': '',
+		        'grunt-contrib-nodeunit': '',
+		        'grunt-coveralls': '',
+		        istanbul: '',
+		        log4js: ''
+		    } 
+		} );
+		test.done();
+	},
+	
+	cacheBadPackage: function( test ){
+		
+		test.throws( function( ){
+			core.populatePackageCache( path.resolve( __dirname, 'test-package.jsons', 'bad-package.json' ), this );
+		} );
+		
+		test.done();
+	},
+	
+};

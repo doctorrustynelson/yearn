@@ -1,0 +1,11 @@
+{
+	"name": "bad-package",
+	"version": "0.0.1",
+	"description": "Multiple orgs for single dependency.",
+	"dependencies": {
+		"semver": "4.3.x"
+	},
+	"optionalDependencies": {
+		"bad:semver": "4.3.x"
+	}
+}
