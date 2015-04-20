@@ -34,7 +34,7 @@ var path = require( 'path' );
 module.exports.determineYearningPathTests = {
 	
 	setUp: function( callback ){
-		core.init( require( '../lib/utils/config' )( { orgs: { '': path.resolve( __dirname, 'node_modules' ) } } ) );	
+		core.init( require( '../lib/utils/config' )( { orgs: { '': path.resolve( __dirname, 'node_modules' ), 'test': path.resolve( __dirname, 'node_modules' ) } } ) );	
 		callback( );
 	},
 	
@@ -42,6 +42,40 @@ module.exports.determineYearningPathTests = {
 	
 		var result = core.determineYearningPath( { module: 'test-module-0' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
 		test.equal( result, path.resolve( __dirname, 'node_modules', 'test-module-0', '1.1.0' ) );
+		
+		test.done(  );
+	},
+	
+	otherOrgYearning: function( test ){
+		
+		var result = core.determineYearningPath( { module: 'test-module-2' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		test.equal( result, path.resolve( __dirname, 'node_modules', 'test-module-2', '1.0.0' ) );
+		
+		test.done(  );
+	},
+	
+	noPackage: function( test ){
+		
+		test.throws( function( ){
+			core.determineYearningPath( { module: 'test-module-0' }, { id: path.resolve( '/' ) } );
+		} );
+		
+		test.done(  );
+	},
+	
+	noKnowOrg: function( test ){
+		
+		var result = core.determineYearningPath( { module: 'test-module-3', version: '1.x.x' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		test.equal( result, path.resolve( __dirname, 'node_modules', 'test-module-3', '1.1.0' ) );
+		
+		test.done(  );
+	},
+	
+	noKnowVersion: function( test ){
+		
+		test.throws( function( ){
+			core.determineYearningPath( { module: 'test-module-3' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		} );
 		
 		test.done(  );
 	}
