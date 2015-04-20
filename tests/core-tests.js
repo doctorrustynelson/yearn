@@ -54,6 +54,14 @@ module.exports.determineYearningPathTests = {
 		test.done(  );
 	},
 	
+	fileYearning: function( test ){
+		
+		var result = core.determineYearningPath( { module: 'test-module-0', file: 'package.json' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		test.equal( result, path.resolve( __dirname, 'node_modules', 'test-module-0', '1.1.0', 'package.json' ) );
+		
+		test.done(  );
+	},
+	
 	noPackage: function( test ){
 		
 		test.throws( function( ){
@@ -67,6 +75,24 @@ module.exports.determineYearningPathTests = {
 		
 		var result = core.determineYearningPath( { module: 'test-module-3', version: '1.x.x' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
 		test.equal( result, path.resolve( __dirname, 'node_modules', 'test-module-3', '1.1.0' ) );
+		
+		test.done(  );
+	},
+	
+	badOrg: function( test ){
+		
+		test.throws( function( ){
+			core.determineYearningPath( { org: 'bad', module: 'test-module-3', version: '1.x.x' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		} );
+		
+		test.done(  );
+	},
+	
+	moduleDoesNotExist: function( test ){
+		
+		test.throws( function( ){
+			core.determineYearningPath( { org: '', module: 'test-module-4', version: '1.x.x' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		} );
 		
 		test.done(  );
 	},
