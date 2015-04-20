@@ -29,14 +29,28 @@
  */
 
 var core = require( '../lib/yearn-core' );
-var config = require( '../lib/utils/config' )( );
 var path = require( 'path' );
 
-module.exports.populatePackageCacheTest = {
+module.exports.determineYearningPathTests = {
 	
 	setUp: function( callback ){
-		core.init( config );
+		core.init( require( '../lib/utils/config' )( { orgs: { '': path.resolve( __dirname, 'node_modules' ) } } ) );	
+		callback( );
+	},
+	
+	simpleYearning: function( test ){
+	
+		var result = core.determineYearningPath( { module: 'test-module-0' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		test.equal( result, path.resolve( __dirname, 'node_modules', 'test-module-0', '1.1.0' ) );
 		
+		test.done(  );
+	}
+};
+
+module.exports.populatePackageCacheTests = {
+	
+	setUp: function( callback ){
+		core.init( require( '../lib/utils/config' )( ) );
 		callback( );
 	},
 		
