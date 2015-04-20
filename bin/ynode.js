@@ -4,7 +4,15 @@
 
 var repl = require( 'repl' );
 var path = require( 'path' );
-global.yearn = require( '../lib/yearn' )( );
+
+var legacy = false;
+var index;
+while( ( index = process.argv.indexOf( '--legacy' ) ) !== -1 ){
+	legacy = true;
+	process.argv.splice( index, 1 );
+}
+
+global.yearn = require( '../lib/yearn' )( { legacy: legacy } );
 
 process.argv.shift( );
 
