@@ -32,19 +32,28 @@ var path = require( 'path' );
 var yearn = null;
 
 module.exports.setUp = function( callback ){
+	process.env.LOG4JS_CONFIG = path.resolve( './test-configs/test-log4js-config.json' );
 	yearn = require( '../lib/yearn' )({ 
 		orgs: { 
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
-		override: true,
-		log: 'ALL' 
+		override: true
 	} );
 	callback( );
 };
 
 module.exports.tearDown = function( callback ){
+	process.env.LOG4JS_CONFIG = undefined;
 	yearn.revert( );
+	
+	//wipe the cache of all yearn test node_modules
+	Object.keys( require.cache ).forEach( function( item ){
+		if( item.indexOf( path.resolve( __dirname, './node_modules' ) ) === 0){
+			delete require.cache[ item ];
+		}
+	});
+	
 	callback( );
 };
 
@@ -57,8 +66,7 @@ module.exports.forceTest = function( test ){
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
-		override: false,
-		log: 'ALL' 
+		override: false
 	}, true );
 	
 	test.strictEqual( new_yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );

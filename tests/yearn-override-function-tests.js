@@ -30,12 +30,12 @@
 
 var path = require( 'path' );
 var path_resolved = require.resolve( 'path' );
-var raw_yearn = require( '../lib/yearn' );
 var yearn = null;
 
 module.exports.setUp = function( callback ){
 	var original_resolver = module.constructor._resolveFilename;
-	yearn = raw_yearn({ 
+	
+	yearn = require( '../lib/yearn' )({ 
 		orgs: { 
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' )
@@ -43,34 +43,23 @@ module.exports.setUp = function( callback ){
 		override: function( desired, parent ){
 			console.log( 'Ignored require for ' + desired + ' and subsituting path.' );
 			return original_resolver( 'path', parent );
-		},
-		log: 'ALL' 
+		}
 	} );
+	
 	callback( );
 };
 
 module.exports.tearDown = function( callback ){
 	yearn.revert( );
+	
+	//wipe the cache of all yearn test node_modules
+	Object.keys( require.cache ).forEach( function( item ){
+		if( item.indexOf( path.resolve( __dirname, './node_modules' ) ) === 0){
+			delete require.cache[ item ];
+		}
+	});
+	
 	callback( );
-};
-
-module.exports.forceTest = function( test ){
-	
-	test.notStrictEqual( yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
-
-	var new_yearn = raw_yearn({ 
-		orgs: { 
-			'': './node_modules',
-			'test_modules': path.join( __dirname, 'node_modules' ) 
-		},
-		override: false,
-		log: 'ALL' 
-	}, true );
-	
-	test.strictEqual( new_yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
-	test.notStrictEqual( new_yearn, yearn, 'Cached yearn returned on second require.' );
-	
-	test.done();
 };
 
 module.exports.nativeRequireTests = {

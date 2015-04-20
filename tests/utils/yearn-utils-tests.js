@@ -255,19 +255,11 @@ module.exports.findPackageJsonLocationTests = {
 	},
 };
 
-module.exports.findModuleLocationTests = {
+module.exports.findModernModuleLocationTests = {
 		
 	testCorrectDirectory: function( unit ){
 		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/' ), 'test-module-2' ), 
-			path.resolve( __dirname, '../node_modules/test-module-2' ) 
-		);
-		unit.done();
-	},
-	
-	testCorrectWithLegacyDirectory: function( unit ){
-		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/' ), 'test-module-2', true ), 
+			yearn_utils.findModernModuleLocation( __dirname, '../node_modules/', 'test-module-2' ), 
 			path.resolve( __dirname, '../node_modules/test-module-2' ) 
 		);
 		unit.done();
@@ -275,15 +267,42 @@ module.exports.findModuleLocationTests = {
 	
 	testChildDirectory: function( unit ){
 		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2' ), 'test-module-2' ), 
+			yearn_utils.findModernModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2' ), '../node_modules/' , 'test-module-2' ), 
 			null
 		);
 		unit.done();
 	},
 	
-	testChildWithLegacyDirectory: function( unit ){
+	testNoModuleRootDirectory: function( unit ){
 		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2' ), 'test-module-2', true ), 
+			yearn_utils.findModernModuleLocation( path.resolve( '/' ), '../node_modules/', 'test-module-2' ), 
+			null
+		);
+		unit.done();
+	},
+	
+	testNoModuleChildOfRootDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findModernModuleLocation( path.resolve( require('os').tmpdir() ), '../node_modules/', 'test-module-2' ), 
+			null
+		);
+		unit.done();
+	}
+};
+
+module.exports.findLegacyModuleLocationTests = {
+	
+	testCorrectDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findLegacyModuleLocation( path.resolve( __dirname, '../node_modules/' ), 'test-module-2' ), 
+			path.resolve( __dirname, '../node_modules/test-module-2' ) 
+		);
+		unit.done();
+	},
+	
+	testChildDirectory: function( unit ){
+		unit.equal( 
+			yearn_utils.findLegacyModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2' ), 'test-module-2', true ), 
 			path.resolve( __dirname, '../node_modules/test-module-2' ) 
 		);
 		unit.done();
@@ -291,15 +310,7 @@ module.exports.findModuleLocationTests = {
 	
 	testGrandChildDirectory: function( unit ){
 		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0' ), 'test-module-2' ), 
-			null
-		);
-		unit.done();
-	},
-	
-	testGrandChildWithLegacyDirectory: function( unit ){
-		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0' ), 'test-module-2', true ), 
+			yearn_utils.findLegacyModuleLocation( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0' ), 'test-module-2', true ), 
 			path.resolve( __dirname, '../node_modules/test-module-2' ) 
 		);
 		unit.done();
@@ -307,15 +318,7 @@ module.exports.findModuleLocationTests = {
 	
 	testNephewDirectory: function( unit ){
 		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1' ), 'test-module-2' ), 
-			null
-		);
-		unit.done();
-	},
-	
-	testNephewWithLegacyDirectory: function( unit ){
-		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1' ), 'test-module-2', true ), 
+			yearn_utils.findLegacyModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1' ), 'test-module-2', true ), 
 			path.resolve( __dirname, '../node_modules/test-module-2' ) 
 		);
 		unit.done();
@@ -323,33 +326,9 @@ module.exports.findModuleLocationTests = {
 	
 	testGrandNephewDirectory: function( unit ){
 		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1/1.0.0' ), 'test-module-2' ), 
-			null
-		);
-		unit.done();
-	},
-	
-	testGrandNephewWithLegacyDirectory: function( unit ){
-		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1/1.0.0' ), 'test-module-2', true ), 
+			yearn_utils.findLegacyModuleLocation( path.resolve( __dirname, '../node_modules/test-module-1/1.0.0' ), 'test-module-2', true ), 
 			path.resolve( __dirname, '../node_modules/test-module-2' ) 
 		);
 		unit.done();
 	},
-	
-	testNoModuleRootDirectoryWithLegacy: function( unit ){
-		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( '/' ), 'test-module-2', true ), 
-			null
-		);
-		unit.done();
-	},
-	
-	testNoModuleChildOfRootDirectoryWithLegacy: function( unit ){
-		unit.equal( 
-			yearn_utils.findModuleLocation( path.resolve( require('os').tmpdir() ), 'test-module-2', true ), 
-			null
-		);
-		unit.done();
-	}
 };

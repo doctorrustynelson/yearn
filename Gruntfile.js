@@ -32,7 +32,12 @@ module.exports = function( grunt ){
 			    'tests/ynpm-tests.js'
 			],
 			yearn: [
-			    'tests/yearn*tests.js'
+			    'tests/yearn-tests.js',
+			    'tests/yearn-override-tests.js',
+			    'tests/yearn-override-function-tests.js'
+			],
+			core: [
+			    'tests/core-tests.js'
 			],
 			cli: [
 			    'tests/*cli-tests.js'

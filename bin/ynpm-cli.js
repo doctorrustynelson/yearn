@@ -4,6 +4,7 @@
 
 var commander = require( 'commander' );
 var fs = require( 'fs' );
+var JSON5 = require( 'json5' );
 var merge = require( 'merge' ).recursive;
 
 var version = require( '../package.json' ).version;
@@ -40,7 +41,7 @@ commander
 			LOGGER.info( 'Installing modules specified in package.json.' );
 			var package_json_location = yutils.findPackageJsonLocation( undefined, this );
 			
-			var contents = JSON.parse( fs.readFileSync( package_json_location, 'utf8' ) );
+			var contents = JSON5.parse( fs.readFileSync( package_json_location, 'utf8' ) );
 			
 			var dependencies = merge(
 				contents.dependencies,

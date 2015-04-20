@@ -32,19 +32,30 @@ var path = require( 'path' );
 var yearn = null;
 
 module.exports.setUp = function( callback ){
+	process.env.LOG4JS_CONFIG = path.resolve( __dirname, './test-configs/test-log4js-config.json' );
+	
 	yearn = require( '../lib/yearn' )({ 
 		orgs: { 
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
-		override: false,
-		log: 'ALL' 
+		override: false
 	} );
+	
 	callback( );
 };
 
 module.exports.tearDown = function( callback ){
+	process.env.LOG4JS_CONFIG = undefined;
 	yearn.revert( );
+	
+	//wipe the cache of all yearn test node_modules
+	Object.keys( require.cache ).forEach( function( item ){
+		if( item.indexOf( path.resolve( __dirname, './node_modules' ) ) === 0){
+			delete require.cache[ item ];
+		}
+	});
+	
 	callback( );
 };
 
@@ -57,8 +68,7 @@ module.exports.cachedTest = function( test ){
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
-		override: true,
-		log: 'ALL' 
+		override: true
 	} );
 	
 	test.strictEqual( new_yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
@@ -108,9 +118,10 @@ module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearningWithSubYearning: function( test ){
 		
-		var result = yearn( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
+		test.throws( function( ){ 
+			yearn( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } ); 
+		} );
 		
-		test.equal( 'Secret string for test-module-1 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
 		test.done();
 	},
 	
@@ -124,17 +135,19 @@ module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearningWithNonRootSubYearning: function( test ){
 		
-		var result = yearn( { org: 'test_modules', module: 'test-module-2', version: '1.0.0' } );
+		test.throws( function( ){ 
+			yearn( { org: 'test_modules', module: 'test-module-2', version: '1.0.0' } );
+		} );
 		
-		test.equal( 'Secret string for test-module-2 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
 		test.done();
 	},
 	
 	fullyQualifiedYearningWithNonRootSubYearningAndProxy: function( test ){
 		
-		var result = yearn( { org: 'test_modules', module: 'test-module-2', version: '2.0.0' } );
-		
-		test.equal( 'Secret string for test-module-2 (proxy) v.2.0.0 in default org with test-submodule-0 v.0.1.0.', result );
+		test.throws( function( ){
+			yearn( { org: 'test_modules', module: 'test-module-2', version: '2.0.0' } );
+		});
+			
 		test.done();
 	},
 	

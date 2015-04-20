@@ -1,0 +1,15 @@
+{
+	"appenders": [ {
+		"type": "console",
+		"layout": {
+			"type": "pattern",
+			"pattern": "%[[d] [%5.5p] %10.10c -%] %m"
+		}
+	} ],
+	"levels": {
+		"[all]": "ALL",
+		"yearn": "ALL",
+		"ynpm": "ALL"
+	},
+	"replaceConsole": false
+}
