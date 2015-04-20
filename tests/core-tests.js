@@ -62,6 +62,17 @@ module.exports.determineYearningPathTests = {
 		test.done(  );
 	},
 	
+	cachedModuleFileYearning: function( test ){
+		
+		var result1 = core.determineYearningPath( { module: 'test-module-0' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		test.equal( result1, path.resolve( __dirname, 'node_modules', 'test-module-0', '1.1.0' ) );
+		
+		var result2 = core.determineYearningPath( { module: 'test-module-0', file: 'package.json' }, { id: path.resolve( __dirname, 'test-package.jsons', 'package.json' ) } );
+		test.equal( result2, path.resolve( __dirname, 'node_modules', 'test-module-0', '1.1.0', 'package.json' ) );
+		
+		test.done(  );
+	},
+	
 	noPackage: function( test ){
 		
 		test.throws( function( ){
