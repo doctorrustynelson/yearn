@@ -292,6 +292,14 @@ module.exports.findModernModuleLocationTests = {
 
 module.exports.findLegacyModuleLocationTests = {
 	
+	testNonExistantModule: function( unit ){
+		unit.equal( 
+			yearn_utils.findLegacyModuleLocation( path.resolve( __dirname, '../node_modules/' ), 'missing-module' ), 
+			null 
+		);
+		unit.done();
+	},
+		
 	testCorrectDirectory: function( unit ){
 		unit.equal( 
 			yearn_utils.findLegacyModuleLocation( path.resolve( __dirname, '../node_modules/' ), 'test-module-2' ), 
