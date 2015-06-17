@@ -5,7 +5,7 @@
 var repl = require( 'repl' );
 var path = require( 'path' );
 
-var legacy = false;
+var legacy = undefined;
 var index;
 while( ( index = process.argv.indexOf( '--legacy' ) ) !== -1 ){
 	legacy = true;
