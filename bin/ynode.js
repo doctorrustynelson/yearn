@@ -20,8 +20,7 @@ process.argv.shift( );
 
 if( process.argv.length < 2 ){
 
-	if( ( process.argv.indexOf( '--version' ) !== -1 )
-		|| ( process.argv.indexOf( '-v' ) !== -1 ) ) {
+	if( ( process.argv.indexOf( '--version' ) !== -1 ) || ( process.argv.indexOf( '-v' ) !== -1 ) ) {
 		console.log( process.version );
 		process.exit( 0 );
 	}
