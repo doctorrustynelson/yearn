@@ -4,9 +4,11 @@
 
 var repl = require( 'repl' );
 var path = require( 'path' );
+var fs = require( 'fs' );
 
 var legacy;
 var index;
+
 while( ( index = process.argv.indexOf( '--legacy' ) ) !== -1 ){
 	legacy = true;
 	process.argv.splice( index, 1 );
@@ -17,6 +19,19 @@ global.yearn = require( '../lib/yearn' )( { legacy: legacy } );
 process.argv.shift( );
 
 if( process.argv.length < 2 ){
+
+	if( ( process.argv.indexOf( '--version' ) !== -1 )
+		|| ( process.argv.indexOf( '-v' ) !== -1 ) ) {
+		console.log( process.version );
+		process.exit( 0 );
+	}
+
+	if( process.argv.indexOf( '--yversion' ) !== -1 ) {
+		var pkg = JSON.parse( fs.readFileSync( path.join( __dirname, '..', 'package.json' ) ) );
+		console.log( pkg.version );
+		process.exit( 0 );
+	}
+
 	
 	repl.start( {
 		prompt: ( global.yearn.config.prompt || 'ynode> ' ),
