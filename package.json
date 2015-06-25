@@ -1,6 +1,6 @@
 {
 	"name": "yearn",
-	"version": "0.4.2",
+	"version": "0.4.3",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"commander": "2.8.x",
-		"fs-extra": "0.19.x",
+		"fs-extra": "0.20.x",
 		"json5": "0.4.x",
 		"merge": "1.2.x",
 		"npm": "2.11.x",
