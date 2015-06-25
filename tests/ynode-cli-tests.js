@@ -83,4 +83,4 @@ module.exports.yearnVersionTests = {
 			test.done();
 		} );
 	}
-}
+};
