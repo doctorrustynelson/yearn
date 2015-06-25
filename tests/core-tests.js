@@ -139,7 +139,7 @@ module.exports.populatePackageCacheTests = {
 		test.deepEqual( core.package_dependencies[ path.resolve( __dirname, '../package.json' ) ], { 
 		    semver: '^4.3.2',
 		    commander: '2.8.x',
-		    'fs-extra': '0.19.x',
+		    'fs-extra': '0.20.x',
 		    npm: '2.11.x',
 		    temp: '0.8.x',
 		    json5: '0.4.x',
@@ -178,7 +178,7 @@ module.exports.populatePackageCacheTests = {
 		test.deepEqual( core.package_dependencies[ path.resolve( __dirname, '../package.json' ) ], { 
 		    semver: '^4.3.2',
 		    commander: '2.8.x',
-		    'fs-extra': '0.19.x',
+		    'fs-extra': '0.20.x',
 		    npm: '2.11.x',
 		    temp: '0.8.x',
 		    json5: '0.4.x',
