@@ -169,7 +169,7 @@ module.exports.nativeResolveRootTests = {
 			
 			var result = require('yearn')().resolveRoot( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
 			
-			test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1', 'test_module_0.js' ), path.relative( __dirname, result ) );
+			test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1' ), path.relative( __dirname, result ) );
 			test.done();
 		},
 		
@@ -177,7 +177,7 @@ module.exports.nativeResolveRootTests = {
 			
 			var result = require('yearn')().resolveRoot( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
 			
-			test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0', 'test_module_1.js' ), path.relative( __dirname, result ) );
+			test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0' ), path.relative( __dirname, result ) );
 			test.done();
 		},
 		
