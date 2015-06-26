@@ -196,3 +196,31 @@ module.exports.simpleResolveTests = {
 	}
 	
 };
+
+module.exports.simpleResolveRootTests = {
+		
+		fullyQualifiedYearning: function( test ){
+			
+			var result = yearn.resolveRoot( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
+			
+			test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1' ), path.relative( __dirname, result ) );
+			test.done();
+		},
+		
+		fullyQualifiedYearningWithSubYearning: function( test ){
+			
+			var result = yearn.resolveRoot( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
+			
+			test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0' ), path.relative( __dirname, result ) );
+			test.done();
+		},
+		
+		nativeYearning: function( test ){
+			
+			var result = yearn.resolveRoot( 'path' );
+			
+			test.equal( 'path', result );
+			test.done();
+		}
+		
+	};
