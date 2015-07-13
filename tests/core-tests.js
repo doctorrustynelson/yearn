@@ -30,6 +30,8 @@
 
 var core = require( '../lib/yearn-core' );
 var path = require( 'path' );
+var fs = require( 'fs' );
+var merge = require( 'merge' );
 
 module.exports.determineYearningPathTests = {
 	
@@ -134,77 +136,41 @@ module.exports.populatePackageCacheTests = {
 		
 	cacheYearnPackage: function( test ){
 		
-		core.populatePackageCache( path.resolve( __dirname, '../package.json' ), this );
+		var package_path = path.resolve( __dirname, '../package.json' );
+		core.populatePackageCache( package_path, this );
 		
-		test.deepEqual( core.package_dependencies[ path.resolve( __dirname, '../package.json' ) ], { 
-		    semver: '^4.3.2',
-		    commander: '2.8.x',
-		    'fs-extra': '0.20.x',
-		    npm: '2.11.x',
-		    temp: '0.8.x',
-		    json5: '0.4.x',
-		    merge: '1.2.x',
-		    grunt: '^0.4.x',
-		    'grunt-contrib-jshint': '^0.11.x',
-		    'grunt-contrib-nodeunit': '^0.4.x',
-		    'grunt-coveralls': '^1.0.x',
-		    istanbul: '^0.3.x',
-		    log4js: '0.6.x',
-		    __reverseOrgs: { 
-		    	semver: '',
-		        commander: '',
-		        'fs-extra': '',
-		        npm: '',
-		        temp: '',
-		        json5: '',
-		        merge: '',
-		        grunt: '',
-		        'grunt-contrib-jshint': '',
-		        'grunt-contrib-nodeunit': '',
-		        'grunt-coveralls': '',
-		        istanbul: '',
-		        log4js: ''
-		    } 
-		} );
+		var pkg = JSON.parse( fs.readFileSync( package_path ) );
+		var dependencies = merge( pkg.dependencies, pkg.devDependencies, pkg.optionalDependencies );
+		var reverseOrgs = {};
+		Object.keys(dependencies).forEach( function( key ){
+			reverseOrgs[key] = '';
+		});
+		
+		dependencies.__reverseOrgs = reverseOrgs; 
+		
+		test.deepEqual( core.package_dependencies[ package_path ], dependencies );
 		test.done();
 	},
 	
 	cacheMultipleYearnPackage: function( test ){
 		
-		core.populatePackageCache( path.resolve( __dirname, '../package.json' ), this );
-		core.populatePackageCache( path.resolve( __dirname, '../package.json' ), this );
-		core.populatePackageCache( path.resolve( __dirname, '../package.json' ), this );
+		var package_path = path.resolve( __dirname, '../package.json' );
 		
-		test.deepEqual( core.package_dependencies[ path.resolve( __dirname, '../package.json' ) ], { 
-		    semver: '^4.3.2',
-		    commander: '2.8.x',
-		    'fs-extra': '0.20.x',
-		    npm: '2.11.x',
-		    temp: '0.8.x',
-		    json5: '0.4.x',
-		    merge: '1.2.x',
-		    grunt: '^0.4.x',
-		    'grunt-contrib-jshint': '^0.11.x',
-		    'grunt-contrib-nodeunit': '^0.4.x',
-		    'grunt-coveralls': '^1.0.x',
-		    istanbul: '^0.3.x',
-		    log4js: '0.6.x',
-		    __reverseOrgs: { 
-		    	semver: '',
-		        commander: '',
-		        'fs-extra': '',
-		        npm: '',
-		        temp: '',
-		        json5: '',
-		        merge: '',
-		        grunt: '',
-		        'grunt-contrib-jshint': '',
-		        'grunt-contrib-nodeunit': '',
-		        'grunt-coveralls': '',
-		        istanbul: '',
-		        log4js: ''
-		    } 
-		} );
+		core.populatePackageCache( package_path, this );
+		core.populatePackageCache( package_path, this );
+		core.populatePackageCache( package_path, this );
+		core.populatePackageCache( package_path, this );
+		
+		var pkg = JSON.parse( fs.readFileSync( package_path ) );
+		var dependencies = merge( pkg.dependencies, pkg.devDependencies, pkg.optionalDependencies );
+		var reverseOrgs = {};
+		Object.keys(dependencies).forEach( function( key ){
+			reverseOrgs[key] = '';
+		});
+		
+		dependencies.__reverseOrgs = reverseOrgs; 
+		
+		test.deepEqual( core.package_dependencies[ package_path ], dependencies );
 		test.done();
 	},
 	
