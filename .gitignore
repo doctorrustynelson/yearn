@@ -12,4 +12,5 @@ coverage
 
 # include everything under tests
 tests/test_node_modules
+tests/spec_node_modules
 !tests/**/node_modules

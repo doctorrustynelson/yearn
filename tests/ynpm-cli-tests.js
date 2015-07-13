@@ -343,6 +343,5 @@ module.exports.installTests = {
 			grunt.file.delete( path.join( __dirname, 'spec_node_modules' ), { force: true } );
 			test.done();
 		} );
-	}
+	},
 };
-
