@@ -39,6 +39,7 @@ module.exports.setUp = function( callback ){
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
+		legacy: false,
 		override: false
 	} );
 	
@@ -118,10 +119,9 @@ module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearningWithSubYearning: function( test ){
 		
-		test.throws( function( ){ 
-			yearn( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } ); 
-		} );
+		var result = yearn( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } ); 
 		
+		test.equal( 'Secret string for test-module-1 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
 		test.done();
 	},
 	
@@ -135,19 +135,17 @@ module.exports.simpleRequireTests = {
 	
 	fullyQualifiedYearningWithNonRootSubYearning: function( test ){
 		
-		test.throws( function( ){ 
-			yearn( { org: 'test_modules', module: 'test-module-2', version: '1.0.0' } );
-		} );
+		var result = yearn( { org: 'test_modules', module: 'test-module-2', version: '1.0.0' } );
 		
+		test.equal( 'Secret string for test-module-2 v.1.0.0 in default org with test-submodule-0 v.0.1.0.', result );
 		test.done();
 	},
 	
 	fullyQualifiedYearningWithNonRootSubYearningAndProxy: function( test ){
 		
-		test.throws( function( ){
-			yearn( { org: 'test_modules', module: 'test-module-2', version: '2.0.0' } );
-		});
-			
+		var result = yearn( { org: 'test_modules', module: 'test-module-2', version: '2.0.0' } );
+		
+		test.equal( 'Secret string for test-module-2 (proxy) v.2.0.0 in default org with test-submodule-0 v.0.1.0.', result );	
 		test.done();
 	},
 	
