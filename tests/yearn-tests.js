@@ -197,11 +197,11 @@ module.exports.simpleResolveTests = {
 	
 };
 
-module.exports.simpleResolveRootTests = {
+module.exports.simpleResolveRootPathTests = {
 		
 		fullyQualifiedYearning: function( test ){
 			
-			var result = yearn.resolveRoot( { org: 'test_modules', module: 'test-module-0', version: '0.0.1' } );
+			var result = yearn.resolve( { org: 'test_modules', module: 'test-module-0', version: '0.0.1', rootPath: true } );
 			
 			test.equal( path.join( 'node_modules', 'test-module-0', '0.0.1' ), path.relative( __dirname, result ) );
 			test.done();
@@ -209,7 +209,7 @@ module.exports.simpleResolveRootTests = {
 		
 		fullyQualifiedYearningWithSubYearning: function( test ){
 			
-			var result = yearn.resolveRoot( { org: 'test_modules', module: 'test-module-1', version: '1.0.0' } );
+			var result = yearn.resolve( { org: 'test_modules', module: 'test-module-1', version: '1.0.0', rootPath: true } );
 			
 			test.equal( path.join( 'node_modules', 'test-module-1', '1.0.0' ), path.relative( __dirname, result ) );
 			test.done();
@@ -217,7 +217,7 @@ module.exports.simpleResolveRootTests = {
 		
 		nativeYearning: function( test ){
 			
-			var result = yearn.resolveRoot( 'path' );
+			var result = yearn.resolve( { module: 'path', rootPath: true } );
 			
 			test.equal( 'path', result );
 			test.done();
