@@ -33,6 +33,7 @@ module.exports = function( grunt ){
 			],
 			yearn: [
 			    'tests/yearn-tests.js',
+				'tests/yearn-loose-semver-tests.js',
 				'tests/yearn-legacy-tests.js',
 			    'tests/yearn-logger-tests.js',
 			    'tests/yearn-override-tests.js',

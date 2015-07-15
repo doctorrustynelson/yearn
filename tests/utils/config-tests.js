@@ -51,6 +51,7 @@ module.exports.configTests = {
 				legacy: false,
 				override: true,
 				prompt: 'ynode> ',
+				loose_semver: false,
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				npmconfig: {}
@@ -80,6 +81,7 @@ module.exports.configTests = {
 				legacy: false,
 				override: true,
 				prompt: 'ynode> ',
+				loose_semver: false,
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				npmconfig: {}
@@ -103,6 +105,7 @@ module.exports.configTests = {
 				legacy: false,
 				override: true,
 				prompt: 'ynode> ',
+				loose_semver: false,
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				npmconfig: {}

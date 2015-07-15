@@ -39,6 +39,7 @@ module.exports.setUp = function( callback ){
 			'': './node_modules',
 			'test_modules': path.join( __dirname, 'node_modules' ) 
 		},
+		loose_semver: true,
 		legacy: false,
 		override: false
 	} );
@@ -58,24 +59,6 @@ module.exports.tearDown = function( callback ){
 	});
 	
 	callback( );
-};
-
-module.exports.cachedTest = function( test ){
-	
-	test.strictEqual( yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
-
-	var new_yearn = require( '../lib/yearn' )({ 
-		orgs: { 
-			'': './node_modules',
-			'test_modules': path.join( __dirname, 'node_modules' ) 
-		},
-		override: true
-	} );
-	
-	test.strictEqual( new_yearn._originalResolver, undefined, 'yearn._originalResolver is undefined when not overriding' );
-	test.strictEqual( new_yearn, yearn, 'Cached yearn returned on second require.' );
-	
-	test.done();
 };
 
 module.exports.simpleRequireTests = {
@@ -135,10 +118,9 @@ module.exports.simpleRequireTests = {
 	
 	fullyLooseSemverYearning: function( test ){
 		
-		test.throws( function( ){
-			yearn( { org: 'test_modules', module: 'test-module-3', version: '2015.01.01-1' } );
-		} );
+		var result = yearn( { org: 'test_modules', module: 'test-module-3', version: '2015.01.01-1' } );
 		
+		test.equal( 'Secret string for test-module-3 v.2015.01.01-1 in default org with test-submodule-1 v.0.0.1 with test-submodule-2 v.0.1.0.', result );
 		test.done();
 	},
 	
