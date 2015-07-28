@@ -1,6 +1,6 @@
 {
 	"name": "yearn",
-	"version": "0.4.7",
+	"version": "0.4.8",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
