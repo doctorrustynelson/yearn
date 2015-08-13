@@ -9,7 +9,7 @@ var fs = require( 'fs' );
 var legacy;
 var version = false;
 var yversion = false;
-var eval_script = undefined;
+var eval_script;
 var index;
 
 while( ( index = process.argv.indexOf( '--legacy' ) ) !== -1 ){

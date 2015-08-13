@@ -34,7 +34,7 @@ var yearn = null;
 module.exports.setUp = function( callback ){
 	process.env.LOG4JS_CONFIG = path.resolve( __dirname, './test-configs/test-log4js-config.json' );
 	
-	var logger = require( 'log4js' ).getLogger( 'yearn' );
+	//var logger = require( 'log4js' ).getLogger( 'yearn' );
 	
 	try {
 		yearn = require( '../lib/yearn' )({ 
@@ -50,7 +50,7 @@ module.exports.setUp = function( callback ){
 		console.log( exception, exception.stack.split( '\n' ) );
 	}
 	
-	yearn.setLogger( logger );
+	//yearn.setLogger( logger );
 	
 	callback( );
 };
@@ -74,28 +74,28 @@ module.exports.tearDown = function( callback ){
 
 module.exports.nestedDependencyTests = {
 	
-	"A v 0.0.1": function( unit ){
+	'A v 0.0.1': function( unit ){
 		unit.equal( yearn( 'test:A@0.0.1' )( ), [
 			'Hello from A @ 0.0.1.'
 		].join( '\n' ) );
 		unit.done();	
 	},
 	
-	"A v 0.0.2": function( unit ){
+	'A v 0.0.2': function( unit ){
 		unit.equal( yearn( 'test:A@0.0.2' )( ), [
 			'Hello from A @ 0.0.2.'
 		].join( '\n' ) );
 		unit.done();	
 	},
 	
-	"A v 0.1.0": function( unit ){
+	'A v 0.1.0': function( unit ){
 		unit.equal( yearn( 'test:A@0.1.0' )( ), [
 			'Hello from A @ 0.1.0.'
 		].join( '\n' ) );
 		unit.done();	
 	},
 	
-	"B v 0.0.1": function( unit ){
+	'B v 0.0.1': function( unit ){
 		unit.equal( yearn( 'test:B@0.0.1' )( ), [
 			'Hello from B @ 0.0.1.',
 			'Hello from A @ 0.0.1.'
@@ -103,7 +103,7 @@ module.exports.nestedDependencyTests = {
 		unit.done();	
 	},
 	
-	"B v 0.0.2": function( unit ){
+	'B v 0.0.2': function( unit ){
 		unit.equal( yearn( 'test:B@0.0.2' )( ), [
 			'Hello from B @ 0.0.2.',
 			'Hello from A @ 0.0.2.'
@@ -111,7 +111,7 @@ module.exports.nestedDependencyTests = {
 		unit.done();	
 	},
 	
-	"C v 0.0.1": function( unit ){
+	'C v 0.0.1': function( unit ){
 		unit.equal( yearn( 'test:C@0.0.1' )( ), [
 			'Hello from C @ 0.0.1.',
 			'Hello from A @ 0.0.1.'
@@ -119,7 +119,7 @@ module.exports.nestedDependencyTests = {
 		unit.done();	
 	},
 	
-	"D v 0.0.1": function( unit ){
+	'D v 0.0.1': function( unit ){
 		unit.equal( yearn( 'test:D@0.0.1' )( ), [
 			'Hello from D @ 0.0.1.',
 			'Hello from B @ 0.0.1.',
