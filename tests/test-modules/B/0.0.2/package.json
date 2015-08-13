@@ -1,0 +1,11 @@
+{
+	"name": "B",
+	"private": true,
+	"version": "0.0.2",
+	"main": "index.js",
+	"dependencies": {
+		"test:A": {
+			"version": "0.0.2"
+		}
+	}
+}

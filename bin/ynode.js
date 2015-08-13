@@ -9,6 +9,7 @@ var fs = require( 'fs' );
 var legacy;
 var version = false;
 var yversion = false;
+var eval_script = undefined;
 var index;
 
 while( ( index = process.argv.indexOf( '--legacy' ) ) !== -1 ){
@@ -31,6 +32,16 @@ while( ( index = process.argv.indexOf( '--yversion' ) ) !== -1 ){
 	process.argv.splice( index, 1 );
 }
 
+while( ( index = process.argv.indexOf( '--eval' ) ) !== -1 ){
+	process.argv.splice( index, 1 );
+	eval_script = process.argv.splice( index, 1 );
+}
+
+while( ( index = process.argv.indexOf( '-e' ) ) !== -1 ){
+	process.argv.splice( index, 1 );
+	eval_script = process.argv.splice( index, 1 );
+}
+
 global.yearn = require( '../lib/yearn' )( { legacy: legacy } );
 
 process.argv.shift( );
@@ -48,6 +59,13 @@ if( process.argv.length < 2 ){
 		process.exit( 0 );
 	}
 
+	if( eval_script !== undefined ) {
+		var temp_file = path.resolve( '.tempnodescript.js' );
+		fs.writeFileSync( temp_file, eval_script );
+		require( temp_file );
+		fs.unlinkSync( temp_file );
+		process.exit( 0 );
+	}
 	
 	repl.start( {
 		prompt: ( global.yearn.config.prompt || 'ynode> ' ),
