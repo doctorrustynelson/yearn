@@ -25,6 +25,9 @@ module.exports = function( grunt ){
 				'!tests/yearn*tests.js',
 				'!tests/*cli-tests.js'
 			],
+			dependency: [
+				'tests/yearn-dependency-tests.js'	
+			],
 			utils: [
 			     'tests/utils/*utils-tests.js'           
 			],
@@ -33,6 +36,7 @@ module.exports = function( grunt ){
 			],
 			yearn: [
 			    'tests/yearn-tests.js',
+				'tests/yearn-dependency-tests.js',
 				'tests/yearn-loose-semver-tests.js',
 				'tests/yearn-legacy-tests.js',
 			    'tests/yearn-logger-tests.js',

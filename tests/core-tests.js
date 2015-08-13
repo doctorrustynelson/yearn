@@ -30,8 +30,6 @@
 
 var core = require( '../lib/yearn-core' );
 var path = require( 'path' );
-var fs = require( 'fs' );
-var merge = require( 'merge' );
 
 module.exports.determineYearningPathTests = {
 	
@@ -125,62 +123,4 @@ module.exports.determineYearningPathTests = {
 		
 		test.done(  );
 	}
-};
-
-module.exports.populatePackageCacheTests = {
-	
-	setUp: function( callback ){
-		core.init( require( '../lib/utils/config' )( ) );
-		callback( );
-	},
-		
-	cacheYearnPackage: function( test ){
-		
-		var package_path = path.resolve( __dirname, '../package.json' );
-		core.populatePackageCache( package_path, this );
-		
-		var pkg = JSON.parse( fs.readFileSync( package_path ) );
-		var dependencies = merge( pkg.dependencies, pkg.devDependencies, pkg.optionalDependencies );
-		var reverseOrgs = {};
-		Object.keys(dependencies).forEach( function( key ){
-			reverseOrgs[key] = '';
-		});
-		
-		dependencies.__reverseOrgs = reverseOrgs; 
-		
-		test.deepEqual( core.package_dependencies[ package_path ], dependencies );
-		test.done();
-	},
-	
-	cacheMultipleYearnPackage: function( test ){
-		
-		var package_path = path.resolve( __dirname, '../package.json' );
-		
-		core.populatePackageCache( package_path, this );
-		core.populatePackageCache( package_path, this );
-		core.populatePackageCache( package_path, this );
-		core.populatePackageCache( package_path, this );
-		
-		var pkg = JSON.parse( fs.readFileSync( package_path ) );
-		var dependencies = merge( pkg.dependencies, pkg.devDependencies, pkg.optionalDependencies );
-		var reverseOrgs = {};
-		Object.keys(dependencies).forEach( function( key ){
-			reverseOrgs[key] = '';
-		});
-		
-		dependencies.__reverseOrgs = reverseOrgs; 
-		
-		test.deepEqual( core.package_dependencies[ package_path ], dependencies );
-		test.done();
-	},
-	
-	cacheBadPackage: function( test ){
-		
-		test.throws( function( ){
-			core.populatePackageCache( path.resolve( __dirname, 'test-package.jsons', 'bad-package.json' ), this );
-		} );
-		
-		test.done();
-	},
-	
 };

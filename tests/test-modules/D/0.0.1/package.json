@@ -1,0 +1,22 @@
+{
+	"name": "D",
+	"private": true,
+	"version": "0.0.1",
+	"main": "index.js",
+	"dependencies": {
+		"test:B": {
+			"version": "0.0.1",
+			"dependencies": {
+				"test:A": "0.1.0"
+			}
+		},
+		"test:C": {
+			"version": "0.0.1",
+			"dependencies": {
+				"test:A": {
+					"version": "0.0.2"
+				}
+			}
+		}
+	}
+}
