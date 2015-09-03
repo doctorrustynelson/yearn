@@ -40,7 +40,7 @@ module.exports.setUp = function( callback ){
 		yearn = require( '../lib/yearn' )({ 
 			orgs: { 
 				'': './node_modules',
-				'test': path.join( __dirname, 'test-modules' ) 
+				'*': path.join( __dirname, '*-modules')
 			},
 			legacy: false,
 			override: true
