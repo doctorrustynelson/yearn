@@ -37,7 +37,7 @@ module.exports.setUp = function( callback ){
 	yearn = require( '../lib/yearn' )({ 
 		orgs: { 
 			'': './node_modules',
-			'test_modules': path.join( __dirname, 'node_modules' ) 
+			'test_modules': path.join( __dirname, 'node_modules' )
 		},
 		legacy: false,
 		override: false
@@ -67,7 +67,7 @@ module.exports.cachedTest = function( test ){
 	var new_yearn = require( '../lib/yearn' )({ 
 		orgs: { 
 			'': './node_modules',
-			'test_modules': path.join( __dirname, 'node_modules' ) 
+			'test_modules': path.join( __dirname, 'node_modules' )
 		},
 		override: true
 	} );
