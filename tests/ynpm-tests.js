@@ -30,7 +30,6 @@
 
 var path = require( 'path' );
 var grunt = require( 'grunt' );
-//var npm = require( 'npm' );
 
 module.exports.orgsCommandTests = {
 	
@@ -87,7 +86,7 @@ module.exports.orgsCommandTests = {
 
 
 module.exports.installCommandTests = {
-		
+	
 	installNativeModule: function( test ){
 		var temp_dir = require( 'temp' ).mkdirSync();
 		
@@ -266,6 +265,28 @@ module.exports.installCommandTests = {
 				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash' ) ) );
 				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0' ) ) );
 				test.ok( grunt.file.exists( path.join( temp_dir, 'lodash', '2.4.0', 'package.json' ) ) );
+				
+				grunt.file.delete( temp_dir, { force: true } );
+				test.done();
+			} );
+		} );
+	},
+	
+	gitVersionOverrides: function( test ){
+		var temp_dir = require( 'temp' ).mkdirSync();
+		
+		require( '../lib/ynpm' )( { orgs: { '': temp_dir } }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.install( { module: 'jsdoc', version: '3.2.2' }, function( ){
+				test.ok( grunt.file.exists( path.join( temp_dir, 'jsdoc' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'jsdoc', '3.2.2' ) ) );
+				test.ok( grunt.file.exists( path.join( temp_dir, 'jsdoc', '3.2.2', 'package.json' ) ) );
+				
+				var pkg = grunt.file.readJSON( path.join( temp_dir, 'jsdoc', '3.2.2', 'package.json' ) );
+				
+				test.equal( pkg.dependencies[ 'crypto-browserify' ], '0.1.1' );
+				test.equal( pkg.dependencies.taffydb, '*' );
 				
 				grunt.file.delete( temp_dir, { force: true } );
 				test.done();
