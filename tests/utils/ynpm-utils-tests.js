@@ -90,7 +90,9 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		
 		//npm.load( function( ){
+			//npm.commands.install( temp_src_dir, [ 'lodash@2.4.0' ], function( ){
 			npm.commands.install( temp_src_dir, 'lodash@2.4.0', function( ){
+
 
 				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
 				
@@ -112,6 +114,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		
 		//npm.load( function( ){
+			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 
 				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
@@ -148,6 +151,8 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		
 		//npm.load( function( ){
+			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
+				//npm.commands.install( temp_src_dir, [ 'get-stdin@1.0.0' ], function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 				npm.commands.install( temp_src_dir, 'get-stdin@1.0.0', function( ){
 
@@ -185,6 +190,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var alt_dest_dir = ynpm_utils.createTempDirSync();
 		
 		//npm.load( function( ){
+			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 
 				ynpm_utils.translateLegacyDependencyStructure( path.join( temp_src_dir, 'node_modules', 'has-ansi' ), alt_dest_dir, temp_dest_dir );
