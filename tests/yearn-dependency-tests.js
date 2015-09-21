@@ -111,6 +111,14 @@ module.exports.nestedDependencyTests = {
 		unit.done();	
 	},
 	
+	'B v 0.1.0': function( unit ){
+		unit.equal( yearn( 'test:B@0.1.0' )( ), [
+			'Hello from B @ 0.1.0.',
+			'Hello from A @ 0.1.0.'
+		].join( '\n' ) );
+		unit.done();	
+	},
+	
 	'C v 0.0.1': function( unit ){
 		unit.equal( yearn( 'test:C@0.0.1' )( ), [
 			'Hello from C @ 0.0.1.',
@@ -126,6 +134,17 @@ module.exports.nestedDependencyTests = {
 			'Hello from A @ 0.1.0.',
 			'Hello from C @ 0.0.1.',
 			'Hello from A @ 0.0.2.'
+		].join( '\n' ) );
+		unit.done();	
+	},
+	
+	'D v 0.1.0': function( unit ){
+		unit.equal( yearn( 'test:D@0.1.0' )( ), [
+			'Hello from D @ 0.1.0.',
+			'Hello from B @ 0.1.0.',
+			'Hello from A @ 0.0.2.',
+			'Hello from C @ 0.0.1.',
+			'Hello from A @ 0.1.0.'
 		].join( '\n' ) );
 		unit.done();	
 	}
