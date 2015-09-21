@@ -2,6 +2,9 @@
 
 language: node_js
 
+# run on new infrastucture
+sudo: false
+
 # operating systems to test with:
 os:
   - linux
