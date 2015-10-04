@@ -1,6 +1,6 @@
 # travis continuous integration build specification
-
-language: node_js
+#language: node_js
+language: other
 
 # run on new infrastucture
 sudo: false
@@ -11,20 +11,38 @@ os:
   - osx
 
 # versions of node.js to test with:
-node_js:
-  - "iojs"
-  - "0.12"
-  - "0.11"
-  - "0.10"
+#node_js:
+#  - "iojs"
+#  - "0.12"
+#  - "0.11"
+#  - "0.10"
 #  - "0.8"
 
-matrix:
-  allow_failures:
-    - os: osx
+env:
+  - NODE_VERSION="4.1"
+  - NODE_VERSION="4.0"
+  - NODE_VERSION="iojs-3"
+  - NODE_VERSION="iojs-2"
+  - NODE_VERSION="iojs-1"
+  - NODE_VERSION="0.12"
+  - NODE_VERSION="0.11"
+  - NODE_VERSION="0.10"
+
+#matrix:
+#  allow_failures:
+#    - os: osx
+
+install:
+  - rm -rf ~/.nvm
+  - git clone https://github.com/creationix/nvm.git ~/.nvm
+  - source ~/.nvm/nvm.sh
+  - nvm install $NODE_VERSION
+  - node --version
 
 # npm install is run by default but need to add grunt-ci
 before_script:
   - npm install -g grunt-cli
+  - npm install
 
 # what to run:
 script:
