@@ -10,14 +10,6 @@ os:
   - linux
   - osx
 
-# versions of node.js to test with:
-#node_js:
-#  - "iojs"
-#  - "0.12"
-#  - "0.11"
-#  - "0.10"
-#  - "0.8"
-
 env:
   - NODE_VERSION="5"
   - NODE_VERSION="4.2"
