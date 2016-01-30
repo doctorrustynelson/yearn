@@ -10,6 +10,9 @@ coverage
 .settings
 .project
 
+temp_node_modules
+test_node_modules
+
 # include everything under tests
 tests/test_node_modules
 tests/spec_node_modules

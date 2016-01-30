@@ -1,6 +1,6 @@
 {
 	"name": "yearn",
-	"version": "0.5.7",
+	"version": "0.6.0",
 	"description": "Override node's require mechanism.",
 	"keywords": [
 		"require",
@@ -39,7 +39,7 @@
 		"json5": "0.4.x",
 		"merge": "1.2.x",
 		"npm": "2.14.x",
-		"semver": "5.0.x",
+		"semver": "5.1.x",
 		"temp": "0.8.x"
 	},
 	"optionalDependencies": {
@@ -47,7 +47,7 @@
 	},
 	"devDependencies": {
 		"grunt": "^0.4.x",
-		"grunt-contrib-jshint": "^0.11.x",
+		"grunt-contrib-jshint": "^0.12.x",
 		"grunt-contrib-nodeunit": "^0.4.x",
 		"grunt-coveralls": "^1.0.x",
 	    "istanbul": "^0.4.x"
