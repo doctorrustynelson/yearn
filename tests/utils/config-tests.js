@@ -36,6 +36,7 @@ module.exports.configTests = {
 		
 	tearDown: function( callback ){
 		delete process.env.YEARN_CONFIG;
+        delete process.env.YEARN_OVERRIDE_ORGS;
 		callback();
 	},
 		
@@ -114,5 +115,74 @@ module.exports.configTests = {
 		);
 		
 		unit.done();
-	}
+	},
+    
+    initializeWithSimpleYEARN_OVERRIDE_ORGS: function( unit ){
+		process.env.YEARN_OVERRIDE_ORGS = '{ "other": "something" }';
+		
+		unit.deepEqual( 
+			config.initialize( ), 
+			{ 
+				logger: 'default',
+				init_type: 'LAZY',
+				load_missing: false,
+				legacy: false,
+				override: true,
+				prompt: 'ynode> ',
+				loose_semver: false,
+				orgs: { '': './node_modules', 'other': 'something' },
+				delimiters: { org: ':', semver: '@', file: '/' },
+				npmconfig: {}
+			}, 
+			'Iniailizing config with simple YEARN_OVERRIDE_ORGS env variable set.'
+		);
+		
+		unit.done();
+	},
+    
+    initializeWithDefaultYEARN_OVERRIDE_ORGS: function( unit ){
+		process.env.YEARN_OVERRIDE_ORGS = '{ "": "new" }';
+		
+		unit.deepEqual( 
+			config.initialize( ), 
+			{ 
+				logger: 'default',
+				init_type: 'LAZY',
+				load_missing: false,
+				legacy: false,
+				override: true,
+				prompt: 'ynode> ',
+				loose_semver: false,
+				orgs: { '': 'new' },
+				delimiters: { org: ':', semver: '@', file: '/' },
+				npmconfig: {}
+			}, 
+			'Iniailizing config with default YEARN_OVERRIDE_ORGS env variable set.'
+		);
+		
+		unit.done();
+	},
+    
+    initializeWithBadYEARN_OVERRIDE_ORGS: function( unit ){
+		process.env.YEARN_OVERRIDE_ORGS = 'not a json5 object';
+		
+		unit.deepEqual( 
+			config.initialize( ), 
+			{ 
+				logger: 'default',
+				init_type: 'LAZY',
+				load_missing: false,
+				legacy: false,
+				override: true,
+				prompt: 'ynode> ',
+				loose_semver: false,
+				orgs: { '': './node_modules' },
+				delimiters: { org: ':', semver: '@', file: '/' },
+				npmconfig: {}
+			}, 
+			'Iniailizing config with bad YEARN_OVERRIDE_ORGS env variable set.'
+		);
+		
+		unit.done();
+	},
 };

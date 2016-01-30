@@ -46,6 +46,9 @@ module.exports = function( grunt ){
 			logger: [
 			    'tests/yearn-logger-tests.js'
 			],
+            config: [
+                'tests/utils/config-tests.js'
+            ],
 			core: [
 			    'tests/core-tests.js'
 			],
