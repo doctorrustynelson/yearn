@@ -62,6 +62,34 @@ module.exports.configTests = {
 		
 		unit.done();
 	},
+    
+    initializeWithUserConfig: function( unit ){
+		
+		unit.deepEqual( 
+			config.initialize( {
+                override: false,
+                legacy: undefined,
+                orgs: {
+                    'other': 'something'
+                }
+            } ), 
+			{ 
+				logger: 'default',
+				init_type: 'LAZY',
+				load_missing: false,
+				legacy: false,
+				override: false,
+				prompt: 'ynode> ',
+				loose_semver: false,
+				orgs: { '': './node_modules', 'other': 'something' },
+				delimiters: { org: ':', semver: '@', file: '/' },
+				npmconfig: {}
+			}, 
+			'Iniailizing config with out YEARN_CONFIG env variable set.'
+		);
+		
+		unit.done();
+	},
 	
 	initializeWithYEARN_CONFIG: function( unit ){
 		
