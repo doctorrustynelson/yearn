@@ -285,7 +285,6 @@ module.exports.installCommandTests = {
 				
 				var pkg = grunt.file.readJSON( path.join( temp_dir, 'jsdoc', '3.2.2', 'package.json' ) );
 				
-				console.log( pkg );
 				test.equal( pkg.dependencies[ 'crypto-browserify' ], '0.1.1' );
 				test.equal( pkg.dependencies.taffydb, '*' );
 				
