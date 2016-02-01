@@ -40,7 +40,7 @@ module.exports.setUp = function( callback ){
 		yearn = require( '../lib/yearn' )({ 
 			orgs: { 
 				'': './node_modules',
-				'*': path.join( __dirname, '*-modules')
+				'*': path.join( __dirname, 'test-orgs', '*' )
 			},
 			legacy: false,
 			override: true
@@ -64,7 +64,7 @@ module.exports.tearDown = function( callback ){
 		if( item.indexOf( path.resolve( __dirname, './node_modules' ) ) === 0 ){
 			delete require.cache[ item ];
 		}
-		if( item.indexOf( path.resolve( __dirname, './test-modules' ) ) === 0 ){
+		if( item.indexOf( path.resolve( __dirname, './test-orgs' ) ) === 0 ){
 			delete require.cache[ item ];
 		}
 	});
@@ -75,28 +75,28 @@ module.exports.tearDown = function( callback ){
 module.exports.nestedDependencyTests = {
 	
 	'A v 0.0.1': function( unit ){
-		unit.equal( yearn( 'test:A@0.0.1' )( ), [
+		unit.equal( yearn( 'alphabet:A@0.0.1' )( ), [
 			'Hello from A @ 0.0.1.'
 		].join( '\n' ) );
 		unit.done();	
 	},
 	
 	'A v 0.0.2': function( unit ){
-		unit.equal( yearn( 'test:A@0.0.2' )( ), [
+		unit.equal( yearn( 'alphabet:A@0.0.2' )( ), [
 			'Hello from A @ 0.0.2.'
 		].join( '\n' ) );
 		unit.done();	
 	},
 	
 	'A v 0.1.0': function( unit ){
-		unit.equal( yearn( 'test:A@0.1.0' )( ), [
+		unit.equal( yearn( 'alphabet:A@0.1.0' )( ), [
 			'Hello from A @ 0.1.0.'
 		].join( '\n' ) );
 		unit.done();	
 	},
 	
 	'B v 0.0.1': function( unit ){
-		unit.equal( yearn( 'test:B@0.0.1' )( ), [
+		unit.equal( yearn( 'alphabet:B@0.0.1' )( ), [
 			'Hello from B @ 0.0.1.',
 			'Hello from A @ 0.0.1.'
 		].join( '\n' ) );
@@ -104,7 +104,7 @@ module.exports.nestedDependencyTests = {
 	},
 	
 	'B v 0.0.2': function( unit ){
-		unit.equal( yearn( 'test:B@0.0.2' )( ), [
+		unit.equal( yearn( 'alphabet:B@0.0.2' )( ), [
 			'Hello from B @ 0.0.2.',
 			'Hello from A @ 0.0.2.'
 		].join( '\n' ) );
@@ -112,7 +112,7 @@ module.exports.nestedDependencyTests = {
 	},
 	
 	'B v 0.1.0': function( unit ){
-		unit.equal( yearn( 'test:B@0.1.0' )( ), [
+		unit.equal( yearn( 'alphabet:B@0.1.0' )( ), [
 			'Hello from B @ 0.1.0.',
 			'Hello from A @ 0.1.0.'
 		].join( '\n' ) );
@@ -120,7 +120,7 @@ module.exports.nestedDependencyTests = {
 	},
 	
 	'C v 0.0.1': function( unit ){
-		unit.equal( yearn( 'test:C@0.0.1' )( ), [
+		unit.equal( yearn( 'alphabet:C@0.0.1' )( ), [
 			'Hello from C @ 0.0.1.',
 			'Hello from A @ 0.0.1.'
 		].join( '\n' ) );
@@ -128,7 +128,7 @@ module.exports.nestedDependencyTests = {
 	},
 	
 	'D v 0.0.1': function( unit ){
-		unit.equal( yearn( 'test:D@0.0.1' )( ), [
+		unit.equal( yearn( 'alphabet:D@0.0.1' )( ), [
 			'Hello from D @ 0.0.1.',
 			'Hello from B @ 0.0.1.',
 			'Hello from A @ 0.1.0.',
@@ -139,7 +139,7 @@ module.exports.nestedDependencyTests = {
 	},
 	
 	'D v 0.1.0': function( unit ){
-		unit.equal( yearn( 'test:D@0.1.0' )( ), [
+		unit.equal( yearn( 'alphabet:D@0.1.0' )( ), [
 			'Hello from D @ 0.1.0.',
 			'Hello from B @ 0.1.0.',
 			'Hello from A @ 0.0.2.',

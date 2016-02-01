@@ -49,6 +49,9 @@ module.exports = function( grunt ){
             config: [
                 'tests/utils/config-tests.js'
             ],
+            find: [
+                'tests/utils/ynpm-utils-find-tests.js'
+            ],
 			core: [
 			    'tests/core-tests.js'
 			],
