@@ -91,4 +91,44 @@ module.exports.listCommandTests = {
 			} );
 		} );
 	},
+    
+    listAWithRangeTest: function( test ){
+		
+		require( '../lib/ynpm' )( { 
+			orgs: {
+                '': './node_modules',
+                '*': path.resolve( __dirname, 'test-orgs/*' ),
+                'other': path.resolve( __dirname, 'test-other-org' )
+            },
+            loose_semver: true
+        }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.list( 'A@>=0.0.5', __dirname, function( err, list ){
+				test.strictEqual( err, null, 'No errors in list command.' );
+				test.deepEqual( list, [ 'alphabet:A@0.1.0' ] );
+				test.done();
+			} );
+		} );
+	},
+    
+    listBWithOrgTest: function( test ){
+		
+		require( '../lib/ynpm' )( { 
+			orgs: {
+                '': './node_modules',
+                '*': path.resolve( __dirname, 'test-orgs/*' ),
+                'other': path.resolve( __dirname, 'test-other-org' )
+            },
+            loose_semver: true
+        }, function( err, ynpm ){
+			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+		
+			ynpm.commands.list( 'alphabet:B', __dirname, function( err, list ){
+				test.strictEqual( err, null, 'No errors in list command.' );
+				test.deepEqual( list, [ 'alphabet:B@0.0.1', 'alphabet:B@0.0.2', 'alphabet:B@0.1.0' ] );
+				test.done();
+			} );
+		} );
+	},
 };
