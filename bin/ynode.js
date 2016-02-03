@@ -35,6 +35,7 @@ commander
 			global.yearn = require( '../lib/yearn' )( { legacy: commander.legacy } );
 			
 			try {
+                process.argv.shift();
 				require( path.resolve( script ) );
 			} catch ( exception ) {
 				console.log( exception.stack );
@@ -48,7 +49,8 @@ commander.parse( process.argv );
 
 if( !running_async ){
 	global.yearn = require( '../lib/yearn' )( { legacy: commander.legacy } );
-	
+    
+    process.argv.shift();
 	repl.start( {
 		prompt: ( global.yearn.config.prompt || 'ynode> ' ),
 		input: process.stdin,
