@@ -4,7 +4,7 @@
 	"version": "0.1.0",
 	"main": "index.js",
 	"dependencies": {
-		"test:B": "0.0.1",
-		"test:C": "0.0.1"
+		"alphabet:B": "0.0.1",
+		"alphabet:C": "0.0.1"
 	}
 }

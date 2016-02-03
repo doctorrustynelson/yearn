@@ -1,11 +1,9 @@
 {
 	"name": "B",
 	"private": true,
-	"version": "0.1.0",
+	"version": "0.0.1",
 	"main": "index.js",
 	"dependencies": {
-		"test:A": {
-			"version": "0.0.2"
-		}
+		"alphabet:A": "0.0.1"
 	}
 }

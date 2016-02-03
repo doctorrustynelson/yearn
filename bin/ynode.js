@@ -6,6 +6,7 @@ var repl = require( 'repl' );
 var path = require( 'path' );
 var fs = require( 'fs' );
 var commander = require( 'commander' );
+var running_async = false;
 
 commander
 	.version( process.version )
@@ -27,27 +28,30 @@ commander
 	} )
 	.arguments('<script>')
 	.action( function( script ){
+		running_async = true;
 		
 		if( script ){
 			
 			global.yearn = require( '../lib/yearn' )( { legacy: commander.legacy } );
 			
 			try {
-				require( path.resolve( process.argv[1] ) );
+				require( path.resolve( script ) );
 			} catch ( exception ) {
 				console.log( exception.stack );
 				process.exit( 1 );
 			}
-			process.exit( 0 );
+			//process.exit( result || 0 );
 		}
 	} );
 
 commander.parse( process.argv );
 
-global.yearn = require( '../lib/yearn' )( { legacy: commander.legacy } );
-
-repl.start( {
-	prompt: ( global.yearn.config.prompt || 'ynode> ' ),
-	input: process.stdin,
-	output: process.stdout
-} );
+if( !running_async ){
+	global.yearn = require( '../lib/yearn' )( { legacy: commander.legacy } );
+	
+	repl.start( {
+		prompt: ( global.yearn.config.prompt || 'ynode> ' ),
+		input: process.stdin,
+		output: process.stdout
+	} );
+}

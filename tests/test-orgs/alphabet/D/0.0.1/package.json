@@ -4,16 +4,16 @@
 	"version": "0.0.1",
 	"main": "index.js",
 	"dependencies": {
-		"test:B": {
+		"alphabet:B": {
 			"version": "0.0.1",
 			"dependencies": {
-				"test:A": "0.1.0"
+				"alphabet:A": "0.1.0"
 			}
 		},
-		"test:C": {
+		"alphabet:C": {
 			"version": "0.0.1",
 			"dependencies": {
-				"test:A": {
+				"alphabet:A": {
 					"version": "0.0.2"
 				}
 			}

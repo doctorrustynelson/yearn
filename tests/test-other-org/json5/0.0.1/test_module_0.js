@@ -1,0 +1,1 @@
+module.exports = 'Secret string for json5 v.0.0.1.';

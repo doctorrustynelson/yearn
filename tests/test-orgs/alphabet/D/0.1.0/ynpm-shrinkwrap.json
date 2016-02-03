@@ -1,16 +1,16 @@
 {
 	"version": "0.1.0",
 	"dependencies": {
-		"test:B": {
+		"alphabet:B": {
 			"version": "0.1.0",
 			"dependencies": {
-				"test:A": "0.0.2"
+				"alphabet:A": "0.0.2"
 			}
 		},
-		"test:C": {
+		"alphabet:C": {
 			"version": "0.0.1",
 			"dependencies": {
-				"test:A": {
+				"alphabet:A": {
 					"version": "0.1.0"
 				}
 			}
