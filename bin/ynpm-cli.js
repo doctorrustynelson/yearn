@@ -77,6 +77,16 @@ commander
 			}
 		}
 	} );
+	
+commander
+	.command( 'list <module>' )
+	.description( 'Find all the modules that fulfill the desired org-module-semver (or subset) provided.' )
+	.action( function( desired ){
+		ynpm.commands.list( desired, process.cwd( ), function( err, list ){
+			console.log( 'Found ' + list.length + ' matching module(s):' );
+			console.log( '\t' + list.join( '\n\t' ) );
+		} );
+	} );
 
 commander
 	.command( 'check [orgs_or_specific_modules...]' )
@@ -126,5 +136,7 @@ require( '../lib/ynpm' )( config, function( err, initialized_ynpm ){
 	if( err === null ){
 		ynpm = initialized_ynpm;
 		commander.parse( process.argv );
+	} else {
+		console.log( 'Error intializing YNPM' );
 	}
 } );

@@ -12,6 +12,7 @@ coverage
 
 temp_node_modules
 test_node_modules
+spec_node_modules
 
 # include everything under tests
 tests/test_node_modules

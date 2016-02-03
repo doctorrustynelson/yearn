@@ -32,7 +32,8 @@ module.exports = function( grunt ){
 			     'tests/utils/*utils-tests.js'           
 			],
 			ynpm: [
-			    'tests/ynpm-tests.js'
+			    'tests/ynpm-tests.js',
+                'tests/ynpm-list-tests.js'
 			],
 			yearn: [
 			    'tests/yearn-tests.js',
@@ -49,8 +50,9 @@ module.exports = function( grunt ){
             config: [
                 'tests/utils/config-tests.js'
             ],
-            find: [
-                'tests/utils/ynpm-utils-find-tests.js'
+            list: [
+                'tests/utils/ynpm-utils-find-tests.js',
+                'tests/ynpm-list-tests.js'
             ],
 			core: [
 			    'tests/core-tests.js'
