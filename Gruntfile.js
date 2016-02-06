@@ -50,6 +50,9 @@ module.exports = function( grunt ){
             config: [
                 'tests/utils/config-tests.js'
             ],
+            shrinkwrap: [
+                'tests/ynpm-shrinkwrap-tests.js'
+            ],
             list: [
                 'tests/utils/ynpm-utils-find-tests.js',
                 'tests/ynpm-list-tests.js'

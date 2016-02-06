@@ -46,7 +46,26 @@ module.exports.shrinkwrapCommandTests = {
 		
 			ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.1.0' ) , {}, function( err, shrinkwrap ){
 				test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
-				console.log( JSON.stringify( shrinkwrap, null, '\t' ) );
+				test.deepEqual( shrinkwrap, {
+                    "version": "0.1.0",
+                    "dependencies": {
+                            "alphabet:C": {
+                                    "version": "0.0.1",
+                                    "dependencies": {
+                                            "alphabet:A": "0.1.0"
+                                    },
+                                    "name": "C"
+                            },
+                            "alphabet:B": {
+                                    "version": "0.1.0",
+                                    "dependencies": {
+                                            "alphabet:A": "0.0.2"
+                                    },
+                                    "name": "B"
+                            }
+                    },
+                    "name": "D"
+                } )
 				test.done();
 			} );
 		} );
