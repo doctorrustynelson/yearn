@@ -53,15 +53,13 @@ module.exports.shrinkwrapCommandTests = {
                                     "version": "0.0.1",
                                     "dependencies": {
                                             "alphabet:A": "0.1.0"
-                                    },
-                                    "name": "C"
+                                    }
                             },
                             "alphabet:B": {
                                     "version": "0.1.0",
                                     "dependencies": {
                                             "alphabet:A": "0.0.2"
-                                    },
-                                    "name": "B"
+                                    }
                             }
                     },
                     "name": "D"
