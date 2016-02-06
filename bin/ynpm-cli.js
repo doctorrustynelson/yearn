@@ -5,7 +5,8 @@
 var commander = require( 'commander' );
 var fs = require( 'fs' );
 var JSON5 = require( 'json5' );
-var merge = require( 'merge' ).recursive;
+var _ = require( 'lodash' );
+var path = require( 'path' );
 
 var version = require( '../package.json' ).version;
 var config = require( '../lib/utils/config' ).initialize( );
@@ -43,7 +44,8 @@ commander
 			
 			var contents = JSON5.parse( fs.readFileSync( package_json_location, 'utf8' ) );
 			
-			var dependencies = merge(
+			var dependencies = _.merge(
+                {},
 				contents.dependencies,
 				contents.devDependencies,
 				contents.optionalDependencies
@@ -87,6 +89,21 @@ commander
 			console.log( '\t' + list.join( '\n\t' ) );
 		} );
 	} );
+
+	
+commander
+	.command( 'shrinkwrap [root_dir]' )
+	.description( 'Create a ynpm shrinkwrap.' )
+	.action( function( root_dir ){
+		
+		if( root_dir === undefined )
+			root_dir = process.cwd( );
+		
+		ynpm.commands.shrinkwrap( root_dir, {}, function( err, shrinkwrap ){
+			fs.writeFileSync( path.join( root_dir, 'ynpm-shrinkwrap.json' ), JSON.stringify( shrinkwrap, null, '\t' ) );  
+		} );
+	} );
+
 
 commander
 	.command( 'check [orgs_or_specific_modules...]' )
