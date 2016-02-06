@@ -43,7 +43,7 @@ module.exports.shrinkwrapCommandTests = {
             loose_semver: true
         }, function( err, ynpm ){
 			test.strictEqual( err, null, 'No errors on ynpm initialization' );
-		
+        
 			ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.1.0' ) , {}, function( err, shrinkwrap ){
 				test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
 				test.deepEqual( shrinkwrap, {
