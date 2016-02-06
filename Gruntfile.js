@@ -99,7 +99,7 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
 	grunt.loadNpmTasks( 'grunt-coveralls' );
-    grunt.loadTasks( './tasks' )
+    grunt.loadTasks( './tasks' );
 	
 	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:cli', 'nodeunit:yearn' ] );
 	grunt.registerTask( 'default', [ 'test' ] );
