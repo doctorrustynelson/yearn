@@ -47,23 +47,23 @@ module.exports.shrinkwrapCommandTests = {
 			ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.1.0' ) , {}, function( err, shrinkwrap ){
 				test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
 				test.deepEqual( shrinkwrap, {
-                    "version": "0.1.0",
-                    "dependencies": {
-                            "alphabet:C": {
-                                    "version": "0.0.1",
-                                    "dependencies": {
-                                            "alphabet:A": "0.1.0"
+                    'version': '0.1.0',
+                    'dependencies': {
+                            'alphabet:C': {
+                                    'version': '0.0.1',
+                                    'dependencies': {
+                                            'alphabet:A': '0.1.0'
                                     }
                             },
-                            "alphabet:B": {
-                                    "version": "0.1.0",
-                                    "dependencies": {
-                                            "alphabet:A": "0.0.2"
+                            'alphabet:B': {
+                                    'version': '0.1.0',
+                                    'dependencies': {
+                                            'alphabet:A': '0.0.2'
                                     }
                             }
                     },
-                    "name": "D"
-                } )
+                    'name': 'D'
+                } );
 				test.done();
 			} );
 		} );
