@@ -3,6 +3,7 @@
  */
 
 'use strict';
+var path = require( 'path' );
 
 module.exports = function( grunt ){
 
@@ -50,6 +51,9 @@ module.exports = function( grunt ){
             config: [
                 'tests/utils/config-tests.js'
             ],
+            shrinkwrap: [
+                'tests/ynpm-shrinkwrap-tests.js'
+            ],
             list: [
                 'tests/utils/ynpm-utils-find-tests.js',
                 'tests/ynpm-list-tests.js'
@@ -64,6 +68,23 @@ module.exports = function( grunt ){
 				reporter: 'verbose'
 			}
 		},
+        
+        'ynpm-shrinkwrap': {
+            test: {
+                src: './tests/test-orgs/alphabet/D/0.1.0',
+                dest: '.',
+                options: {
+                    config: {
+                        orgs: {
+                            '': './node_modules',
+                            '*': path.resolve( __dirname, './tests/test-orgs/*' ),
+                            'other': path.resolve( __dirname, './tests/test-other-org' )
+                        },
+                        loose_semver: true
+                    }
+                }
+            }
+        },
 		
 		coveralls: {
 			options: {
@@ -78,6 +99,7 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-nodeunit' );
 	grunt.loadNpmTasks( 'grunt-coveralls' );
+    grunt.loadTasks( './tasks' );
 	
 	grunt.registerTask( 'test', [ 'jshint', 'nodeunit:unit', 'nodeunit:cli', 'nodeunit:yearn' ] );
 	grunt.registerTask( 'default', [ 'test' ] );
