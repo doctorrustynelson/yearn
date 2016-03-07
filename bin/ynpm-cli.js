@@ -15,7 +15,9 @@ var yutils = require( '../lib/utils/yearn-utils' )( config );
 var LOGGER = require( '../lib/utils/logger' ).getLOGGER( config.logger );
 
 // Set version number
-commander.version( version );
+commander
+    .version( version )
+    .option( '-u, --unsafe', 'Run commands in unsafe mode.' );
 
 // Link ynpm version to ynpm --version
 commander
@@ -99,8 +101,12 @@ commander
 		if( root_dir === undefined )
 			root_dir = process.cwd( );
 		
-		ynpm.commands.shrinkwrap( root_dir, {}, function( err, shrinkwrap ){
-			fs.writeFileSync( path.join( root_dir, 'ynpm-shrinkwrap.json' ), JSON.stringify( shrinkwrap, null, '\t' ) );  
+        var unsafe = commander.unsafe;
+        
+		ynpm.commands.shrinkwrap( root_dir, {}, unsafe, function( err, shrinkwrap ){
+            var dest = path.join( root_dir, 'ynpm-shrinkwrap.json' );
+			fs.writeFileSync( dest, JSON.stringify( shrinkwrap, null, '\t' ) );
+            console.log( 'Successfully generated ' + path.resolve( dest ) );
 		} );
 	} );
 
