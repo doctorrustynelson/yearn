@@ -48,57 +48,45 @@ module.exports.setUp = function( callback ){
 module.exports.findOrgsTests = {
     
     findOrgsNoneTest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findOrgs( 'missing', path.resolve( __dirname, '..' ) ),
-            [ ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findOrgs( 'missing', path.resolve( __dirname, '..' ), function( orgs ){
+            unit.deepEqual( orgs, [ ] );
+            unit.done( );
+        } );
     },
     
     findOrgsATest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findOrgs( 'A', path.resolve( __dirname, '..' ) ),
-            [ 'alphabet' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findOrgs( 'A', path.resolve( __dirname, '..' ), function( orgs ){
+            unit.deepEqual( orgs, [ 'alphabet' ] );
+            unit.done( );
+        } );
     },
     
     findOrgsBTest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findOrgs( 'B', path.resolve( __dirname, '..' ) ),
-            [ 'alphabet' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findOrgs( 'B', path.resolve( __dirname, '..' ), function( orgs ){
+            unit.deepEqual( orgs, [ 'alphabet' ] );
+            unit.done( );
+        } );
     },
     
     findOrgsJson5Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findOrgs( 'json5', path.resolve( __dirname, '..' ) ),
-            [ 'other' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findOrgs( 'json5', path.resolve( __dirname, '..' ), function( orgs ){
+            unit.deepEqual( orgs, [ 'other' ] );
+            unit.done( );
+        } );
     },
     
     findOrgsTestModule1Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findOrgs( 'test-module-1', path.resolve( __dirname, '..' ) ),
-            [ '' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findOrgs( 'test-module-1', path.resolve( __dirname, '..' ), function( orgs ){
+            unit.deepEqual( orgs, [ '' ] );
+            unit.done( );
+        } );
     },
     
     findOrgsTestModule3Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findOrgs( 'test-module-3', path.resolve( __dirname, '..' ) ),
-            [ '' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findOrgs( 'test-module-3', path.resolve( __dirname, '..' ), function( orgs ){
+            unit.deepEqual( orgs, [ '' ] );
+            unit.done( );
+        } );
     }
     
 };
@@ -106,113 +94,89 @@ module.exports.findOrgsTests = {
 module.exports.findVersionsTests = {
     
     findVersionsNoneTest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findVersions( 'alphabet', 'missing', path.resolve( __dirname, '..' ) ),
-            [ ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findVersions( 'alphabet', 'missing', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ ] );
+            unit.done( );
+        } );
     },
     
     findVersionsATest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findVersions( 'alphabet', 'A', path.resolve( __dirname, '..' ) ),
-            [ '0.0.1', '0.0.2', '0.1.0' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findVersions( 'alphabet', 'A', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ '0.0.1', '0.0.2', '0.1.0' ] );
+            unit.done( );
+        } );
     },
     
     findVersionsBTest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findVersions( 'alphabet', 'B', path.resolve( __dirname, '..' ) ),
-            [ '0.0.1', '0.0.2', '0.1.0' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findVersions( 'alphabet', 'B', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ '0.0.1', '0.0.2', '0.1.0' ] );
+            unit.done( );
+        } );
     },
     
     findVersionsJson5Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findVersions( 'other', 'json5', path.resolve( __dirname, '..' ) ),
-            [ '0.0.1' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findVersions( 'other', 'json5', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ '0.0.1' ] );
+            unit.done( );
+        } );
     },
     
     findVersionsTestModule1Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findVersions( '', 'test-module-1', path.resolve( __dirname, '..' ) ),
-            [ '1.0.0' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findVersions( '', 'test-module-1', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ '1.0.0' ] );
+            unit.done( );
+        } );
     },
     
     findVersionsTestModule3Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findVersions( '', 'test-module-3', path.resolve( __dirname, '..' ) ),
-            [ '1.1.0', '2015.01.01-1' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findVersions( '', 'test-module-3', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ '1.1.0', '2015.01.01-1' ] );
+            unit.done( );
+        } );
     }
 };
 
 module.exports.findMatchingVersionsTests = {
     
     findMatchingVersionsNoneTest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findMatchingVersions( 'alphabet', 'missing', '*', path.resolve( __dirname, '..' ) ),
-            [ ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findMatchingVersions( 'alphabet', 'missing', '*', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ ] );
+            unit.done( );
+        } );
     },
     
     findMatchingVersionsATest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findMatchingVersions( 'alphabet', 'A', '*', path.resolve( __dirname, '..' ) ),
-            [ '0.0.1', '0.0.2', '0.1.0' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findMatchingVersions( 'alphabet', 'A', '*', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ '0.0.1', '0.0.2', '0.1.0' ] );
+            unit.done( );
+        } );
     },
     
     findMatchingVersionsBTest: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findMatchingVersions( 'alphabet', 'B', '>=0.1.0', path.resolve( __dirname, '..' ) ),
-            [ '0.1.0' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findMatchingVersions( 'alphabet', 'B', '>=0.1.0', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ '0.1.0' ] );
+            unit.done( );
+        } );
     },
     
     findMatchingVersionsJson5Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findMatchingVersions( 'other', 'json5', '0.1.x', path.resolve( __dirname, '..' ) ),
-            [ ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findMatchingVersions( 'other', 'json5', '0.1.x', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ ] );
+            unit.done( );
+        } );
     },
     
     findMatchingVersionsTestModule1Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findMatchingVersions( '', 'test-module-1', '*', path.resolve( __dirname, '..' ) ),
-            [ '1.0.0' ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findMatchingVersions( '', 'test-module-1', '*', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions, [ '1.0.0' ] );
+            unit.done( );
+        } );
     },
     
     findMatchingVersionsTestModule3Test: function( unit ){
-        unit.deepEqual( 
-            ynpm_utils.findMatchingVersions( '', 'test-module-3', '*', path.resolve( __dirname, '..' ) ),
-            [ '1.1.0' /*, '2015.01.01-1' // Doesn't find this because of semver validation of prerelease tags */ ]
-        );
-        
-        unit.done( );
+        ynpm_utils.findMatchingVersions( '', 'test-module-3', '*', path.resolve( __dirname, '..' ), function( versions ){
+            unit.deepEqual( versions,  [ '1.1.0' /*, '2015.01.01-1' // Doesn't find this because of semver validation of prerelease tags */ ] );
+            unit.done( );
+        } );
     }
 };
