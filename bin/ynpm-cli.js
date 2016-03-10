@@ -17,7 +17,8 @@ var LOGGER = require( '../lib/utils/logger' ).getLOGGER( config.logger );
 // Set version number
 commander
     .version( version )
-    .option( '-u, --unsafe', 'Run commands in unsafe mode.' );
+    .option( '-u, --unsafe', 'Run commands in unsafe mode.', false )
+	.option( '--noalias', 'Run commands without aliasing.', false );
 
 // Link ynpm version to ynpm --version
 commander
@@ -59,7 +60,7 @@ commander
 		}
 		
 		modules.forEach( function( module ){
-			ynpm.commands.install( module, function( err ){
+			ynpm.commands.install( module, commander.noalias, function( err ){
 				if( err !== null ){
 					LOGGER.warn( 'Failed to install ' + module + '.' );
 				} else {
@@ -67,7 +68,6 @@ commander
 				}
 			} );
 		} );
-		
 	} );
 
 commander
@@ -86,7 +86,7 @@ commander
 	.command( 'list <module>' )
 	.description( 'Find all the modules that fulfill the desired org-module-semver (or subset) provided.' )
 	.action( function( desired ){
-		ynpm.commands.list( desired, process.cwd( ), function( err, list ){
+		ynpm.commands.list( desired, process.cwd( ), commander.noalias, function( err, list ){
 			console.log( 'Found ' + list.length + ' matching module(s):' );
 			console.log( '\t' + list.join( '\n\t' ) );
 		} );
@@ -125,18 +125,18 @@ commander
 					var desired;
 					if( module === '' ){
 						desired = '""/' + installed_module;
-						return ynpm.commands.check( installed_module, function( err, latest ){
+						return ynpm.commands.check( installed_module, commander.noalias, function( err, latest ){
 							console.log( desired + ' -> ' + latest );
 						} );
 					} else {
 						desired = module + '/' + installed_module;
-						return ynpm.commands.check( desired, function( err, latest ){
+						return ynpm.commands.check( desired, commander.noalias, function( err, latest ){
 							console.log( desired + ' -> ' + latest );
 						} );
 					}
 				} );
 			} else {
-				return ynpm.commands.check( module, function( err, latest ){
+				return ynpm.commands.check( module, commander.noalias, function( err, latest ){
 					if( latest !== true && latest !== false ){
 						console.log( module + ' -> ' + latest );
 					}

@@ -30,17 +30,19 @@
 
 var ynpm_utils = null;
 var path = require( 'path' );
-var npm = require( 'npm' );
 var grunt = require( 'grunt' );
 var fs = require( 'fs' );
 
+var npm = null;
+
 module.exports.setUp = function( callback ){
-	npm.load( function( err, npm ){
+	require( 'npm' ).load( function( err, _npm ){
 		if( err !== null ){
 			console.log( 'Failed to setup npm.' );
 		}
 		
-		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( {}, npm );
+		npm = _npm;
+		
 		callback( );
 	} );
 };
@@ -48,6 +50,8 @@ module.exports.setUp = function( callback ){
 module.exports.getLatestVersionTests = {
 	
 	nodeunit: function( test ){
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( {} ), npm );
+		
 		ynpm_utils.getLatestVersionOf( 'nodeunit', function( err, version ){
 			test.equal( err, null );
 			test.notEqual( version, undefined );
@@ -57,6 +61,8 @@ module.exports.getLatestVersionTests = {
 	},
 
 	yearn: function( test ){
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( {} ), npm );
+		
 		ynpm_utils.getLatestVersionOf( 'yearn', function( err, version ){
 			test.equal( err, null );
 			test.notEqual( version, undefined );
@@ -65,6 +71,8 @@ module.exports.getLatestVersionTests = {
 	},
 	
 	moduleThatShouldNeverExist: function( test ){
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( {} ), npm );
+		
 		ynpm_utils.getLatestVersionOf( 'modulethatshouldneverexist', function( err, version ){
 			test.notEqual( err, null );
 			test.equal( version, undefined );
@@ -76,25 +84,27 @@ module.exports.getLatestVersionTests = {
 module.exports.translateLegacyDependencyStructureTests = {
 		
 	badPathTest: function( unit ){
-		
 		var temp_src_dir = '/one/bad/path';
 		var temp_dest_dir = '/another/bad/path';
 		
-		unit.ok( !ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir ) );
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { orgs: { '': temp_dest_dir } } ), npm );
+		
+		unit.ok( !ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, '', '' ) );
 		unit.done();
 	},
 	
 	noDependenciesStructureTest: function( unit ){
-		
 		var temp_src_dir = ynpm_utils.createTempDirSync();
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { orgs: { '': temp_dest_dir } } ), npm );
 		
 		//npm.load( function( ){
 			//npm.commands.install( temp_src_dir, [ 'lodash@2.4.0' ], function( ){
 			npm.commands.install( temp_src_dir, 'lodash@2.4.0', function( ){
 
 
-				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
+				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, '', '' );
 				
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodash' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodash/2.4.0' ) ) );
@@ -109,15 +119,16 @@ module.exports.translateLegacyDependencyStructureTests = {
 	},
 	
 	smallDependenciesStructureTest: function( unit ){
-		
 		var temp_src_dir = ynpm_utils.createTempDirSync();
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { orgs: { '': temp_dest_dir } } ), npm );
 		
 		//npm.load( function( ){
 			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 
-				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
+				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, '', '' );
 				
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
@@ -127,7 +138,6 @@ module.exports.translateLegacyDependencyStructureTests = {
 				
 				
 				var ansi_regex_versions = fs.readdirSync( path.join( temp_dest_dir, 'ansi-regex' ) );
-				console.log( ansi_regex_versions );
 				unit.ok( ansi_regex_versions.length === 1 );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0] ) ) );
 				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex', ansi_regex_versions[0], 'package.json' ) ) );
@@ -146,9 +156,10 @@ module.exports.translateLegacyDependencyStructureTests = {
 	},
 	
 	alreadyInstalledDependenciesStructureTest: function( unit ){
-		
 		var temp_src_dir = ynpm_utils.createTempDirSync();
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { orgs: { '': temp_dest_dir } } ), npm );
 		
 		//npm.load( function( ){
 			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
@@ -156,7 +167,7 @@ module.exports.translateLegacyDependencyStructureTests = {
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 				npm.commands.install( temp_src_dir, 'get-stdin@1.0.0', function( ){
 
-					ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, temp_dest_dir, temp_dest_dir );
+					ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, '', '' );
 					
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
 					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
@@ -189,11 +200,13 @@ module.exports.translateLegacyDependencyStructureTests = {
 		var temp_dest_dir = ynpm_utils.createTempDirSync();
 		var alt_dest_dir = ynpm_utils.createTempDirSync();
 		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { orgs: { '': temp_dest_dir, 'alt': alt_dest_dir } } ), npm );
+		
 		//npm.load( function( ){
 			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
 			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
 
-				ynpm_utils.translateLegacyDependencyStructure( path.join( temp_src_dir, 'node_modules', 'has-ansi' ), alt_dest_dir, temp_dest_dir );
+				ynpm_utils.translateLegacyDependencyStructure( path.join( temp_src_dir, 'node_modules', 'has-ansi' ), 'alt', '' );
 					
 				unit.ok( grunt.file.exists( path.join( alt_dest_dir, 'has-ansi' ) ) );
 				unit.ok( grunt.file.exists( path.join( alt_dest_dir, 'has-ansi/1.0.0' ) ) );
@@ -224,9 +237,217 @@ module.exports.translateLegacyDependencyStructureTests = {
 	}
 };
 
+module.exports.translateLegacyDependencyStructureWithAliasesTests = {
+		
+	badPathTest: function( unit ){
+		var temp_src_dir = '/one/bad/path';
+		var temp_dest_dir = '/another/bad/path';
+		
+		var config = require( '../../lib/utils/config')( { 
+			orgs: { '': temp_dest_dir }, 
+			aliases: [{
+				from: { module: 'lodash' },
+				to: { module: 'lodown' }
+			}]
+		} );
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( config, npm );
+		
+		unit.ok( !ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, '', '' ) );
+		unit.done();
+	},
+	
+	noDependenciesStructureTest: function( unit ){
+		var temp_src_dir = ynpm_utils.createTempDirSync();
+		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		
+		var config = require( '../../lib/utils/config')( { 
+			orgs: { '': temp_dest_dir }, 
+			aliases: [{
+				from: { module: 'lodash' },
+				to: { module: 'lodown' }
+			}]
+		} );
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( config, npm );
+		
+		//npm.load( function( ){
+			//npm.commands.install( temp_src_dir, [ 'lodash@2.4.0' ], function( ){
+			npm.commands.install( temp_src_dir, 'lodash@2.4.0', function( ){
+
+
+				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, '', '' );
+				
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'lodash' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'lodash/2.4.0' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'lodash/2.4.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'lodash/2.4.0/node_modules' ) ) );
+				
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodown' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodown/2.4.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'lodown/2.4.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'lodown/2.4.0/node_modules' ) ) );
+				
+				grunt.file.delete( temp_src_dir, { force: true } );
+				grunt.file.delete( temp_dest_dir, { force: true } );
+				unit.done();
+			} );
+		//} );
+	},
+	
+	smallDependenciesStructureTest: function( unit ){
+		var temp_src_dir = ynpm_utils.createTempDirSync();
+		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		
+		var config = require( '../../lib/utils/config')( { 
+			orgs: { '': temp_dest_dir }, 
+			aliases: [{
+				from: { module: 'ansi-regex' },
+				to: { module: 'ansi-regularexpression' }
+			}]
+		} );
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( config, npm );
+		
+		//npm.load( function( ){
+			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
+			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
+
+				ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, '', '' );
+				
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
+				
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
+				
+				var ansi_regex_versions = fs.readdirSync( path.join( temp_dest_dir, 'ansi-regularexpression' ) );
+				unit.ok( ansi_regex_versions.length === 1 );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0] ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0], 'package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0], 'node_modules' ) ) );
+				
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/node_modules' ) ) );
+				
+				grunt.file.delete( temp_src_dir, { force: true } );
+				grunt.file.delete( temp_dest_dir, { force: true } );
+				unit.done();
+			} );
+		//} );
+	},
+	
+	alreadyInstalledDependenciesStructureTest: function( unit ){
+		var temp_src_dir = ynpm_utils.createTempDirSync();
+		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		
+		var config = require( '../../lib/utils/config')( { 
+			orgs: { '': temp_dest_dir }, 
+			aliases: [{
+				from: { module: 'ansi-regex' },
+				to: { module: 'ansi-regularexpression' }
+			}]
+		} );
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( config, npm );
+		
+		//npm.load( function( ){
+			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
+				//npm.commands.install( temp_src_dir, [ 'get-stdin@1.0.0' ], function( ){
+			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
+				npm.commands.install( temp_src_dir, 'get-stdin@1.0.0', function( ){
+
+					ynpm_utils.translateLegacyDependencyStructure( temp_src_dir, '', '' );
+					
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
+					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
+					
+					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
+				
+					var ansi_regex_versions = fs.readdirSync( path.join( temp_dest_dir, 'ansi-regularexpression' ) );
+					unit.ok( ansi_regex_versions.length === 1 );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0] ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0], 'package.json' ) ) );
+					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0], 'node_modules' ) ) );
+					
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
+					unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
+					unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/node_modules' ) ) );
+					
+					grunt.file.delete( temp_src_dir, { force: true } );
+					grunt.file.delete( temp_dest_dir, { force: true } );
+					unit.done();
+				} );
+			} );
+		//} );
+	},
+	
+	alternatePrimeDestinationTest: function( unit ){
+		
+		var temp_src_dir = ynpm_utils.createTempDirSync();
+		var temp_dest_dir = ynpm_utils.createTempDirSync();
+		var alt_dest_dir = ynpm_utils.createTempDirSync();
+		
+		var config = require( '../../lib/utils/config')( { 
+			orgs: { '': temp_dest_dir, 'alt': alt_dest_dir }, 
+			aliases: [{
+				from: { module: 'ansi-regex' },
+				to: { module: 'ansi-regularexpression' }
+			}]
+		} );
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( config, npm );
+		
+		//npm.load( function( ){
+			//npm.commands.install( temp_src_dir, [ 'has-ansi@1.0.0' ], function( ){
+			npm.commands.install( temp_src_dir, 'has-ansi@1.0.0', function( ){
+
+				ynpm_utils.translateLegacyDependencyStructure( path.join( temp_src_dir, 'node_modules', 'has-ansi' ), 'alt', '' );
+					
+				unit.ok( grunt.file.exists( path.join( alt_dest_dir, 'has-ansi' ) ) );
+				unit.ok( grunt.file.exists( path.join( alt_dest_dir, 'has-ansi/1.0.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( alt_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( alt_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'has-ansi/1.0.0/node_modules' ) ) );
+				
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regex' ) ) );
+				
+				var ansi_regex_versions = fs.readdirSync( path.join( temp_dest_dir, 'ansi-regularexpression' ) );
+				unit.ok( ansi_regex_versions.length === 1 );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0] ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0], 'package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'ansi-regularexpression', ansi_regex_versions[0], 'node_modules' ) ) );
+					
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0' ) ) );
+				unit.ok( grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/package.json' ) ) );
+				unit.ok( !grunt.file.exists( path.join( temp_dest_dir, 'get-stdin/1.0.0/node_modules' ) ) );
+					
+				grunt.file.delete( temp_src_dir, { force: true } );
+				grunt.file.delete( temp_dest_dir, { force: true } );
+				unit.done();
+			} );
+		//} );
+	}
+};
+
 module.exports.npmInstallToDirTests = {
 	
 	installBadModule: function( unit ){
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { } ), npm );
 		
 		var tempdir = ynpm_utils.createTempDirSync();
 		
@@ -239,6 +460,8 @@ module.exports.npmInstallToDirTests = {
 	},
 		
 	installAnyLodash: function( unit ){
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { } ), npm );
 		
 		var tempdir = ynpm_utils.createTempDirSync();
 		
@@ -254,6 +477,8 @@ module.exports.npmInstallToDirTests = {
 
 	installSpecificLodash: function( unit ){
 		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { } ), npm );
+		
 		var tempdir = ynpm_utils.createTempDirSync();
 		
 		ynpm_utils.npmInstallToDir( 'lodash@2.4.0', tempdir, function( err ){
@@ -268,6 +493,8 @@ module.exports.npmInstallToDirTests = {
 	
 	installFuzzyLodash: function( unit ){
 		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { } ), npm );
+		
 		var tempdir = ynpm_utils.createTempDirSync();
 		
 		ynpm_utils.npmInstallToDir( 'lodash@~2.4.0', tempdir, function( err ){
@@ -281,6 +508,8 @@ module.exports.npmInstallToDirTests = {
 	},
 	
 	installRangeLodash: function( unit ){
+		
+		ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config')( { } ), npm );
 		
 		var tempdir = ynpm_utils.createTempDirSync();
 		

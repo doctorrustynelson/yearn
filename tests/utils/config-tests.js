@@ -56,7 +56,7 @@ module.exports.configTests = {
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				aliases: [],
-				npmconfig: {}
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with out YEARN_CONFIG env variable set.'
 		);
@@ -85,7 +85,7 @@ module.exports.configTests = {
 				orgs: { '': './node_modules', 'other': 'something' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				aliases: [],
-				npmconfig: {}
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with out YEARN_CONFIG env variable set.'
 		);
@@ -116,7 +116,7 @@ module.exports.configTests = {
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				aliases: [],
-				npmconfig: {}
+				npmconfig: { loglevel: 'silent' }
 			}, 'Iniailizing config with YEARN_CONFIG env variable set.'
 		);
 		
@@ -141,7 +141,7 @@ module.exports.configTests = {
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				aliases: [],
-				npmconfig: {}
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with YEARN_CONFIG env variable set to bad path.'
 		);
@@ -165,7 +165,7 @@ module.exports.configTests = {
 				orgs: { '': './node_modules', 'other': 'something' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				aliases: [],
-				npmconfig: {}
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with simple YEARN_OVERRIDE_ORGS env variable set.'
 		);
@@ -189,7 +189,7 @@ module.exports.configTests = {
 				orgs: { '': 'new' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				aliases: [],
-				npmconfig: {}
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with default YEARN_OVERRIDE_ORGS env variable set.'
 		);
@@ -213,7 +213,7 @@ module.exports.configTests = {
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
 				aliases: [],
-				npmconfig: {}
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with bad YEARN_OVERRIDE_ORGS env variable set.'
 		);

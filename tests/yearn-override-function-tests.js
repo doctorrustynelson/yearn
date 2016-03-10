@@ -41,7 +41,7 @@ module.exports.setUp = function( callback ){
 			'test_modules': path.join( __dirname, 'node_modules' )
 		},
 		override: function( desired, parent ){
-			console.log( 'Ignored require for ' + desired + ' and subsituting path.' );
+			// Ignoring require for desired and subsituting path.
 			return original_resolver( 'path', parent );
 		}
 	} );
