@@ -290,6 +290,37 @@ module.exports.findModernModuleLocationTests = {
 	}
 };
 
+module.exports.findModernModuleLocationAsyncTests = {
+		
+	testCorrectDirectory: function( unit ){
+		yearn_utils.findModernModuleLocationAsync( __dirname, '../node_modules/', 'test-module-2', function( location ){
+			unit.equal( location, path.resolve( __dirname, '../node_modules/test-module-2' ) );
+			unit.done(  );
+		} );
+	},
+	
+	testChildDirectory: function( unit ){
+		yearn_utils.findModernModuleLocationAsync( path.resolve( __dirname, '../node_modules/test-module-2' ), '../node_modules/', 'test-module-2', function( location ){
+			unit.equal( location, null );
+			unit.done( );
+		} );
+	},
+	
+	testNoModuleRootDirectory: function( unit ){
+		yearn_utils.findModernModuleLocationAsync( path.resolve( '/' ), '../node_modules/', 'test-module-2', function( location ){
+			unit.equal( location, null );
+			unit.done( );
+		} );
+	},
+	
+	testNoModuleChildOfRootDirectory: function( unit ){
+		yearn_utils.findModernModuleLocationAsync( path.resolve( require('os').tmpdir() ), '../node_modules/', 'test-module-2', function( location ){
+			unit.equal( location, null );
+			unit.done( );
+		} );
+	}
+};
+
 module.exports.findLegacyModuleLocationTests = {
 	
 	testNonExistantModule: function( unit ){
@@ -338,5 +369,50 @@ module.exports.findLegacyModuleLocationTests = {
 			path.resolve( __dirname, '../node_modules/test-module-2' ) 
 		);
 		unit.done();
+	},
+};
+
+module.exports.findLegacyModuleLocationAsyncTests = {
+	
+	testNonExistantModule: function( unit ){
+		yearn_utils.findLegacyModuleLocationAsync( path.resolve( __dirname, '../node_modules/' ), 'missing-module', function( location ){
+			unit.equal( location, null );
+			unit.done();
+		} ); 
+	},
+		
+	testCorrectDirectory: function( unit ){
+		yearn_utils.findLegacyModuleLocationAsync( path.resolve( __dirname, '../node_modules/' ), 'test-module-2', function( location ){
+			unit.equal( location, path.resolve( __dirname, '../node_modules/test-module-2' ) );
+			unit.done();
+		} ); 
+	},
+	
+	testChildDirectory: function( unit ){
+		yearn_utils.findLegacyModuleLocationAsync( path.resolve( __dirname, '../node_modules/test-module-2' ), 'test-module-2', function( location ){
+			unit.equal( location, path.resolve( __dirname, '../node_modules/test-module-2' ) );
+			unit.done();
+		} );
+	},
+	
+	testGrandChildDirectory: function( unit ){
+		yearn_utils.findLegacyModuleLocationAsync( path.resolve( __dirname, '../node_modules/test-module-2/1.0.0' ), 'test-module-2', function( location ){
+			unit.equal( location, path.resolve( __dirname, '../node_modules/test-module-2' ) );
+			unit.done();
+		} );
+	},
+	
+	testNephewDirectory: function( unit ){
+		yearn_utils.findLegacyModuleLocationAsync( path.resolve( __dirname, '../node_modules/test-module-1' ), 'test-module-2', function( location ){
+			unit.equal( location, path.resolve( __dirname, '../node_modules/test-module-2' ) );
+			unit.done();
+		} );
+	},
+	
+	testGrandNephewDirectory: function( unit ){
+		yearn_utils.findLegacyModuleLocationAsync( path.resolve( __dirname, '../node_modules/test-module-1/1.0.0' ), 'test-module-2', function( location ){
+			unit.equal( location, path.resolve( __dirname, '../node_modules/test-module-2' ) );
+			unit.done();
+		} );
 	},
 };

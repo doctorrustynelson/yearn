@@ -1,0 +1,10 @@
+{
+	"name": "D",
+	"private": true,
+	"version": "0.0.2",
+	"main": "index.js",
+	"dependencies": {
+		"alphabet:B": "0.0.1",
+		"alphabet:C": "0.0.1"
+	}
+}

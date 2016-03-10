@@ -49,13 +49,11 @@ module.exports.checkTests = {
 		require( '../lib/ynpm' )( JSON5.parse( fs.readFileSync( env.YEARN_CONFIG ) ), function( err, ynpm ){
 			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-			ynpm.commands.install( 'lodash', function( ){
+			ynpm.commands.install( 'lodash', false, function( ){
 				exec( 'node bin/ynpm-cli.js check lodash', {
 					cwd: path.join( __dirname, '..' ),
 					env: env
 				}, function( err, stdout, stderr ){
-					console.log( stderr );
-					console.log( stdout );
 					
 					test.equal( null, err );
 					test.deepEqual( [
@@ -77,13 +75,11 @@ module.exports.checkTests = {
 		require( '../lib/ynpm' )( JSON5.parse( fs.readFileSync( env.YEARN_CONFIG ) ), function( err, ynpm ){
 			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-			ynpm.commands.install( 'lodash@2.4.0', function( ){
+			ynpm.commands.install( 'lodash@2.4.0', false, function( ){
 				exec( 'node bin/ynpm-cli.js check lodash', {
 					cwd: path.join( __dirname, '..' ),
 					env: env
 				}, function( err, stdout, stderr ){
-					console.log( stderr );
-					console.log( stdout );
 					
 					test.equal( null, err );
 					test.deepEqual( [
@@ -105,14 +101,12 @@ module.exports.checkTests = {
 		require( '../lib/ynpm' )( JSON5.parse( fs.readFileSync( env.YEARN_CONFIG ) ), function( err, ynpm ){
 			test.strictEqual( err, null, 'No errors on ynpm initialization' );
 		
-			ynpm.commands.install( 'lodash@2.4.0', function( ){
-				ynpm.commands.install( 'spec:lodash@2.4.0', function( ){
+			ynpm.commands.install( 'lodash@2.4.0', false, function( ){
+				ynpm.commands.install( 'spec:lodash@2.4.0', false, function( ){
 					exec( 'node bin/ynpm-cli.js check', {
 						cwd: path.join( __dirname, '..' ),
 						env: env
 					}, function( err, stdout, stderr ){
-						console.log( stderr );
-						console.log( stdout );
 						
 						test.equal( null, err );
 						test.deepEqual( [
@@ -140,7 +134,7 @@ module.exports.orgsTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    'YEARN_CONFIG is not defined.  Using default config.'
+			    'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '"" -> ./node_modules' 
@@ -160,7 +154,7 @@ module.exports.orgsTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    'YEARN_CONFIG is not defined.  Using default config.'
+			    'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '"" -> ./node_modules' 
@@ -180,7 +174,7 @@ module.exports.orgsTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    'YEARN_CONFIG is not defined.  Using default config.'
+			    'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '"" -> ./node_modules' 
@@ -200,7 +194,7 @@ module.exports.orgsTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    'YEARN_CONFIG was not found at ' + env.YEARN_CONFIG + '.  Using default config.'
+			    'YEARN_CONFIG was not found at ' + env.YEARN_CONFIG + '.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '"" -> ./node_modules' 
@@ -260,9 +254,7 @@ module.exports.installTests = {
 		exec( 'node ../bin/ynpm-cli.js install lodash@2.4.0', {
 			cwd: __dirname,
 			env: env
-		}, function( err, stdout, stderr ){
-			console.log( stderr );
-			console.log( stdout );
+		}, function( err /*stdout, stderr*/ ){
 			test.equal( null, err );
 			
 			test.ok( grunt.file.exists( path.join( __dirname, 'test_node_modules', 'lodash' ) ) );
@@ -282,9 +274,7 @@ module.exports.installTests = {
 		exec( 'node ../bin/ynpm-cli.js install lodash', {
 			cwd: __dirname,
 			env: env
-		}, function( err, stdout, stderr ){
-			console.log( stderr );
-			console.log( stdout );
+		}, function( err /*stdout, stderr*/ ){
 			test.equal( null, err );
 			
 			test.ok( grunt.file.exists( path.join( __dirname, 'test_node_modules', 'lodash' ) ) );
@@ -302,9 +292,7 @@ module.exports.installTests = {
 		exec( 'node ../bin/ynpm-cli.js install nodeunit@0.9.0', {
 			cwd: __dirname,
 			env: env
-		}, function( err, stdout, stderr ){
-			console.log( stderr );
-			console.log( stdout );
+		}, function( err /*stdout, stderr*/ ){
 			test.equal( null, err );
 			
 			test.ok( grunt.file.exists( path.join( __dirname, 'test_node_modules', 'nodeunit' ) ) );
@@ -325,9 +313,7 @@ module.exports.installTests = {
 		exec( 'node ../bin/ynpm-cli.js install spec:nodeunit@0.9.0', {
 			cwd: __dirname,
 			env: env
-		}, function( err, stdout, stderr ){
-			console.log( stderr );
-			console.log( stdout );
+		}, function( err /*stdout, stderr*/ ){
 			test.equal( null, err );
 			
 			test.ok( grunt.file.exists( path.join( __dirname, 'spec_node_modules', 'nodeunit' ) ) );

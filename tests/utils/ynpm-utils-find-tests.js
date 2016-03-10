@@ -34,14 +34,14 @@ var path = require( 'path' );
 module.exports.setUp = function( callback ){
 	// Tests don't require npm
 		
-	ynpm_utils = require( '../../lib/utils/ynpm-utils' )( { 
+	ynpm_utils = require( '../../lib/utils/ynpm-utils' )( require( '../../lib/utils/config' )( { 
             orgs: {
                 '': './node_modules',
                 '*': path.resolve( __dirname, '../test-orgs/*' ),
                 'other': path.resolve( __dirname, '../test-other-org' )
             },
             loose_semver: true
-        }, { /* npm */ } );
+        } ), { /* npm */ } );
 	callback( );
 };
 

@@ -55,7 +55,8 @@ module.exports.configTests = {
 				loose_semver: false,
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
-				npmconfig: {}
+				aliases: [],
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with out YEARN_CONFIG env variable set.'
 		);
@@ -83,7 +84,8 @@ module.exports.configTests = {
 				loose_semver: false,
 				orgs: { '': './node_modules', 'other': 'something' },
 				delimiters: { org: ':', semver: '@', file: '/' },
-				npmconfig: {}
+				aliases: [],
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with out YEARN_CONFIG env variable set.'
 		);
@@ -113,11 +115,55 @@ module.exports.configTests = {
 				loose_semver: false,
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
-				npmconfig: {}
+				aliases: [],
+				npmconfig: { loglevel: 'silent' }
 			}, 'Iniailizing config with YEARN_CONFIG env variable set.'
 		);
 		
 		grunt.file.delete( process.env.YEARN_CONFIG );
+		
+		unit.done();
+	},
+	
+	initializeWithMultipleYEARN_CONFIG: function( unit ){
+		
+		process.env.YEARN_CONFIG = path.resolve( __dirname, 'TEST_YEARN_CONFIG_1.json') + path.delimiter + path.resolve( __dirname, 'TEST_YEARN_CONFIG_2.json');
+
+		var environment_config_1 = {
+			logger: 'log4js',
+			aliases: [
+				{ from: { module: 'module1' }, to: { module: 'module2' } }
+			]
+		};
+
+		var environment_config_2 = {
+			logger: 'other'
+		};
+		
+		grunt.file.write( path.resolve( __dirname, 'TEST_YEARN_CONFIG_1.json'), JSON.stringify( environment_config_1 ) );
+		grunt.file.write( path.resolve( __dirname, 'TEST_YEARN_CONFIG_2.json'), JSON.stringify( environment_config_2 ) );
+		
+		unit.deepEqual( 
+			config.initialize( ), 
+			{ 
+				logger: 'other',
+				init_type: 'LAZY',
+				load_missing: false,
+				legacy: false,
+				override: true,
+				prompt: 'ynode> ',
+				loose_semver: false,
+				orgs: { '': './node_modules' },
+				delimiters: { org: ':', semver: '@', file: '/' },
+				aliases: [
+					{ from: { module: 'module1' }, to: { module: 'module2' } }
+				],
+				npmconfig: { loglevel: 'silent' }
+			}, 'Iniailizing config with YEARN_CONFIG env variable set.'
+		);
+		
+		grunt.file.delete( path.resolve( __dirname, 'TEST_YEARN_CONFIG_1.json') );
+		grunt.file.delete( path.resolve( __dirname, 'TEST_YEARN_CONFIG_2.json') );
 		
 		unit.done();
 	},
@@ -137,7 +183,8 @@ module.exports.configTests = {
 				loose_semver: false,
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
-				npmconfig: {}
+				aliases: [],
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with YEARN_CONFIG env variable set to bad path.'
 		);
@@ -160,7 +207,8 @@ module.exports.configTests = {
 				loose_semver: false,
 				orgs: { '': './node_modules', 'other': 'something' },
 				delimiters: { org: ':', semver: '@', file: '/' },
-				npmconfig: {}
+				aliases: [],
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with simple YEARN_OVERRIDE_ORGS env variable set.'
 		);
@@ -183,7 +231,8 @@ module.exports.configTests = {
 				loose_semver: false,
 				orgs: { '': 'new' },
 				delimiters: { org: ':', semver: '@', file: '/' },
-				npmconfig: {}
+				aliases: [],
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with default YEARN_OVERRIDE_ORGS env variable set.'
 		);
@@ -206,7 +255,8 @@ module.exports.configTests = {
 				loose_semver: false,
 				orgs: { '': './node_modules' },
 				delimiters: { org: ':', semver: '@', file: '/' },
-				npmconfig: {}
+				aliases: [],
+				npmconfig: { loglevel: 'silent' }
 			}, 
 			'Iniailizing config with bad YEARN_OVERRIDE_ORGS env variable set.'
 		);
