@@ -43,7 +43,8 @@ module.exports = function( grunt ){
 				'tests/yearn-legacy-tests.js',
 			    'tests/yearn-logger-tests.js',
 			    'tests/yearn-override-tests.js',
-			    'tests/yearn-override-function-tests.js'
+			    'tests/yearn-override-function-tests.js',
+				'tests/yearn-alias-tests.js',
 			],
 			logger: [
 			    'tests/yearn-logger-tests.js'
