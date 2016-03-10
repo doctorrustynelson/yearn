@@ -134,7 +134,7 @@ module.exports.orgsTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    'YEARN_CONFIG is not defined.  Using default config.'
+			    'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '"" -> ./node_modules' 
@@ -154,7 +154,7 @@ module.exports.orgsTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    'YEARN_CONFIG is not defined.  Using default config.'
+			    'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '"" -> ./node_modules' 
@@ -174,7 +174,7 @@ module.exports.orgsTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    'YEARN_CONFIG is not defined.  Using default config.'
+			    'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '"" -> ./node_modules' 
@@ -194,7 +194,7 @@ module.exports.orgsTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    'YEARN_CONFIG was not found at ' + env.YEARN_CONFIG + '.  Using default config.'
+			    'YEARN_CONFIG was not found at ' + env.YEARN_CONFIG + '.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '"" -> ./node_modules' 

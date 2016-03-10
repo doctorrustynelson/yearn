@@ -40,7 +40,7 @@ module.exports.versionTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    //'YEARN_CONFIG is not defined.  Using default config.'
+			    //'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '' + process.version
@@ -56,7 +56,7 @@ module.exports.versionTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    //'YEARN_CONFIG is not defined.  Using default config.'
+			    //'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '' + process.version
@@ -75,7 +75,7 @@ module.exports.yearnVersionTests = {
 		}, function( err, stdout, stderr ){
 			test.equal( null, err );
 			test.deepEqual( [
-			    //'YEARN_CONFIG is not defined.  Using default config.'
+			    //'YEARN_CONFIG is not defined.'
 			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
 			test.deepEqual( [
  			    '' + JSON.parse( fs.readFileSync( path.join( __dirname, '..', 'package.json' ) ) ).version
