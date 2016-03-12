@@ -263,4 +263,28 @@ module.exports.configTests = {
 		
 		unit.done();
 	},
+	
+	initializeWithSimpleYEARN_OVERRIDE_ALIASES: function( unit ){
+		process.env.YEARN_OVERRIDE_ALIASES = '[ { "from": { "module": "other" }, "to": { "module": "something" } } ]';
+		
+		unit.deepEqual( 
+			config.initialize( ), 
+			{ 
+				logger: 'default',
+				init_type: 'LAZY',
+				load_missing: false,
+				legacy: false,
+				override: true,
+				prompt: 'ynode> ',
+				loose_semver: false,
+				orgs: { '': './node_modules' },
+				delimiters: { org: ':', semver: '@', file: '/' },
+				aliases: [ { from: { module: 'other' }, to: { module: 'something' } } ],
+				npmconfig: { loglevel: 'silent' }
+			}, 
+			'Iniailizing config with simple YEARN_OVERRIDE_ORGS env variable set.'
+		);
+		
+		unit.done();
+	},
 };
