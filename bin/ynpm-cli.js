@@ -69,6 +69,43 @@ commander
 			} );
 		} );
 	} );
+	
+commander
+	.command( 'installLegacy [modules...]' )
+	.description( 'Directly install modules from npm.' )
+	.action( function( modules ){
+		var cwd = process.cwd;
+		
+		if( modules.length === 0 ){
+			LOGGER.info( 'Installing modules specified in package.json.' );
+			var package_json_location = yutils.findPackageJsonLocation( undefined, this );
+			
+			var contents = JSON5.parse( fs.readFileSync( package_json_location, 'utf8' ) );
+			
+			var dependencies = _.merge(
+                {},
+				contents.dependencies,
+				contents.devDependencies,
+				contents.optionalDependencies
+			);
+			
+			modules = Object.keys( dependencies ).map( function( module ){
+				return module + '@' + dependencies[ module ];
+			} );
+			
+			cwd = path.dir( package_json_location );
+		}
+		
+		modules.forEach( function( module ){
+			ynpm.commands.installLegacy( module, cwd, function( err ){
+				if( err !== null ){
+					LOGGER.warn( 'Failed to install ' + module + '.' );
+				} else {
+					LOGGER.info( 'Module ' + module + ' correctly installed.' );
+				}
+			} );
+		} );
+	} );
 
 commander
 	.command( 'orgs' )
