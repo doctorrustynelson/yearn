@@ -76,6 +76,16 @@ module.exports.installToDirTests = {
 			unit.done();
 		} );
 	},
+	
+	installBadDir: function( unit ){
+		
+		var tempdir = '/a/bad/dir';
+		
+		npm_utils.installToDir( 'lodash', tempdir, {}, function( err ){
+			unit.notEqual( err, null, 'Error on callback.' );
+			unit.done();
+		} );
+	},
 		
 	installAnyLodash: function( unit ){
 		
