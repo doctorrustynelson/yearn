@@ -10,7 +10,7 @@ var path = require( 'path' );
 
 var version = require( '../package.json' ).version;
 var config = require( '../lib/utils/config' ).initialize( );
-var ynpm = null;
+var ynpm = require( '../lib/ynpm' )( config );
 var yutils = require( '../lib/utils/yearn-utils' )( config );
 var LOGGER = require( '../lib/utils/logger' ).getLOGGER( config.logger );
 
@@ -154,12 +154,5 @@ commander
 		console.log( arguments );
 	} );
 
-// Initialize ynpm and process arguments
-require( '../lib/ynpm' )( config, function( err, initialized_ynpm ){
-	if( err === null ){
-		ynpm = initialized_ynpm;
-		commander.parse( process.argv );
-	} else {
-		console.log( 'Error intializing YNPM' );
-	}
-} );
+
+commander.parse( process.argv );
