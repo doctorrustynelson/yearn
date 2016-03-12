@@ -287,4 +287,28 @@ module.exports.configTests = {
 		
 		unit.done();
 	},
+	
+	initializeWithBadYEARN_OVERRIDE_ALIASES: function( unit ){
+		process.env.YEARN_OVERRIDE_ALIASES = 'not a json5 object';
+		
+		unit.deepEqual( 
+			config.initialize( ), 
+			{ 
+				logger: 'default',
+				init_type: 'LAZY',
+				load_missing: false,
+				legacy: false,
+				override: true,
+				prompt: 'ynode> ',
+				loose_semver: false,
+				orgs: { '': './node_modules' },
+				delimiters: { org: ':', semver: '@', file: '/' },
+				aliases: [],
+				npmconfig: { loglevel: 'silent' }
+			}, 
+			'Iniailizing config with bad YEARN_OVERRIDE_ORGS env variable set.'
+		);
+		
+		unit.done();
+	},
 };
