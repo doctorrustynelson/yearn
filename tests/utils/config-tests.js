@@ -37,6 +37,7 @@ module.exports.configTests = {
 	tearDown: function( callback ){
 		delete process.env.YEARN_CONFIG;
         delete process.env.YEARN_OVERRIDE_ORGS;
+		delete process.env.YEARN_OVERRIDE_ALIASES;
 		callback();
 	},
 		
