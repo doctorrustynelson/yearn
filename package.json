@@ -28,7 +28,7 @@
 		"ynode": "./bin/ynode.js"
 	},
 	"scripts": {
-		"ci": "istanbul cover --preload-sources -x **/bin/** -x **/tests/** -x **/tasks/** -x Gruntfile.js -v --print both grunt && grunt coveralls",
+		"ci": "istanbul cover --preload-sources -x **/bin/** -x **/tests/** -x **/tasks/** -x Gruntfile.js -v --print both grunt --stack && grunt coveralls",
 		"test": "grunt test",
 		"ynode": "node ./bin/ynode.js",
 		"ynpm": "./bin/ynpm-cli.js"
