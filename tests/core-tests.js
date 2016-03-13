@@ -65,8 +65,8 @@ module.exports.determineYearningPathTests = {
 	legacyFileYearning: function( test ){
 		
 		core.init( require( '../lib/utils/config' )( { orgs: { '': path.resolve( __dirname, 'node_modules' ), 'test': path.resolve( __dirname, 'node_modules' ) }, legacy: true } ) );	
-		var result = core.determineYearningPath( { module: 'log4js', file: 'package.json' }, { id: path.resolve( __dirname, '..', 'package.json' ) } );
-		test.equal( result, path.resolve( __dirname, '..', 'node_modules', 'log4js', 'package.json' ) );
+		var result = core.determineYearningPath( { module: 'npm', file: 'package.json' }, { id: path.resolve( __dirname, '..', 'package.json' ) } );
+		test.equal( result, path.resolve( __dirname, '..', 'node_modules', 'npm', 'package.json' ) );
 		
 		test.done(  );
 	},

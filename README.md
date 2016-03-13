@@ -5,7 +5,6 @@
 ![NPM Downloads](https://img.shields.io/npm/dm/yearn.svg)
 
 [![Dependencies](https://img.shields.io/david/doctorrustynelson/yearn.svg)](https://david-dm.org/doctorrustynelson/yearn#info=dependencies)
-[![Optional Dependencies](https://david-dm.org/doctorrustynelson/yearn/optional-status.svg)](https://david-dm.org/doctorrustynelson/yearn#info=optionalDependencies)
 [![Dev Dependencies](https://img.shields.io/david/dev/doctorrustynelson/yearn.svg)](https://david-dm.org/doctorrustynelson/yearn#info=devDependencies)
 
 [![Build Status](https://img.shields.io/travis/doctorrustynelson/yearn/master.svg)](http://travis-ci.org/doctorrustynelson/yearn)
@@ -62,7 +61,6 @@ YEARN_CONFIG is an evironment variable that is read when ever ynode and ynpm are
 
 	var yearn = require( 'yearn' )({
 		orgs: { '', './node_modules' },
-		logger: 'default',
 		override: true,
 		prompt: 'ynode> ',
 		delimiters: {
@@ -70,6 +68,8 @@ YEARN_CONFIG is an evironment variable that is read when ever ynode and ynpm are
 			semver: '@',
 			file: '/'
 		},
+		aliases: [
+		],
 		npmconfig: {
 		}
 	});
@@ -90,11 +90,7 @@ YEARN_CONFIG is an evironment variable that is read when ever ynode and ynpm are
 	
 		// require looking in '//some/other/location/module2' for a version specified in the package.json for module2.
 		var other_modules = require( 'other:module2' );
-   
-+ __logger__: As of yearn 0.2.0, yearn has no built in logger.  This option allows for bootstrapping loggers.  The suggested logger is [log4js](https://www.npmjs.com/package/log4js).  Any logger can be supported as long as it can be instantiated with the line `require( config.logger ).getLogger( 'yearn|ynpm' );`  Note: the setup of any optional logger will happen after setting up yearn so the logger must be installed in a way that the possibly overridden require will work.
-   
-   + `'default'`: no logging (default).
-   + `'${other logger}'`: user specified logger.
+  
 
 + __override__: This boolean specifies if yearn should override Node's require mechanism or should only return the yearn functionality.  Additionaly if a function is provided than yearn will ignore all of it's default functionality and override require with that functionality instead.
 
@@ -107,6 +103,26 @@ YEARN_CONFIG is an evironment variable that is read when ever ynode and ynpm are
    + __org__: the separator between an org and module (defaults to `:`).
    + __semver__: the separator between a module and the desired semver to match (defaults to `@`).
    + __file__: the separator to determine the path to find the file within the found module (defaults to `/`).
+
++ __aliases__: This option allows for globally mapping whole orgs, specific modules or even specific versions of modules to other orgs, modules or versions.  These aliases not only affect runtime but also are applied when installing new modules via ynpm.
+
+   Example:
+   
+		var yearn = require( 'yearn' )({
+			orgs: { 
+				'', '//usr/bin/default_node_modules_location' 
+				'other_loc': '//some/other/location'	
+			},
+			aliases: [
+				{
+					from: { org: 'other_loc' },
+					to: { org: '' }
+				},{
+					from: { module: 'nodeunit', version: '<0.9.0' },
+					to: { module: 'nodeunit', version: '^0.9.1' }
+				}		
+			]
+		});
 
 + __npmconfig__: This option only pertains to ynpm.  This object can be populated with parameters that ynpm should initialize it's internal npm library with when it executes npm commands. 
 
@@ -124,9 +140,9 @@ ynpm is a small wrapper around some of npm's functionality.  This script can be 
 
 + `ynpm help`: Print the ynpm usage information.
 
-+ `ynpm install [modules...]`: Install modules from npm to the flattened yearn structure.
++ `ynpm install [module]`: Search for and list all available versions of the module.
 
-+ `ynpm npmconfig [args]`(IN DEVELOPMENT): Manage npm configuration.
++ `ynpm list [args]`(IN DEVELOPMENT): Manage npm configuration.
 
 + `ynpm orgs`: Print the current orgs as specified by the YEARN_CONFIG.
 

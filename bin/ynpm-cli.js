@@ -12,7 +12,6 @@ var version = require( '../package.json' ).version;
 var config = require( '../lib/utils/config' ).initialize( );
 var ynpm = require( '../lib/ynpm' )( config );
 var yutils = require( '../lib/utils/yearn-utils' )( config );
-var LOGGER = require( '../lib/utils/logger' ).getLOGGER( config.logger );
 
 // Set version number
 commander
@@ -42,7 +41,7 @@ commander
 	.description( 'Install modules from npm to the flattened yearn structure.' )
 	.action( function( modules ){
 		if( modules.length === 0 ){
-			LOGGER.info( 'Installing modules specified in package.json.' );
+			console.info( 'Installing modules specified in package.json.' );
 			var package_json_location = yutils.findPackageJsonLocation( undefined, this );
 			
 			var contents = JSON5.parse( fs.readFileSync( package_json_location, 'utf8' ) );
@@ -62,9 +61,9 @@ commander
 		modules.forEach( function( module ){
 			ynpm.commands.install( module, commander.noalias, function( err ){
 				if( err !== null ){
-					LOGGER.warn( 'Failed to install ' + module + '.' );
+					console.warn( 'Failed to install ' + module + '.' );
 				} else {
-					LOGGER.info( 'Module ' + module + ' correctly installed.' );
+					console.info( 'Module ' + module + ' correctly installed.' );
 				}
 			} );
 		} );
@@ -77,7 +76,7 @@ commander
 		var cwd = process.cwd;
 		
 		if( modules.length === 0 ){
-			LOGGER.info( 'Installing modules specified in package.json.' );
+			console.info( 'Installing modules specified in package.json.' );
 			var package_json_location = yutils.findPackageJsonLocation( undefined, this );
 			
 			var contents = JSON5.parse( fs.readFileSync( package_json_location, 'utf8' ) );
@@ -99,9 +98,9 @@ commander
 		modules.forEach( function( module ){
 			ynpm.commands.installLegacy( module, cwd, function( err ){
 				if( err !== null ){
-					LOGGER.warn( 'Failed to install ' + module + '.' );
+					console.warn( 'Failed to install ' + module + '.' );
 				} else {
-					LOGGER.info( 'Module ' + module + ' correctly installed.' );
+					console.info( 'Module ' + module + ' correctly installed.' );
 				}
 			} );
 		} );
