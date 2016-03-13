@@ -31,11 +31,7 @@
 var path = require( 'path' );
 var yearn = null;
 
-module.exports.setUp = function( callback ){
-	process.env.LOG4JS_CONFIG = path.resolve( __dirname, './test-configs/test-log4js-config.json' );
-	
-	//var logger = require( 'log4js' ).getLogger( 'yearn' );
-	
+module.exports.setUp = function( callback ){	
 	try {
 		yearn = require( '../lib/yearn' )({ 
 			orgs: { 
@@ -50,13 +46,10 @@ module.exports.setUp = function( callback ){
 		console.log( exception, exception.stack.split( '\n' ) );
 	}
 	
-	//yearn.setLogger( logger );
-	
 	callback( );
 };
 
 module.exports.tearDown = function( callback ){
-	process.env.LOG4JS_CONFIG = undefined;
 	yearn.revert( );
 	
 	//wipe the cache of all yearn test node_modules

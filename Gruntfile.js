@@ -44,13 +44,9 @@ module.exports = function( grunt ){
 				'tests/yearn-dependency-tests.js',
 				'tests/yearn-loose-semver-tests.js',
 				'tests/yearn-legacy-tests.js',
-			    'tests/yearn-logger-tests.js',
 			    'tests/yearn-override-tests.js',
 			    'tests/yearn-override-function-tests.js',
 				'tests/yearn-alias-tests.js',
-			],
-			logger: [
-			    'tests/yearn-logger-tests.js'
 			],
             config: [
                 'tests/utils/config-tests.js'

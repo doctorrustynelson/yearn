@@ -47,7 +47,6 @@ module.exports.configTests = {
 		unit.deepEqual( 
 			config.initialize( ), 
 			{ 
-				logger: 'default',
 				init_type: 'LAZY',
 				load_missing: false,
 				legacy: false,
@@ -76,7 +75,6 @@ module.exports.configTests = {
                 }
             } ), 
 			{ 
-				logger: 'default',
 				init_type: 'LAZY',
 				load_missing: false,
 				legacy: false,
@@ -99,7 +97,7 @@ module.exports.configTests = {
 		process.env.YEARN_CONFIG = path.resolve( __dirname, 'TEST_YEARN_CONFIG.json');
 
 		var environment_config = {
-			logger: 'log4js'
+			init_type: 'ACTIVE'
 		};
 		
 		grunt.file.write( process.env.YEARN_CONFIG, JSON.stringify( environment_config ) );
@@ -107,8 +105,7 @@ module.exports.configTests = {
 		unit.deepEqual( 
 			config.initialize( ), 
 			{ 
-				logger: 'log4js',
-				init_type: 'LAZY',
+				init_type: 'ACTIVE',
 				load_missing: false,
 				legacy: false,
 				override: true,
@@ -131,14 +128,14 @@ module.exports.configTests = {
 		process.env.YEARN_CONFIG = path.resolve( __dirname, 'TEST_YEARN_CONFIG_1.json') + path.delimiter + path.resolve( __dirname, 'TEST_YEARN_CONFIG_2.json');
 
 		var environment_config_1 = {
-			logger: 'log4js',
+			init_type: 'ACTIVE',
 			aliases: [
 				{ from: { module: 'module1' }, to: { module: 'module2' } }
 			]
 		};
 
 		var environment_config_2 = {
-			logger: 'other'
+			init_type: 'other'
 		};
 		
 		grunt.file.write( path.resolve( __dirname, 'TEST_YEARN_CONFIG_1.json'), JSON.stringify( environment_config_1 ) );
@@ -146,9 +143,8 @@ module.exports.configTests = {
 		
 		unit.deepEqual( 
 			config.initialize( ), 
-			{ 
-				logger: 'other',
-				init_type: 'LAZY',
+			{
+				init_type: 'other',
 				load_missing: false,
 				legacy: false,
 				override: true,
@@ -175,7 +171,6 @@ module.exports.configTests = {
 		unit.deepEqual( 
 			config.initialize( ), 
 			{ 
-				logger: 'default',
 				init_type: 'LAZY',
 				load_missing: false,
 				legacy: false,
@@ -199,7 +194,6 @@ module.exports.configTests = {
 		unit.deepEqual( 
 			config.initialize( ), 
 			{ 
-				logger: 'default',
 				init_type: 'LAZY',
 				load_missing: false,
 				legacy: false,
@@ -223,7 +217,6 @@ module.exports.configTests = {
 		unit.deepEqual( 
 			config.initialize( ), 
 			{ 
-				logger: 'default',
 				init_type: 'LAZY',
 				load_missing: false,
 				legacy: false,
@@ -247,7 +240,6 @@ module.exports.configTests = {
 		unit.deepEqual( 
 			config.initialize( ), 
 			{ 
-				logger: 'default',
 				init_type: 'LAZY',
 				load_missing: false,
 				legacy: false,
@@ -271,7 +263,6 @@ module.exports.configTests = {
 		unit.deepEqual( 
 			config.initialize( ), 
 			{ 
-				logger: 'default',
 				init_type: 'LAZY',
 				load_missing: false,
 				legacy: false,
@@ -295,7 +286,6 @@ module.exports.configTests = {
 		unit.deepEqual( 
 			config.initialize( ), 
 			{ 
-				logger: 'default',
 				init_type: 'LAZY',
 				load_missing: false,
 				legacy: false,
