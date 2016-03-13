@@ -30,105 +30,59 @@
 
 var path = require( 'path' );
 
+var ynpm = require( '../lib/ynpm' )( { 
+	orgs: {
+		'': './node_modules',
+		'*': path.resolve( __dirname, 'test-orgs/*' ),
+		'other': path.resolve( __dirname, 'test-other-org' )
+	},
+	loose_semver: true
+} );
+
 module.exports.listCommandTests = {
 	
 	listJson5Test: function( test ){
-		
-		require( '../lib/ynpm' )( { 
-			orgs: {
-                '': './node_modules',
-                '*': path.resolve( __dirname, 'test-orgs/*' ),
-                'other': path.resolve( __dirname, 'test-other-org' )
-            },
-            loose_semver: true
-        }, function( err, ynpm ){
-			test.strictEqual( err, null, 'No errors on ynpm initialization' );
-		
-			ynpm.commands.list( 'json5', __dirname, false, function( err, list ){
-				test.strictEqual( err, null, 'No errors in list command.' );
-				test.deepEqual( list, [ 'other:json5@0.0.1' ] );
-				test.done();
-			} );
+	
+		ynpm.commands.list( 'json5', __dirname, false, function( err, list ){
+			test.strictEqual( err, null, 'No errors in list command.' );
+			test.deepEqual( list, [ 'other:json5@0.0.1' ] );
+			test.done();
 		} );
 	},
 	
 	listTestModule3Test: function( test ){
 		
-		require( '../lib/ynpm' )( { 
-			orgs: {
-                '': './node_modules',
-                '*': path.resolve( __dirname, 'test-orgs/*' ),
-                'other': path.resolve( __dirname, 'test-other-org' )
-            },
-            loose_semver: true
-        }, function( err, ynpm ){
-			test.strictEqual( err, null, 'No errors on ynpm initialization' );
-		
-			ynpm.commands.list( 'test-module-3', __dirname, false, function( err, list ){
-				test.strictEqual( err, null, 'No errors in list command.' );
-				test.deepEqual( list, [ 'test-module-3@1.1.0', 'test-module-3@2015.01.01-1' ] );
-				test.done();
-			} );
+		ynpm.commands.list( 'test-module-3', __dirname, false, function( err, list ){
+			test.strictEqual( err, null, 'No errors in list command.' );
+			test.deepEqual( list, [ 'test-module-3@1.1.0', 'test-module-3@2015.01.01-1' ] );
+			test.done();
 		} );
 	},
 	
 	listATest: function( test ){
 		
-		require( '../lib/ynpm' )( { 
-			orgs: {
-                '': './node_modules',
-                '*': path.resolve( __dirname, 'test-orgs/*' ),
-                'other': path.resolve( __dirname, 'test-other-org' )
-            },
-            loose_semver: true
-        }, function( err, ynpm ){
-			test.strictEqual( err, null, 'No errors on ynpm initialization' );
-		
-			ynpm.commands.list( 'A', __dirname, false, function( err, list ){
-				test.strictEqual( err, null, 'No errors in list command.' );
-				test.deepEqual( list, [ 'alphabet:A@0.0.1', 'alphabet:A@0.0.2', 'alphabet:A@0.1.0' ] );
-				test.done();
-			} );
+		ynpm.commands.list( 'A', __dirname, false, function( err, list ){
+			test.strictEqual( err, null, 'No errors in list command.' );
+			test.deepEqual( list, [ 'alphabet:A@0.0.1', 'alphabet:A@0.0.2', 'alphabet:A@0.1.0' ] );
+			test.done();
 		} );
 	},
     
     listAWithRangeTest: function( test ){
 		
-		require( '../lib/ynpm' )( { 
-			orgs: {
-                '': './node_modules',
-                '*': path.resolve( __dirname, 'test-orgs/*' ),
-                'other': path.resolve( __dirname, 'test-other-org' )
-            },
-            loose_semver: true
-        }, function( err, ynpm ){
-			test.strictEqual( err, null, 'No errors on ynpm initialization' );
-		
-			ynpm.commands.list( 'A@>=0.0.5', __dirname, false, function( err, list ){
-				test.strictEqual( err, null, 'No errors in list command.' );
-				test.deepEqual( list, [ 'alphabet:A@0.1.0' ] );
-				test.done();
-			} );
+		ynpm.commands.list( 'A@>=0.0.5', __dirname, false, function( err, list ){
+			test.strictEqual( err, null, 'No errors in list command.' );
+			test.deepEqual( list, [ 'alphabet:A@0.1.0' ] );
+			test.done();
 		} );
 	},
     
     listBWithOrgTest: function( test ){
 		
-		require( '../lib/ynpm' )( { 
-			orgs: {
-                '': './node_modules',
-                '*': path.resolve( __dirname, 'test-orgs/*' ),
-                'other': path.resolve( __dirname, 'test-other-org' )
-            },
-            loose_semver: true
-        }, function( err, ynpm ){
-			test.strictEqual( err, null, 'No errors on ynpm initialization' );
-		
-			ynpm.commands.list( 'alphabet:B', __dirname, false, function( err, list ){
-				test.strictEqual( err, null, 'No errors in list command.' );
-				test.deepEqual( list, [ 'alphabet:B@0.0.1', 'alphabet:B@0.0.2', 'alphabet:B@0.1.0' ] );
-				test.done();
-			} );
+		ynpm.commands.list( 'alphabet:B', __dirname, false, function( err, list ){
+			test.strictEqual( err, null, 'No errors in list command.' );
+			test.deepEqual( list, [ 'alphabet:B@0.0.1', 'alphabet:B@0.0.2', 'alphabet:B@0.1.0' ] );
+			test.done();
 		} );
 	},
 };

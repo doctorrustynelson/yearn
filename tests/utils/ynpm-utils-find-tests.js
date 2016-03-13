@@ -41,7 +41,7 @@ module.exports.setUp = function( callback ){
                 'other': path.resolve( __dirname, '../test-other-org' )
             },
             loose_semver: true
-        } ), { /* npm */ } );
+        } ) );
 	callback( );
 };
 

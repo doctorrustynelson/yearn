@@ -32,6 +32,9 @@ module.exports = function( grunt ){
 			utils: [
 			     'tests/utils/*utils-tests.js'           
 			],
+			npm: [
+			     'tests/utils/npm-utils-tests.js'           
+			],
 			ynpm: [
 			    'tests/ynpm-tests.js',
                 'tests/ynpm-list-tests.js'

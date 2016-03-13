@@ -34,81 +34,77 @@ module.exports.shrinkwrapCommandTests = {
 	
 	'D v 0.1.0': function( test ){
 		
-		require( '../lib/ynpm' )( { 
+		var ynpm = require( '../lib/ynpm' )( { 
 			orgs: {
                 '': './node_modules',
                 '*': path.resolve( __dirname, 'test-orgs/*' ),
                 'other': path.resolve( __dirname, 'test-other-org' )
             },
             loose_semver: true
-        }, function( err, ynpm ){
-			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+        } );
         
-			ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.1.0' ) , {}, false, function( err, shrinkwrap ){
-				test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
-				test.deepEqual( shrinkwrap, {
-                    'version': '0.1.0',
-                    'dependencies': {
-                            'alphabet:C': {
-                                    'version': '0.0.1',
-                                    'dependencies': {
-                                            'alphabet:A': '0.1.0'
-                                    }
-                            },
-                            'alphabet:B': {
-                                    'version': '0.1.0',
-                                    'dependencies': {
-                                            'alphabet:A': '0.0.2'
-                                    }
-                            }
-                    },
-                    'name': 'D'
-                } );
-				test.done();
+		ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.1.0' ) , {}, false, function( err, shrinkwrap ){
+			test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
+			test.deepEqual( shrinkwrap, {
+				'version': '0.1.0',
+				'dependencies': {
+						'alphabet:C': {
+								'version': '0.0.1',
+								'dependencies': {
+										'alphabet:A': '0.1.0'
+								}
+						},
+						'alphabet:B': {
+								'version': '0.1.0',
+								'dependencies': {
+										'alphabet:A': '0.0.2'
+								}
+						}
+				},
+				'name': 'D'
 			} );
+			test.done();
 		} );
 	},
 	
 	'D v 0.0.2 no Alias': function( test ){
 		
-		require( '../lib/ynpm' )( { 
+		var ynpm = require( '../lib/ynpm' )( { 
 			orgs: {
                 '': './node_modules',
                 '*': path.resolve( __dirname, 'test-orgs/*' ),
                 'other': path.resolve( __dirname, 'test-other-org' )
             },
             loose_semver: true
-        }, function( err, ynpm ){
-			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+        } );
         
-			ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.0.2' ) , {}, false, function( err, shrinkwrap ){
-				test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
-				test.deepEqual( shrinkwrap, {
-                    'version': '0.0.2',
-                    'dependencies': {
-                            'alphabet:C': {
-                                    'version': '0.0.1',
-                                    'dependencies': {
-                                            'alphabet:A': '0.0.1'
-                                    }
-                            },
-                            'alphabet:B': {
-                                    'version': '0.0.1',
-                                    'dependencies': {
-                                            'alphabet:A': '0.0.1'
-                                    }
-                            }
-                    },
-                    'name': 'D'
-                } );
-				test.done();
+		ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.0.2' ) , {}, false, function( err, shrinkwrap ){
+			test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
+			test.deepEqual( shrinkwrap, {
+				'version': '0.0.2',
+				'dependencies': {
+						'alphabet:C': {
+								'version': '0.0.1',
+								'dependencies': {
+										'alphabet:A': '0.0.1'
+								}
+						},
+						'alphabet:B': {
+								'version': '0.0.1',
+								'dependencies': {
+										'alphabet:A': '0.0.1'
+								}
+						}
+				},
+				'name': 'D'
 			} );
+			test.done();
 		} );
 	},
 	
 	'D v 0.0.2 alias B -> A': function( test ){
 		
-		require( '../lib/ynpm' )( { 
+		var ynpm = require( '../lib/ynpm' )( { 
 			orgs: {
                 '': './node_modules',
                 '*': path.resolve( __dirname, 'test-orgs/*' ),
@@ -121,26 +117,24 @@ module.exports.shrinkwrapCommandTests = {
 				}
 			],
             loose_semver: true
-        }, function( err, ynpm ){
-			test.strictEqual( err, null, 'No errors on ynpm initialization' );
+        } );
         
-			ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.0.2' ) , {}, false, function( err, shrinkwrap ){
-				test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
-				test.deepEqual( shrinkwrap, {
-                    'version': '0.0.2',
-                    'dependencies': {
-                            'alphabet:C': '0.0.1',
-                            'alphabet:B': {
-                                    'version': '0.0.1',
-                                    'dependencies': {
-                                            'alphabet:A': '0.0.1'
-                                    }
-                            }
-                    },
-                    'name': 'D'
-                } );
-				test.done();
+		ynpm.commands.shrinkwrap( path.resolve( __dirname, './test-orgs/alphabet/D/0.0.2' ) , {}, false, function( err, shrinkwrap ){
+			test.strictEqual( err, null, 'No errors in shrinkwrap command.' );
+			test.deepEqual( shrinkwrap, {
+				'version': '0.0.2',
+				'dependencies': {
+						'alphabet:C': '0.0.1',
+						'alphabet:B': {
+								'version': '0.0.1',
+								'dependencies': {
+										'alphabet:A': '0.0.1'
+								}
+						}
+				},
+				'name': 'D'
 			} );
+			test.done();
 		} );
 	},
 };
