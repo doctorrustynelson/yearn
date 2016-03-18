@@ -33,6 +33,7 @@ var fs = require( 'fs' );
 var grunt = require( 'grunt' );
 var exec = require( 'child_process' ).exec;
 var JSON5 = require( 'json5' );
+var temp = require( 'temp' );
 
 module.exports.checkTests = {
 	
@@ -241,7 +242,7 @@ module.exports.installTests = {
 		exec( 'node ../bin/ynpm-cli.js install lodash@2.4.0', {
 			cwd: __dirname,
 			env: env
-		}, function( err /*stdout, stderr*/ ){
+		}, function( err ){
 			test.equal( null, err );
 			
 			test.ok( grunt.file.exists( path.join( __dirname, 'test_node_modules', 'lodash' ) ) );
@@ -261,7 +262,7 @@ module.exports.installTests = {
 		exec( 'node ../bin/ynpm-cli.js install lodash', {
 			cwd: __dirname,
 			env: env
-		}, function( err /*stdout, stderr*/ ){
+		}, function( err ){
 			test.equal( null, err );
 			
 			test.ok( grunt.file.exists( path.join( __dirname, 'test_node_modules', 'lodash' ) ) );
@@ -279,7 +280,7 @@ module.exports.installTests = {
 		exec( 'node ../bin/ynpm-cli.js install nodeunit@0.9.0', {
 			cwd: __dirname,
 			env: env
-		}, function( err /*stdout, stderr*/ ){
+		}, function( err ){
 			test.equal( null, err );
 			
 			test.ok( grunt.file.exists( path.join( __dirname, 'test_node_modules', 'nodeunit' ) ) );
@@ -300,7 +301,7 @@ module.exports.installTests = {
 		exec( 'node ../bin/ynpm-cli.js install spec:nodeunit@0.9.0', {
 			cwd: __dirname,
 			env: env
-		}, function( err /*stdout, stderr*/ ){
+		}, function( err ){
 			test.equal( null, err );
 			
 			test.ok( grunt.file.exists( path.join( __dirname, 'spec_node_modules', 'nodeunit' ) ) );
@@ -317,4 +318,54 @@ module.exports.installTests = {
 			test.done();
 		} );
 	},
+};
+
+module.exports.installLegacyTests = {
+	
+	installLodash: function( test ){
+		
+		var env = JSON.parse( JSON.stringify( process.env ) );
+		env.YEARN_CONFIG = path.join( __dirname, 'test-configs', 'default-test-config.json5' );
+		var tempdir = temp.mkdirSync( );
+		
+		exec( `node ${ path.resolve( __dirname, '../bin/ynpm-cli.js' ) } installLegacy lodash@2.4.0`, {
+			cwd: tempdir,
+			env: env
+		}, function( err ){
+			test.equal( null, err, 'No error on return.' );
+			
+			test.ok( grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash' ) ), 'lodash node_module exists.' );
+			test.ok( grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash', 'package.json' ) ), 'lodash package.json exists.' );
+			test.ok( !grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash', '2.4.0' ) ), 'lodash version folder does not exist.' );
+			test.ok( !grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash', '2.4.0', 'package.json' ) ), 'lodash package.json not under version folder.' );
+			
+			grunt.file.delete( path.join( __dirname, 'test_node_modules' ), { force: true } );
+			grunt.file.delete( tempdir, { force: true } );
+			test.done();
+		} );
+	},
+	
+	installViaPackageJson: function( test ){
+		
+		var env = JSON.parse( JSON.stringify( process.env ) );
+		env.YEARN_CONFIG = path.join( __dirname, 'test-configs', 'default-test-config.json5' );
+		var tempdir = temp.mkdirSync( );
+		grunt.file.write( path.join( tempdir, 'package.json' ), '{ dependencies: { lodash: "2.4.0" } }' );
+		
+		exec( `node ${ path.resolve( __dirname, '../bin/ynpm-cli.js' ) } installLegacy`, {
+			cwd: tempdir,
+			env: env
+		}, function( err ){
+			test.equal( null, err, 'No error on return.' );
+			
+			test.ok( grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash' ) ), 'lodash node_module exists.' );
+			test.ok( grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash', 'package.json' ) ), 'lodash package.json exists.' );
+			test.ok( !grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash', '2.4.0' ) ), 'lodash version folder does not exist.' );
+			test.ok( !grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash', '2.4.0', 'package.json' ) ), 'lodash package.json not under version folder.' );
+			
+			grunt.file.delete( path.join( __dirname, 'test_node_modules' ), { force: true } );
+			grunt.file.delete( tempdir, { force: true } );
+			test.done();
+		} );
+	}
 };

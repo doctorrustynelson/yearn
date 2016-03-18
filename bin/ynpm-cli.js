@@ -73,7 +73,7 @@ commander
 	.command( 'installLegacy [modules...]' )
 	.description( 'Directly install modules from npm.' )
 	.action( function( modules ){
-		var cwd = process.cwd;
+		var cwd = process.cwd();
 		
 		if( modules.length === 0 ){
 			console.info( 'Installing modules specified in package.json.' );
@@ -92,7 +92,7 @@ commander
 				return module + '@' + dependencies[ module ];
 			} );
 			
-			cwd = path.dir( package_json_location );
+			cwd = path.dirname( package_json_location );
 		}
 		
 		modules.forEach( function( module ){
