@@ -147,7 +147,7 @@ commander
 commander
     .command( 'runGlobal <module> [options_string]' )
     .description( 'Runs a global script.' )
-    .option( '-c, --cmd [cmd]', "Name of the command to run if there are multiple in the module." )
+    .option( '-c, --cmd [cmd]', 'Name of the command to run if there are multiple in the module.' )
     .action( ( module, options_string, options ) => {
         var yearn = require( '../lib/yearn' )( { override: false } );
         var pkg = yearn( `${module}/package.json` );
@@ -157,7 +157,7 @@ commander
             options.cmd = commands[ 0 ];
         }
         
-        if( commands.length != 1 && options.cmd === undefined ){
+        if( commands.length !== 1 && options.cmd === undefined ){
             console.error( `Module ${module} contains multiple global scripts please specify one via the --cmd option.` );
             process.exit( 1 );
         }
@@ -180,7 +180,7 @@ commander
         
         child.on( 'close', (code) => {
             process.exit( code );
-        } )
+        } );
     } );
     
 commander
