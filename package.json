@@ -36,12 +36,13 @@
 	"dependencies": {
 		"async": "1.5.x",
 		"commander": "2.9.x",
-		"fs-extra": "0.26.x",
+		"fs-extra": "0.28.x",
 		"json5": "0.5.x",
-		"lodash": "4.6.x",
+		"lodash": "4.11.x",
 		"npm": "3.8.x",
 		"semver": "5.1.x",
-		"temp": "0.8.x"
+		"temp": "0.8.x",
+		"which": "^1.2.4"
 	},
 	"devDependencies": {
 		"grunt": "^0.4.x",
