@@ -355,7 +355,7 @@ module.exports.installLegacyTests = {
 		exec( `node ${ path.resolve( __dirname, '../bin/ynpm-cli.js' ) } installLegacy`, {
 			cwd: tempdir,
 			env: env
-		}, function( err, stdout, stderr ){
+		}, function( err ){
 			test.equal( null, err, 'No error on return.' );
 
 			test.ok( grunt.file.exists( path.join( tempdir, 'node_modules', 'lodash' ) ), 'lodash node_module exists.' );
