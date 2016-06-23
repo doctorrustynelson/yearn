@@ -274,7 +274,6 @@ commander
 	.command( '*' )
 	.action( function( ){
 		console.log( 'Unrecognized ynpm command.  For more help using ynpm run "ynpm help".' );
-		console.log( arguments );
 	} );
 
 commander.parse( process.argv );
