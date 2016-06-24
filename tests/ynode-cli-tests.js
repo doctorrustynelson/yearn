@@ -64,6 +64,22 @@ module.exports.versionTests = {
 			test.done();
 		} );
 	},
+
+	shorthand2: function( test ){
+		
+		exec( 'node ../bin/ynode.js -v', {
+			cwd: __dirname
+		}, function( err, stdout, stderr ){
+			test.equal( null, err );
+			test.deepEqual( [
+			    //'YEARN_CONFIG is not defined.'
+			], stderr.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
+			test.deepEqual( [
+ 			    '' + process.version
+ 			], stdout.split( '\n' ).map( function( line ){ return line.trim(); } ).filter( function( line ){ return line !== ''; } ));
+			test.done();
+		} );
+	},
 };
 
 module.exports.yearnVersionTests = {
