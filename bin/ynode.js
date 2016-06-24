@@ -26,6 +26,10 @@ commander
 		fs.unlinkSync( temp_file );
 		process.exit( 0 );
 	} )
+	.option( '-v', 'print Node.js version', function( ){
+		console.log( process.version );
+		process.exit( 0 );
+	} )
 	.arguments('<script>')
 	.action( function( script ){
 		running_async = true;
