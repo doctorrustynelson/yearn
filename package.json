@@ -45,10 +45,10 @@
 		"which": "^1.2.4"
 	},
 	"devDependencies": {
-		"grunt": "^0.4.x",
+		"grunt": "^1.0.x",
 		"grunt-contrib-jshint": "^1.0.x",
 		"grunt-contrib-nodeunit": "^1.0.x",
 		"grunt-coveralls": "^1.0.x",
-	    "istanbul": "^0.4.x"
+		"istanbul": "^0.4.x"
 	}
 }
